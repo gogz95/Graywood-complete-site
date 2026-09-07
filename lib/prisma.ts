@@ -14,7 +14,7 @@ function resolveDatabaseUrl(raw: string): string {
     if (/^[a-zA-Z]:/.test(filePath)) {
       return "file:///" + filePath.replace(/\\/g, "/");
     }
-    const abs = path.resolve(process.cwd(), filePath);
+    const abs = path.resolve(/*turbopackIgnore: true*/ process.cwd(), filePath);
     return "file:///" + abs.replace(/\\/g, "/");
   }
   return raw;

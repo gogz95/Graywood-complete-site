@@ -5,6 +5,8 @@ import "./globals.css";
 
 import { type DomainKey, DOMAIN_HEADER, DOMAIN_META } from "@/lib/domain";
 import { DomainProvider } from "@/components/DomainProvider";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,7 +62,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-dvh flex flex-col bg-background text-foreground">
         <DomainProvider domain={domain}>
-          {children}
+          <Navbar />
+          <div className="flex-1 flex flex-col">
+            {children}
+          </div>
+          <Footer />
         </DomainProvider>
       </body>
     </html>

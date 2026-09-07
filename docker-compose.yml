@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  graywood-platform:
+    build: .
+    container_name: graywood-digital-platform
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/prod.db
+      - NAS_STORAGE_PATH=/mnt/storage
+      - LOCAL_CACHE_PATH=/app/cache/previews
+      - SESSION_SECRET=production_secret_key_minimum_32_characters_long_graywood_2026
+    volumes:
+      - ./data:/app/data:rw
+      - ./cache:/app/cache:rw
+      - /mnt/nas/photography:/mnt/storage:rw
