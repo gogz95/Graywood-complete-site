@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* ============================================================
+   GRAYWOOD — Design System Tokens (Tailwind v4)
+   ============================================================ */
+
+/* --- Global base theme (dark-first) --- */
+:root {
+  /* Brand neutrals */
+  --gw-bg:          #09090b;
+  --gw-surface:     #18181b;
+  --gw-surface-2:   #27272a;
+  --gw-border:      #3f3f46;
+  --gw-text:        #fafafa;
+  --gw-text-muted:  #a1a1aa;
+
+  /* Default accent (overridden per domain) */
+  --gw-primary:     #18181b;
+  --gw-accent:      #3b82f6;
+  --gw-accent-hover:#2563eb;
+
+  /* Typography */
+  --gw-font-sans:   var(--font-geist-sans, 'Inter', system-ui, sans-serif);
+  --gw-font-mono:   var(--font-geist-mono, 'JetBrains Mono', monospace);
+
+  /* Radius scale */
+  --gw-radius-sm:   0.375rem;
+  --gw-radius-md:   0.5rem;
+  --gw-radius-lg:   0.75rem;
+  --gw-radius-xl:   1rem;
+
+  /* Transitions */
+  --gw-transition:  150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- PHOTOGRAPHY domain theme — warm amber accent --- */
+[data-domain="PHOTOGRAPHY"] {
+  --gw-accent:       #f59e0b;
+  --gw-accent-hover: #d97706;
+}
+
+/* --- MEDIA domain theme — electric violet accent --- */
+[data-domain="MEDIA"] {
+  --gw-accent:       #8b5cf6;
+  --gw-accent-hover: #7c3aed;
+}
+
+/* --- MAIN domain theme — electric blue accent (default) --- */
+[data-domain="MAIN"] {
+  --gw-accent:       #3b82f6;
+  --gw-accent-hover: #2563eb;
+}
+
+/* ============================================================
+   Tailwind v4 — expose CSS vars as theme tokens
+   ============================================================ */
+@theme inline {
+  --color-background:   var(--gw-bg);
+  --color-surface:      var(--gw-surface);
+  --color-surface-2:    var(--gw-surface-2);
+  --color-border:       var(--gw-border);
+  --color-foreground:   var(--gw-text);
+  --color-muted:        var(--gw-text-muted);
+  --color-accent:       var(--gw-accent);
+  --color-accent-hover: var(--gw-accent-hover);
+
+  --font-sans: var(--gw-font-sans);
+  --font-mono: var(--gw-font-mono);
+
+  --radius-sm: var(--gw-radius-sm);
+  --radius-md: var(--gw-radius-md);
+  --radius-lg: var(--gw-radius-lg);
+  --radius-xl: var(--gw-radius-xl);
+}
+
+/* ============================================================
+   Base reset & global styles
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--gw-bg);
+  color: var(--gw-text);
+  font-family: var(--gw-font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  line-height: 1.6;
+}
+
+/* Focus ring — keyboard-accessible, invisible to mouse */
+:focus-visible {
+  outline: 2px solid var(--gw-accent);
+  outline-offset: 2px;
+  border-radius: var(--gw-radius-sm);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--gw-accent);
+  color: #fff;
+}
+
+/* Scrollbar (Webkit) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--gw-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gw-border);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gw-text-muted);
+}
+
+/* ============================================================
+   Utility micro-animations
+   ============================================================ */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position:  200% center; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease both;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--gw-surface) 25%,
+    var(--gw-surface-2) 50%,
+    var(--gw-surface) 75%
+  );
+  background-size: 200% auto;
+  animation: shimmer 1.6s linear infinite;
+}

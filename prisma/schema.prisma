@@ -1,0 +1,133 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String            @id @default(cuid())
+  email        String            @unique
+  passwordHash String
+  name         String
+  role         String            @default("CO_OWNER") // "ADMIN" or "CO_OWNER"
+  checkouts    GearCheckoutLog[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model GearItem {
+  id              String            @id @default(cuid())
+  name            String
+  category        String            // "BODY", "LENS", "LIGHTING", "AUDIO", "SUPPORT", "ACCESSORY"
+  serialNumber    String            @unique
+  condition       String            @default("Good")
+  status          String            @default("AVAILABLE") // "AVAILABLE", "CHECKED_OUT", "MAINTENANCE"
+  storageLocation String            @default("Studio Locker")
+  notes           String?
+  checkoutLogs    GearCheckoutLog[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model GearCheckoutLog {
+  id             String    @id @default(cuid())
+  gearId         String
+  gear           GearItem  @relation(fields: [gearId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checkoutDate   DateTime  @default(now())
+  expectedReturn DateTime
+  actualReturn   DateTime?
+  checkoutNotes  String?
+  returnNotes    String?
+}
+
+model MediaAsset {
+  id           String          @id @default(cuid())
+  filePath     String          @unique
+  fileHash     String?
+  fileName     String
+  fileSize     Int
+  mimeType     String          @default("image/jpeg")
+  width        Int?
+  height       Int?
+  cameraModel  String?
+  lensModel    String?
+  focalLength  String?
+  aperture     String?
+  shutterSpeed String?
+  iso          Int?
+  capturedAt   DateTime?
+  artists      ArtistProfile[]
+  albums       AlbumItem[]
+  createdAt    DateTime        @default(now())
+}
+
+model ArtistProfile {
+  id        String       @id @default(cuid())
+  slug      String       @unique
+  name      String
+  bio       String?
+  avatarUrl String?
+  featured  Boolean      @default(false)
+  sortOrder Int          @default(0)
+  photos    MediaAsset[]
+}
+
+model Album {
+  id            String      @id @default(cuid())
+  slug          String      @unique
+  title         String
+  type          String      @default("PUBLIC_PORTFOLIO") // "PUBLIC_PORTFOLIO", "CLIENT_PROOFING"
+  isUnlisted    Boolean     @default(false)
+  pinHash       String? // Bcrypt hash for client proofing
+  allowDownload Boolean     @default(true)
+  photos        AlbumItem[]
+}
+
+model AlbumItem {
+  id        String     @id @default(cuid())
+  albumId   String
+  album     Album      @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  assetId   String
+  asset     MediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  sortOrder Int        @default(0)
+
+  @@unique([albumId, assetId])
+}
+
+model ContactInquiry {
+  id           String   @id @default(cuid())
+  domainSource String   @default("PHOTOGRAPHY")
+  name         String
+  email        String
+  phone        String?
+  message      String
+  status       String   @default("NEW") // "NEW", "REPLIED", "BOOKED"
+  createdAt    DateTime @default(now())
+}
+
+model SystemModule {
+  id      String  @id // "GEAR_DESK", "CLIENT_PORTAL", "MANGA_READER", "GAME_SERVERS"
+  name    String
+  enabled Boolean @default(true)
+}
+
+model BrandSettings {
+  id              String @id // "GLOBAL", "PHOTOGRAPHY", "MEDIA"
+  siteTitle       String @default("Graywood")
+  primaryColor    String @default("#18181b")
+  accentColor     String @default("#3b82f6")
+  backgroundColor String @default("#09090b")
+}
+
+model GameServer {
+  id        String @id @default(cuid())
+  name      String
+  host      String
+  queryPort Int
+  gameType  String
+  sortOrder Int    @default(0)
+}
