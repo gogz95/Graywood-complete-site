@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { getProofingSession, isAlbumAuthorized } from "@/lib/session";
 import { PinEntryForm } from "@/components/portal/PinEntryForm";
@@ -7,43 +6,43 @@ import { ProofingGallery } from "@/components/portal/ProofingGallery";
 
 export const dynamic = "force-dynamic";
 
-interface PortalPageProps {
-  params: Promise<{
-    albumSlug: string;
-  }>;
-}
-
-/**
- * Zero-Discovery Crawler Lockout:
- * Strict robots meta preventing any search engine discovery or caching.
- */
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ albumSlug: string }>;
+}) {
   return {
-    title: "Client Proofing Vault | Graywood",
+    title: "Client Proofing Portal | Graywood",
     robots: {
       index: false,
       follow: false,
-      nocache: true,
     },
   };
 }
 
-export default async function ClientProofingPage({ params }: PortalPageProps) {
+export default async function ProofingAlbumPage({
+  params,
+}: {
+  params: Promise<{ albumSlug: string }>;
+}) {
   const { albumSlug } = await params;
 
-  // Query private client proofing album
+  if (!albumSlug) {
+    notFound();
+  }
+
   const album = await prisma.album.findFirst({
     where: {
       slug: albumSlug,
       type: "CLIENT_PROOFING",
     },
     include: {
-      photos: {
+      items: {
         include: {
           asset: true,
         },
         orderBy: {
-          sortOrder: "asc",
+          order: "asc",
         },
       },
     },
@@ -61,25 +60,10 @@ export default async function ClientProofingPage({ params }: PortalPageProps) {
     return <PinEntryForm albumSlug={album.slug} albumTitle={album.title} />;
   }
 
-  const mappedAssets = album.photos.map((item: {
-    asset: {
-      id: string;
-      filePath: string;
-      fileName: string;
-      width: number | null;
-      height: number | null;
-      cameraModel: string | null;
-      lensModel: string | null;
-      focalLength: string | null;
-      aperture: string | null;
-      shutterSpeed: string | null;
-      iso: number | null;
-      capturedAt: Date | null;
-    };
-  }) => ({
+  const mappedAssets = album.items.map((item) => ({
     id: item.asset.id,
-    filePath: item.asset.filePath,
-    fileName: item.asset.fileName,
+    filePath: item.asset.originalPath,
+    fileName: item.asset.filename,
     width: item.asset.width,
     height: item.asset.height,
     cameraModel: item.asset.cameraModel,
@@ -95,13 +79,13 @@ export default async function ClientProofingPage({ params }: PortalPageProps) {
 
   return (
     <main className="w-full min-h-screen bg-nordic-canvas text-nordic-ink">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 flex flex-col space-y-20">
         <ProofingGallery
           album={{
             id: album.id,
             slug: album.slug,
             title: album.title,
-            allowDownload: album.allowDownload,
+            allowDownload: true,
           }}
           assets={mappedAssets}
         />

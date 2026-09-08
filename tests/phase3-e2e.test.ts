@@ -10,6 +10,7 @@
 
 import "dotenv/config";
 import assert from "node:assert";
+import { prisma } from "@/lib/prisma";
 import { verifyAlbumPin, lockAlbumSession } from "@/app/actions/portal";
 import { GET as downloadRoute } from "@/app/api/portal/[albumSlug]/download/route";
 import robots from "@/app/robots";
@@ -25,6 +26,18 @@ async function runPhase3Tests() {
   console.log("=== PHASE 3 E2E INTEGRATION TEST SUITE ===\n");
 
   const albumSlug = "nordic-campaign-2026";
+  const bcrypt = await import("bcryptjs");
+  const pinHash = await bcrypt.hash("1234", 10);
+  await prisma.album.upsert({
+    where: { slug: albumSlug },
+    update: { pinHash, type: "CLIENT_PROOFING" },
+    create: {
+      slug: albumSlug,
+      title: "Nordic Campaign 2026",
+      type: "CLIENT_PROOFING",
+      pinHash,
+    },
+  });
 
   // -------------------------------------------------------------------------
   // 1. Zero-Discovery Privacy & Crawler Lockout
@@ -54,7 +67,7 @@ async function runPhase3Tests() {
   console.log("   [PASS] robots.txt disallows /portal/ and /api/portal/");
 
   // 1c. Proofing page metadata
-  const meta = await generatePortalMetadata();
+  const meta = await generatePortalMetadata({ params: Promise.resolve({ albumSlug }) });
   const robotsObj = typeof meta.robots === "object" && meta.robots !== null ? meta.robots : null;
   assert.strictEqual(robotsObj?.index, false, "Metadata must disallow search indexing");
   assert.strictEqual(robotsObj?.follow, false, "Metadata must disallow link following");

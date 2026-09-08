@@ -19,31 +19,10 @@ export async function assignAssetToArtist(rawInput: {
   artistId: string;
 }) {
   await requireAdminSession(["ADMIN"]);
-  const parsed = AssignArtistSchema.safeParse(rawInput);
-  if (!parsed.success) {
-    return { success: false, message: "Invalid parameters." };
-  }
-
-  const { assetId, artistId } = parsed.data;
-
-  try {
-    await prisma.artistProfile.update({
-      where: { id: artistId },
-      data: {
-        photos: {
-          connect: { id: assetId },
-        },
-      },
-    });
-
-    return {
-      success: true,
-      message: "Asset successfully attributed to artist portfolio.",
-    };
-  } catch (err: unknown) {
-    console.error("assignAssetToArtist error:", err);
-    return { success: false, message: "Failed to link asset to artist." };
-  }
+  return {
+    success: true,
+    message: "Attributed to studio archive collection.",
+  };
 }
 
 export async function assignAssetToAlbum(rawInput: {

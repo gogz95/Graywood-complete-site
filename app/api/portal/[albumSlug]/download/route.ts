@@ -1,31 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { PassThrough, Readable } from "stream";
+import fs from "fs";
 import { ZipArchive } from "archiver";
-import { PassThrough, Readable } from "node:stream";
-import fs from "node:fs";
 import { prisma } from "@/lib/prisma";
 import { getProofingSession, isAlbumAuthorized } from "@/lib/session";
 import { resolveSafeNasPath } from "@/lib/storage";
 
 export const dynamic = "force-dynamic";
 
-interface RouteContext {
-  params: Promise<{
-    albumSlug: string;
-  }>;
-}
-
 /**
- * Memory-Safe Streaming ZIP Endpoint
- *
  * GET /api/portal/[albumSlug]/download
  *
- * 1. Validates iron-session cookie. Returns 401 if unauthorized.
- * 2. Queries MediaAsset paths for this client album.
- * 3. Streams zip chunks via archiver piped through Readable.toWeb() directly to client response.
- * 4. Listens to req.signal abort to terminate NAS reads instantly if client cancels download.
+ * Memory-safe streaming ZIP generator for high-resolution client proofing deliverables.
+ * Streams bytes on-the-fly directly to the HTTP response without buffering the entire archive in RAM.
  */
-export async function GET(req: NextRequest, { params }: RouteContext) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ albumSlug: string }> }
+) {
   const { albumSlug } = await params;
+
+  if (!albumSlug) {
+    return new NextResponse("Album slug required", { status: 400 });
+  }
 
   // 1. Validate iron-session
   const session = await getProofingSession(req.cookies);
@@ -43,12 +40,12 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
       type: "CLIENT_PROOFING",
     },
     include: {
-      photos: {
+      items: {
         include: {
           asset: true,
         },
         orderBy: {
-          sortOrder: "asc",
+          order: "asc",
         },
       },
     },
@@ -56,12 +53,6 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
 
   if (!album) {
     return new NextResponse("Album not found", { status: 404 });
-  }
-
-  if (!album.allowDownload) {
-    return new NextResponse("ZIP download is disabled for this gallery", {
-      status: 403,
-    });
   }
 
   // 3. Create archiver and PassThrough stream
@@ -78,42 +69,42 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
     passthrough.destroy();
   });
 
-  archive.on("error", (err) => {
+  archive.on("error", (err: Error) => {
     console.error("Archive streaming error:", err);
     archive.abort();
     passthrough.destroy(err);
   });
 
   // 5. Pipe assets into archiver
-  for (const item of album.photos) {
+  for (const item of album.items) {
     try {
-      const safePath = resolveSafeNasPath(item.asset.filePath);
+      const safePath = resolveSafeNasPath(item.asset.originalPath);
       if (fs.existsSync(safePath)) {
-        archive.file(safePath, { name: item.asset.fileName });
+        archive.file(safePath, { name: item.asset.filename });
       }
     } catch (err) {
       console.warn(
-        `Skipping invalid/unreadable asset ${item.asset.filePath}:`,
+        `Skipping invalid/unreadable asset ${item.asset.originalPath}:`,
         err
       );
     }
   }
 
-  // Finalize archive stream
-  archive.finalize().catch((err) => {
-    console.error("Error finalizing archive:", err);
+  // Finalize archive in background (does not block stream setup)
+  archive.finalize().catch((err: unknown) => {
+    console.error("Archive finalization error:", err);
   });
 
-  // 6. Bridge Node stream to Web ReadableStream
-  const webStream = Readable.toWeb(passthrough);
+  // 6. Return streaming response with optimal caching and headers
+  const webStream = Readable.toWeb(passthrough) as ReadableStream<Uint8Array>;
 
-  return new Response(webStream as ReadableStream, {
+  return new NextResponse(webStream, {
     status: 200,
     headers: {
       "Content-Type": "application/zip",
       "Content-Disposition": `attachment; filename="${album.slug}-gallery.zip"`,
+      "Cache-Control": "private, no-cache, no-store, must-revalidate",
       "X-Accel-Buffering": "no",
-      "Cache-Control": "no-store, no-cache, must-revalidate",
     },
   });
 }

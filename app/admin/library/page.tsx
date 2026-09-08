@@ -7,18 +7,10 @@ export const dynamic = "force-dynamic";
 export default async function AdminLibraryPage() {
   await requireAdminSession(["ADMIN"]);
 
-  const [rawAssets, rawArtists, rawAlbums] = await Promise.all([
+  const [rawAssets, rawAlbums] = await Promise.all([
     prisma.mediaAsset.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: { indexedAt: "desc" },
       take: 100,
-    }),
-    prisma.artistProfile.findMany({
-      orderBy: { name: "asc" },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-      },
     }),
     prisma.album.findMany({
       orderBy: { title: "asc" },
@@ -33,9 +25,9 @@ export default async function AdminLibraryPage() {
 
   const assets = rawAssets.map((a) => ({
     id: a.id,
-    fileName: a.fileName,
-    filePath: a.filePath,
-    fileSize: a.fileSize,
+    fileName: a.filename,
+    filePath: a.originalPath,
+    fileSize: Number(a.sizeBytes),
     width: a.width,
     height: a.height,
     cameraModel: a.cameraModel,
@@ -48,7 +40,7 @@ export default async function AdminLibraryPage() {
   return (
     <LibraryManager
       assets={assets}
-      artists={rawArtists}
+      artists={[]}
       albums={rawAlbums}
     />
   );

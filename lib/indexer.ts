@@ -253,13 +253,13 @@ export async function runIncrementalScan(
     // Check which files already exist in SQLite
     const existing = await prisma.mediaAsset.findMany({
       where: {
-        filePath: { in: batch },
+        originalPath: { in: batch },
       },
-      select: { filePath: true },
+      select: { originalPath: true },
     });
 
     const existingSet = new Set(
-      existing.map((e: { filePath: string }) => e.filePath)
+      existing.map((e: { originalPath: string }) => e.originalPath)
     );
     const newFilePaths = batch.filter((p) => !existingSet.has(p));
 
@@ -291,13 +291,13 @@ export async function runIncrementalScan(
 
       recordsToCreate.push({
         id: generateAssetId(),
-        filePath: relPath,
-        fileHash,
-        fileName,
-        fileSize: stat.size,
+        originalPath: relPath,
+        hash: fileHash,
+        filename: fileName,
+        sizeBytes: BigInt(stat.size),
         mimeType,
-        width: meta.width ?? null,
-        height: meta.height ?? null,
+        width: meta.width ?? 0,
+        height: meta.height ?? 0,
         cameraModel: meta.cameraModel ?? null,
         lensModel: meta.lensModel ?? null,
         focalLength: meta.focalLength ?? null,

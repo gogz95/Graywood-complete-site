@@ -15,22 +15,22 @@ export async function ThemeProvider({ domain }: ThemeProviderProps) {
 
   try {
     if (domain) {
-      brandSettings = await prisma.brandSettings.findUnique({
-        where: { id: domain },
+      brandSettings = await prisma.brandSettings.findFirst({
+        where: { scope: domain },
       });
     }
     if (!brandSettings) {
-      brandSettings = await prisma.brandSettings.findUnique({
-        where: { id: "GLOBAL" },
+      brandSettings = await prisma.brandSettings.findFirst({
+        where: { scope: "GLOBAL" },
       });
     }
   } catch {
     // Graceful fallback during setup or database bootstrap
   }
 
-  const backgroundColor = brandSettings?.backgroundColor || "#F9F8F6";
-  const accentColor = brandSettings?.accentColor || "#2D3B36";
-  const primaryColor = brandSettings?.primaryColor || "#1C1B19";
+  const backgroundColor = brandSettings?.canvasColor || "#F9F8F6";
+  const accentColor = brandSettings?.pineColor || "#2D3B36";
+  const primaryColor = brandSettings?.inkColor || "#1C1B19";
 
   return (
     <style

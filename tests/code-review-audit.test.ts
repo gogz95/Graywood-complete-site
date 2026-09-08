@@ -22,7 +22,7 @@ async function runAuditTests() {
 
   const publicAssets = await prisma.mediaAsset.findMany({
     where: {
-      albums: {
+      albumItems: {
         none: {
           album: {
             type: "CLIENT_PROOFING",
@@ -31,7 +31,7 @@ async function runAuditTests() {
       },
     },
     include: {
-      albums: {
+      albumItems: {
         include: {
           album: true,
         },
@@ -40,7 +40,7 @@ async function runAuditTests() {
   });
 
   const hasLeakedClientProof = publicAssets.some((asset) =>
-    asset.albums.some((item) => item.album.type === "CLIENT_PROOFING")
+    asset.albumItems.some((item) => item.album.type === "CLIENT_PROOFING")
   );
   assert.strictEqual(
     hasLeakedClientProof,

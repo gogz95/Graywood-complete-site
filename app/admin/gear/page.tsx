@@ -12,9 +12,7 @@ export default async function AdminGearPage() {
       orderBy: { name: "asc" },
       include: {
         checkoutLogs: {
-          where: { actualReturn: null },
-          include: { user: true },
-          orderBy: { checkoutDate: "desc" },
+          orderBy: { timestamp: "desc" },
           take: 1,
         },
       },
@@ -29,34 +27,33 @@ export default async function AdminGearPage() {
       },
     }),
     prisma.gearCheckoutLog.findMany({
-      orderBy: { checkoutDate: "desc" },
+      orderBy: { timestamp: "desc" },
       include: {
-        gear: true,
-        user: true,
+        gearItem: true,
       },
       take: 50,
     }),
   ]);
 
   const items = rawItems.map((item) => {
-    const active = item.checkoutLogs[0];
     return {
       id: item.id,
       name: item.name,
+      brand: item.brand,
       category: item.category,
-      serialNumber: item.serialNumber,
-      condition: item.condition,
+      serialNumber: item.serialNumber || "",
+      condition: "Good",
       status: item.status,
       storageLocation: item.storageLocation,
       notes: item.notes,
-      activeCheckout: active
+      activeCheckout: item.status === "CHECKED_OUT"
         ? {
-            id: active.id,
-            userId: active.userId,
-            userName: active.user.name,
-            checkoutDate: active.checkoutDate.toISOString(),
-            expectedReturn: active.expectedReturn.toISOString(),
-            checkoutNotes: active.checkoutNotes,
+            id: item.id,
+            userId: item.custodian || "Unknown",
+            userName: item.custodian || "Unknown Custodian",
+            checkoutDate: item.checkedOutAt ? item.checkedOutAt.toISOString() : new Date().toISOString(),
+            expectedReturn: item.expectedReturn ? item.expectedReturn.toISOString() : new Date().toISOString(),
+            checkoutNotes: item.notes,
           }
         : null,
     };
@@ -64,17 +61,23 @@ export default async function AdminGearPage() {
 
   const logs = rawLogs.map((log) => ({
     id: log.id,
-    gearId: log.gearId,
-    gearName: log.gear.name,
-    serialNumber: log.gear.serialNumber,
-    userId: log.userId,
-    userName: log.user.name,
-    checkoutDate: log.checkoutDate.toISOString(),
-    expectedReturn: log.expectedReturn.toISOString(),
-    actualReturn: log.actualReturn ? log.actualReturn.toISOString() : null,
-    checkoutNotes: log.checkoutNotes,
-    returnNotes: log.returnNotes,
+    gearId: log.gearItemId,
+    gearName: log.gearItem?.name || "Equipment Item",
+    serialNumber: log.gearItem?.serialNumber || "N/A",
+    userId: log.custodian,
+    userName: log.custodian,
+    checkoutDate: log.timestamp.toISOString(),
+    expectedReturn: log.timestamp.toISOString(),
+    actualReturn: log.action === "CHECKIN" ? log.timestamp.toISOString() : null,
+    checkoutNotes: log.notes,
+    returnNotes: log.notes,
   }));
 
-  return <GearDeskView initialItems={items} users={rawUsers} logs={logs} />;
+  return (
+    <GearDeskView
+      initialItems={items}
+      users={rawUsers}
+      logs={logs}
+    />
+  );
 }

@@ -18,8 +18,8 @@ async function test() {
     const sample = assets[0];
     console.log("Sample asset in DB:", {
       id: sample.id,
-      filePath: sample.filePath,
-      fileName: sample.fileName,
+      filePath: sample.originalPath,
+      fileName: sample.filename,
       width: sample.width,
       height: sample.height,
       cameraModel: sample.cameraModel,

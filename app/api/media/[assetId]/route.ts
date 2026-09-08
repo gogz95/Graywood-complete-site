@@ -56,7 +56,7 @@ export async function GET(
     // Resolve safe NAS file path (guarded against traversal)
     let nasFilePath: string;
     try {
-      nasFilePath = resolveSafeNasPath(asset.filePath);
+      nasFilePath = resolveSafeNasPath(asset.originalPath);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Access denied.";
       return new NextResponse(message, { status: 403 });

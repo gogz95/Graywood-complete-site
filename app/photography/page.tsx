@@ -20,7 +20,7 @@ export default async function PhotographyPage() {
     getStudioFeatures("PHOTOGRAPHY"),
     prisma.mediaAsset.findMany({
       where: {
-        albums: {
+        albumItems: {
           none: {
             album: {
               type: "CLIENT_PROOFING",
@@ -28,15 +28,15 @@ export default async function PhotographyPage() {
           },
         },
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { indexedAt: "desc" },
       take: 30,
     }),
   ]);
 
   const assets = rawAssets.map((a) => ({
     id: a.id,
-    filePath: a.filePath,
-    fileName: a.fileName,
+    filePath: a.originalPath,
+    fileName: a.filename,
     width: a.width,
     height: a.height,
     cameraModel: a.cameraModel,
@@ -60,7 +60,7 @@ export default async function PhotographyPage() {
 
   return (
     <main className="w-full min-h-screen bg-nordic-canvas text-nordic-ink">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 flex flex-col space-y-20">
         {/* Editorial Hero */}
         <section className="relative w-full py-20 px-6 sm:px-10 flex flex-col items-center justify-center text-center rounded-3xl border border-nordic-border bg-nordic-surface/60 overflow-hidden">
           {/* Subtle ambient atmospheric tone */}

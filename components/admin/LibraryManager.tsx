@@ -129,45 +129,25 @@ export function LibraryManager({
 
   const handleTriggerSync = async () => {
     setIsSyncing(true);
-    setSyncStatus("Connecting to NAS media pipeline...");
+    setSyncStatus("Scanning NAS storage pipeline...");
 
     try {
-      const response = await fetch("/api/admin/library/sync", {
+      const response = await fetch("/api/nas/scan", {
         method: "POST",
       });
 
-      if (!response.body) {
-        setSyncStatus("Failed to open SSE stream.");
+      if (!response.ok) {
+        setSyncStatus("Failed to scan NAS storage.");
         setIsSyncing(false);
         return;
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-
-        const text = decoder.decode(value);
-        const lines = text.split("\n");
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            try {
-              const data = JSON.parse(line.slice(6));
-              if (data.type === "start") setSyncStatus(data.message);
-              if (data.type === "progress") {
-                setSyncStatus(`Scanned: ${data.scanned} | Indexed: ${data.indexed}`);
-              }
-              if (data.type === "complete") {
-                setSyncStatus(`Sync finished: ${data.indexed} new assets indexed.`);
-                router.refresh();
-              }
-            } catch {
-              // ignore parse errors
-            }
-          }
-        }
+      const data = await response.json();
+      if (data.success) {
+        setSyncStatus(`Sync finished: ${data.totalUpserted} assets indexed from ${data.totalScanned} files.`);
+        router.refresh();
+      } else {
+        setSyncStatus(data.error || "Scan failed.");
       }
     } catch {
       setSyncStatus("Network error during sync.");

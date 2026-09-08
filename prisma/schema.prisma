@@ -6,25 +6,106 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id           String            @id @default(cuid())
-  email        String            @unique
-  passwordHash String
-  name         String
-  role         String            @default("CO_OWNER") // "ADMIN" or "CO_OWNER"
-  checkouts    GearCheckoutLog[]
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
+// Live In-Site Dynamic Content Management
+model SiteContent {
+  id        String   @id @default(cuid())
+  scope     String   // "GLOBAL", "PHOTOGRAPHY", "MEDIA", "PORTAL"
+  section   String   // "HERO", "ARCHIVE", "COMMISSION", "FOOTER", "ABOUT"
+  key       String   // "badge", "title", "description", etc.
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@unique([scope, section, key])
 }
 
+// Configurable Studio Highlight Callouts
+model StudioFeature {
+  id          String   @id @default(cuid())
+  scope       String   // "PHOTOGRAPHY" or "MEDIA"
+  icon        String   // Lucide icon name: "Camera", "Compass", "Award", "Aperture"
+  title       String
+  description String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Dynamic Ecosystem Module Capability Toggles
+model SystemModule {
+  id          String   @id @default(cuid())
+  key         String   @unique // "GEAR_DESK", "CLIENT_PORTAL", "MANGA_READER", "GAME_SERVERS"
+  label       String
+  description String
+  enabled     Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+}
+
+// Live Game Server Telemetry Nodes (Native to Gamehosting-by-Graywood-2)
+model GameServer {
+  id           String   @id @default(cuid())
+  name         String
+  gameType     String   // e.g., "Assetto Corsa", "Unreal Engine Testbed"
+  protocolType String   // Gamedig query protocol
+  endpoint     String   // "play.graywood.no:27015"
+  enabled      Boolean  @default(true)
+  createdAt    DateTime @default(now())
+}
+
+// Ingested Media Asset Registry (Photoview / Immich read-only model)
+model MediaAsset {
+  id           String      @id @default(cuid())
+  filename     String
+  originalPath String      @unique
+  hash         String      @unique // SHA-256
+  mimeType     String
+  sizeBytes    BigInt
+  width        Int         @default(0)
+  height       Int         @default(0)
+  cameraModel  String?
+  lensModel    String?
+  focalLength  String?
+  iso          Int?
+  aperture     String?
+  shutterSpeed String?
+  capturedAt   DateTime?
+  indexedAt    DateTime    @default(now())
+  albumItems   AlbumItem[]
+}
+
+model Album {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  title       String
+  clientName  String?
+  pinHash     String?     // For client proofing vaults
+  type        String      @default("PORTFOLIO") // "PORTFOLIO" | "CLIENT_PROOFING"
+  createdAt   DateTime    @default(now())
+  items       AlbumItem[]
+}
+
+model AlbumItem {
+  id        String     @id @default(cuid())
+  albumId   String
+  assetId   String
+  order     Int        @default(0)
+  album     Album      @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  asset     MediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([albumId, assetId])
+}
+
+// Co-Owner Gear Desk & Equipment Custody Logs
 model GearItem {
   id              String            @id @default(cuid())
   name            String
-  category        String            // "BODY", "LENS", "LIGHTING", "AUDIO", "SUPPORT", "ACCESSORY"
-  serialNumber    String            @unique
-  condition       String            @default("Good")
-  status          String            @default("AVAILABLE") // "AVAILABLE", "CHECKED_OUT", "MAINTENANCE"
-  storageLocation String            @default("Studio Locker")
+  brand           String
+  category        String            // "BODY", "LENS", "LIGHTING", "DRONE", "AUDIO"
+  serialNumber    String?
+  storageLocation String            @default("Main Studio Locker")
+  status          String            @default("AVAILABLE") // "AVAILABLE" | "CHECKED_OUT" | "MAINTENANCE"
+  custodian       String?
+  checkedOutAt    DateTime?
+  expectedReturn  DateTime?
   notes           String?
   checkoutLogs    GearCheckoutLog[]
   createdAt       DateTime          @default(now())
@@ -32,72 +113,40 @@ model GearItem {
 }
 
 model GearCheckoutLog {
-  id             String    @id @default(cuid())
-  gearId         String
-  gear           GearItem  @relation(fields: [gearId], references: [id], onDelete: Cascade)
-  userId         String
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  checkoutDate   DateTime  @default(now())
-  expectedReturn DateTime
-  actualReturn   DateTime?
-  checkoutNotes  String?
-  returnNotes    String?
+  id         String   @id @default(cuid())
+  gearItemId String
+  custodian  String
+  action     String   // "CHECKOUT" | "CHECKIN"
+  notes      String?
+  timestamp  DateTime @default(now())
+  gearItem   GearItem @relation(fields: [gearItemId], references: [id], onDelete: Cascade)
 }
 
-model MediaAsset {
-  id           String          @id @default(cuid())
-  filePath     String          @unique
-  fileHash     String?
-  fileName     String
-  fileSize     Int
-  mimeType     String          @default("image/jpeg")
-  width        Int?
-  height       Int?
-  cameraModel  String?
-  lensModel    String?
-  focalLength  String?
-  aperture     String?
-  shutterSpeed String?
-  iso          Int?
-  capturedAt   DateTime?
-  artists      ArtistProfile[]
-  albums       AlbumItem[]
-  createdAt    DateTime        @default(now())
+// Superadmin & Role Authentication
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
 }
 
-model ArtistProfile {
-  id        String       @id @default(cuid())
-  slug      String       @unique
-  name      String
-  bio       String?
-  avatarUrl String?
-  featured  Boolean      @default(false)
-  sortOrder Int          @default(0)
-  photos    MediaAsset[]
+// Brand Settings & Color Overrides
+model BrandSettings {
+  id           String   @id @default(cuid())
+  scope        String   @unique // "GLOBAL", "PHOTOGRAPHY", "MEDIA"
+  studioTitle  String   @default("Graywood")
+  tagline      String   @default("Visual Craft & Shared Infrastructure")
+  canvasColor  String   @default("#F9F8F6")
+  surfaceColor String   @default("#FFFFFF")
+  borderColor  String   @default("#E8E5DF")
+  inkColor     String   @default("#1C1B19")
+  pineColor    String   @default("#2D3B36")
+  updatedAt    DateTime @updatedAt
 }
 
-model Album {
-  id            String      @id @default(cuid())
-  slug          String      @unique
-  title         String
-  type          String      @default("PUBLIC_PORTFOLIO") // "PUBLIC_PORTFOLIO", "CLIENT_PROOFING"
-  isUnlisted    Boolean     @default(false)
-  pinHash       String? // Bcrypt hash for client proofing
-  allowDownload Boolean     @default(true)
-  photos        AlbumItem[]
-}
-
-model AlbumItem {
-  id        String     @id @default(cuid())
-  albumId   String
-  album     Album      @relation(fields: [albumId], references: [id], onDelete: Cascade)
-  assetId   String
-  asset     MediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  sortOrder Int        @default(0)
-
-  @@unique([albumId, assetId])
-}
-
+// Client Inquiries Ledger
 model ContactInquiry {
   id           String   @id @default(cuid())
   domainSource String   @default("PHOTOGRAPHY")
@@ -108,51 +157,3 @@ model ContactInquiry {
   status       String   @default("NEW") // "NEW", "REPLIED", "BOOKED"
   createdAt    DateTime @default(now())
 }
-
-model SystemModule {
-  id      String  @id // "GEAR_DESK", "CLIENT_PORTAL", "MANGA_READER", "GAME_SERVERS"
-  name    String
-  enabled Boolean @default(true)
-}
-
-model BrandSettings {
-  id              String @id // "GLOBAL", "PHOTOGRAPHY", "MEDIA"
-  siteTitle       String @default("Graywood")
-  primaryColor    String @default("#18181b")
-  accentColor     String @default("#3b82f6")
-  backgroundColor String @default("#09090b")
-}
-
-model GameServer {
-  id        String @id @default(cuid())
-  name      String
-  host      String
-  queryPort Int
-  gameType  String
-  sortOrder Int    @default(0)
-}
-
-// Centralized copy store for all domains and sections
-model SiteContent {
-  id        String   @id @default(cuid())
-  scope     String   // "GLOBAL", "PHOTOGRAPHY", "MEDIA", "PORTAL"
-  section   String   // "HERO", "ARCHIVE", "COMMISSION", "FOOTER", "ABOUT"
-  key       String   // e.g., "badge", "title", "description", "button_primary"
-  value     String   // Plain text or markdown content
-  updatedAt DateTime @updatedAt
-
-  @@unique([scope, section, key])
-}
-
-// Configurable highlight callouts (replaces hardcoded feature boxes)
-model StudioFeature {
-  id          String   @id @default(cuid())
-  scope       String   // "PHOTOGRAPHY" or "MEDIA"
-  icon        String   // Lucide icon identifier: "Camera", "Compass", "Award", "Aperture"
-  title       String
-  description String
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-

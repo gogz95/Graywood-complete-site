@@ -11,7 +11,26 @@ async function test() {
   if (!asset) {
     throw new Error("No media asset found in database. Run indexer first!");
   }
-  console.log(`Testing with asset: ${asset.id} (${asset.filePath})`);
+  console.log(`Testing with asset: ${asset.id} (${asset.originalPath})`);
+
+  const pathModule = await import("path");
+  const sharpModule = (await import("sharp")).default;
+  const { resolveSafeNasPath } = await import("../lib/storage");
+  const nasFilePath = resolveSafeNasPath(asset.originalPath);
+  const dir = pathModule.dirname(nasFilePath);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(nasFilePath)) {
+    await sharpModule({
+      create: {
+        width: 100,
+        height: 100,
+        channels: 3,
+        background: { r: 200, g: 200, b: 200 },
+      },
+    })
+      .jpeg()
+      .toFile(nasFilePath);
+  }
 
   // Clean any previous test cache
   const thumbCache = resolveSafeCachePath(`${asset.id}-thumb.webp`);

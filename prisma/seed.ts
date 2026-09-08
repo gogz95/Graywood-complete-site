@@ -18,61 +18,94 @@ async function main() {
   // 1. Core System Modules
   // -------------------------------------------------------------------------
   const modules = [
-    { id: "GEAR_DESK", name: "Co-Owner Gear Desk" },
-    { id: "CLIENT_PORTAL", name: "Client Proofing Portal" },
-    { id: "MANGA_READER", name: "Manga Reader Integration" },
-    { id: "GAME_SERVERS", name: "Game Server Monitors" },
+    {
+      key: "GEAR_DESK",
+      label: "Co-Owner Gear Desk",
+      description: "Hardware inventory, custodian custody tracking, and return logs.",
+    },
+    {
+      key: "CLIENT_PORTAL",
+      label: "Client Proofing Portal",
+      description: "Private PIN-protected client proofing vaults and high-resolution delivery.",
+    },
+    {
+      key: "MANGA_READER",
+      label: "Manga Reader Integration",
+      description: "Direct gateway to native Graywood-Reader sister subservice.",
+    },
+    {
+      key: "GAME_SERVERS",
+      label: "Game Server Monitors",
+      description: "Live UDP telemetry and player counts for Gamehosting-by-Graywood-2 clusters.",
+    },
   ];
 
   for (const mod of modules) {
     await prisma.systemModule.upsert({
-      where: { id: mod.id },
-      update: { name: mod.name },
-      create: { id: mod.id, name: mod.name, enabled: true },
+      where: { key: mod.key },
+      update: { label: mod.label, description: mod.description },
+      create: {
+        key: mod.key,
+        label: mod.label,
+        description: mod.description,
+        enabled: true,
+      },
     });
   }
-  console.log(`  ✅ Base system modules ensured: ${modules.map((m) => m.id).join(", ")}`);
+  console.log(`  ✅ Base system modules ensured: ${modules.map((m) => m.key).join(", ")}`);
 
   // -------------------------------------------------------------------------
   // 2. Scandinavian BrandSettings Defaults
   // -------------------------------------------------------------------------
   const brands = [
     {
-      id: "GLOBAL",
-      siteTitle: "Graywood",
-      primaryColor: "#1C1B19",
-      accentColor: "#2D3B36",
-      backgroundColor: "#F9F8F6",
+      scope: "GLOBAL",
+      studioTitle: "Graywood",
+      tagline: "Visual Craft & Shared Infrastructure",
+      canvasColor: "#F9F8F6",
+      surfaceColor: "#FFFFFF",
+      borderColor: "#E8E5DF",
+      inkColor: "#1C1B19",
+      pineColor: "#2D3B36",
     },
     {
-      id: "PHOTOGRAPHY",
-      siteTitle: "Graywood Photography",
-      primaryColor: "#1C1B19",
-      accentColor: "#2D3B36",
-      backgroundColor: "#F9F8F6",
+      scope: "PHOTOGRAPHY",
+      studioTitle: "Graywood Photography",
+      tagline: "Nordic Landscape & Commercial Photography",
+      canvasColor: "#F9F8F6",
+      surfaceColor: "#FFFFFF",
+      borderColor: "#E8E5DF",
+      inkColor: "#1C1B19",
+      pineColor: "#2D3B36",
     },
     {
-      id: "MEDIA",
-      siteTitle: "Graywood Media",
-      primaryColor: "#1C1B19",
-      accentColor: "#C86D51",
-      backgroundColor: "#F9F8F6",
+      scope: "MEDIA",
+      studioTitle: "Graywood Media",
+      tagline: "High-Resolution Production & Digital Media",
+      canvasColor: "#F9F8F6",
+      surfaceColor: "#FFFFFF",
+      borderColor: "#E8E5DF",
+      inkColor: "#1C1B19",
+      pineColor: "#2D3B36",
     },
   ];
 
   for (const brand of brands) {
     await prisma.brandSettings.upsert({
-      where: { id: brand.id },
+      where: { scope: brand.scope },
       update: {
-        siteTitle: brand.siteTitle,
-        primaryColor: brand.primaryColor,
-        accentColor: brand.accentColor,
-        backgroundColor: brand.backgroundColor,
+        studioTitle: brand.studioTitle,
+        tagline: brand.tagline,
+        canvasColor: brand.canvasColor,
+        surfaceColor: brand.surfaceColor,
+        borderColor: brand.borderColor,
+        inkColor: brand.inkColor,
+        pineColor: brand.pineColor,
       },
       create: brand,
     });
   }
-  console.log(`  ✅ Scandinavian Brand Settings seeded: ${brands.map((b) => b.id).join(", ")}`);
+  console.log(`  ✅ Scandinavian Brand Settings seeded: ${brands.map((b) => b.scope).join(", ")}`);
 
   // -------------------------------------------------------------------------
   // 3. Baseline SiteContent Copy (PHOTOGRAPHY)
@@ -107,7 +140,8 @@ async function main() {
       scope: "PHOTOGRAPHY",
       section: "ARCHIVE",
       key: "description",
-      value: "Curated master files and commissions.",
+      value:
+        "Selected editorial collections captured across Svalbard, Lofoten, Oslofjord, and bespoke studio environments.",
     },
     {
       scope: "PHOTOGRAPHY",
@@ -137,12 +171,12 @@ async function main() {
       create: item,
     });
   }
-  console.log(`  ✅ Baseline SiteContent copy seeded (${siteCopy.length} keys)`);
+  console.log(`  ✅ Baseline SiteContent seeded: ${siteCopy.length} entries`);
 
   // -------------------------------------------------------------------------
-  // 4. Default StudioFeature Highlights (PHOTOGRAPHY)
+  // 4. Baseline StudioFeature Highlights (PHOTOGRAPHY)
   // -------------------------------------------------------------------------
-  const features = [
+  const studioFeatures = [
     {
       scope: "PHOTOGRAPHY",
       icon: "Camera",
@@ -166,21 +200,27 @@ async function main() {
     },
   ];
 
-  // Clean out existing photography features and seed default order
-  await prisma.studioFeature.deleteMany({ where: { scope: "PHOTOGRAPHY" } });
-  for (const feature of features) {
-    await prisma.studioFeature.create({
-      data: feature,
-    });
-  }
-  console.log(`  ✅ Default StudioFeature highlights seeded (${features.length} features)`);
+  const existingCount = await prisma.studioFeature.count({
+    where: { scope: "PHOTOGRAPHY" },
+  });
 
-  console.log("🎉  Baseline seed complete. All mock data eradicated.");
+  if (existingCount === 0) {
+    for (const feat of studioFeatures) {
+      await prisma.studioFeature.create({ data: feat });
+    }
+    console.log(`  ✅ Baseline StudioFeatures created: ${studioFeatures.length} highlights`);
+  } else {
+    console.log(`  ℹ️  StudioFeatures already configured (${existingCount} found), skipping creation.`);
+  }
+
+  console.log("\n🚀 System configuration successfully seeded with Scandinavian editorial defaults!");
 }
 
 main()
   .catch((e) => {
-    console.error("❌  Seed failed:", e);
+    console.error("❌ Seed failed:", e);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

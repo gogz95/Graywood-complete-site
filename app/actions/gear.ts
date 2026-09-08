@@ -53,19 +53,27 @@ export async function checkoutGearItem(rawInput: CheckoutInput) {
       return { success: false, message: "This item is already checked out." };
     }
 
+    const returnDate = new Date(expectedReturn);
+
     // Run transaction: create checkout log and update gear status
     await prisma.$transaction([
       prisma.gearCheckoutLog.create({
         data: {
-          gearId,
-          userId,
-          expectedReturn: new Date(expectedReturn),
-          checkoutNotes: notes ?? null,
+          gearItemId: gearId,
+          custodian: userId,
+          action: "CHECKOUT",
+          notes: notes ?? null,
         },
       }),
       prisma.gearItem.update({
         where: { id: gearId },
-        data: { status: "CHECKED_OUT" },
+        data: {
+          status: "CHECKED_OUT",
+          custodian: userId,
+          checkedOutAt: new Date(),
+          expectedReturn: returnDate,
+          notes: notes ?? gear.notes,
+        },
       }),
     ]);
 
@@ -90,7 +98,7 @@ export async function checkinGearItem(rawInput: CheckinInput) {
     };
   }
 
-  const { gearId, logId, returnNotes, condition } = parsed.data;
+  const { gearId, returnNotes, condition } = parsed.data;
 
   try {
     const gear = await prisma.gearItem.findUnique({
@@ -101,48 +109,32 @@ export async function checkinGearItem(rawInput: CheckinInput) {
       return { success: false, message: "Gear item not found." };
     }
 
-    // Find active checkout log if not explicitly provided
-    let targetLogId = logId;
-    if (!targetLogId) {
-      const activeLog = await prisma.gearCheckoutLog.findFirst({
-        where: {
-          gearId,
-          actualReturn: null,
-        },
-        orderBy: { checkoutDate: "desc" },
-      });
-      targetLogId = activeLog?.id;
-    }
-
     const nextStatus =
       condition.toLowerCase().includes("damaged") ||
       condition.toLowerCase().includes("maintenance")
         ? "MAINTENANCE"
         : "AVAILABLE";
 
-    const operations: Array<ReturnType<typeof prisma.gearItem.update> | ReturnType<typeof prisma.gearCheckoutLog.update>> = [
+    await prisma.$transaction([
+      prisma.gearCheckoutLog.create({
+        data: {
+          gearItemId: gearId,
+          custodian: gear.custodian || "Unknown",
+          action: "CHECKIN",
+          notes: returnNotes ?? null,
+        },
+      }),
       prisma.gearItem.update({
         where: { id: gearId },
         data: {
           status: nextStatus,
-          condition,
+          custodian: null,
+          checkedOutAt: null,
+          expectedReturn: null,
+          notes: returnNotes ?? gear.notes,
         },
       }),
-    ];
-
-    if (targetLogId) {
-      operations.push(
-        prisma.gearCheckoutLog.update({
-          where: { id: targetLogId },
-          data: {
-            actualReturn: new Date(),
-            returnNotes: returnNotes ?? null,
-          },
-        })
-      );
-    }
-
-    await prisma.$transaction(operations);
+    ]);
 
     return {
       success: true,
@@ -156,9 +148,10 @@ export async function checkinGearItem(rawInput: CheckinInput) {
 
 const CreateGearSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
+  brand: z.string().optional().default("Sony"),
   category: z.string().min(1, "Category is required"),
   serialNumber: z.string().min(1, "Serial number is required"),
-  storageLocation: z.string().default("Studio Locker"),
+  storageLocation: z.string().default("Main Studio Locker"),
   condition: z.string().default("Good"),
   notes: z.string().optional(),
 });
@@ -176,11 +169,11 @@ export async function createGearItem(rawInput: CreateGearInput) {
     };
   }
 
-  const { name, category, serialNumber, storageLocation, condition, notes } =
+  const { name, brand, category, serialNumber, storageLocation, notes } =
     parsed.data;
 
   try {
-    const existing = await prisma.gearItem.findUnique({
+    const existing = await prisma.gearItem.findFirst({
       where: { serialNumber: serialNumber.trim() },
     });
 
@@ -194,10 +187,10 @@ export async function createGearItem(rawInput: CreateGearInput) {
     const item = await prisma.gearItem.create({
       data: {
         name: name.trim(),
+        brand: brand?.trim() || "Sony",
         category,
         serialNumber: serialNumber.trim(),
-        storageLocation: storageLocation.trim() || "Studio Locker",
-        condition,
+        storageLocation: storageLocation.trim() || "Main Studio Locker",
         notes: notes?.trim() || null,
         status: "AVAILABLE",
       },
@@ -213,4 +206,3 @@ export async function createGearItem(rawInput: CreateGearInput) {
     return { success: false, message: "Failed to create equipment item." };
   }
 }
-

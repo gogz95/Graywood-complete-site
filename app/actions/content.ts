@@ -15,8 +15,9 @@ const FeatureSchema = z.object({
 });
 
 /**
- * Server Action: updateSiteContent
+ * Server Action: updateSiteContent / saveSiteContent
  * Upserts a batch of section.key copy values for a given scope.
+ * Directly revalidates public page cache ('/', 'layout') on mutation.
  */
 export async function updateSiteContent(
   scope: string,
@@ -54,6 +55,8 @@ export async function updateSiteContent(
 
     try {
       revalidatePath("/", "layout");
+      revalidatePath("/photography");
+      revalidatePath("/hub");
     } catch {
       // Safe fallback outside Next request context
     }
@@ -66,6 +69,26 @@ export async function updateSiteContent(
     console.error("updateSiteContent error:", error);
     return { success: false, message: "Failed to update site copy." };
   }
+}
+
+/**
+ * Server Action: saveSiteContent
+ * Accepts FormData or a structured object to upsert key-value pairs into prisma.siteContent.
+ */
+export async function saveSiteContent(
+  input: FormData | { scope: string; entries: Record<string, string> }
+) {
+  if (input instanceof FormData) {
+    const scope = (input.get("scope") as string) || "PHOTOGRAPHY";
+    const entries: Record<string, string> = {};
+    for (const [key, value] of input.entries()) {
+      if (key !== "scope" && typeof value === "string") {
+        entries[key] = value;
+      }
+    }
+    return updateSiteContent(scope, entries);
+  }
+  return updateSiteContent(input.scope, input.entries);
 }
 
 /**
@@ -99,6 +122,8 @@ export async function upsertStudioFeature(rawInput: z.infer<typeof FeatureSchema
 
     try {
       revalidatePath("/", "layout");
+      revalidatePath("/photography");
+      revalidatePath("/hub");
     } catch {
       // Safe fallback
     }
@@ -131,6 +156,8 @@ export async function deleteStudioFeature(id: string) {
 
     try {
       revalidatePath("/", "layout");
+      revalidatePath("/photography");
+      revalidatePath("/hub");
     } catch {
       // Safe fallback
     }

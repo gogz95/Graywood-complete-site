@@ -189,6 +189,7 @@ export function GearDeskView({
 
     const res = await createGearItem({
       name: newItemData.name,
+      brand: "Sony",
       category: newItemData.category,
       serialNumber: newItemData.serialNumber,
       storageLocation: newItemData.storageLocation,

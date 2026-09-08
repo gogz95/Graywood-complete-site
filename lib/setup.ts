@@ -3,7 +3,7 @@ import { prisma } from "./prisma";
 /**
  * Checks whether initial first-time ecosystem setup is complete:
  * 1. An Administrator account (role = "ADMIN") exists in User.
- * 2. A GLOBAL BrandSettings record exists.
+ * 2. A GLOBAL BrandSettings record exists in BrandSettings.
  *
  * Gracefully handles fresh unmigrated databases or connection delays by returning false.
  */
@@ -14,8 +14,8 @@ export async function checkSetupStatus(): Promise<boolean> {
         where: { role: "ADMIN" },
         select: { id: true },
       }),
-      prisma.brandSettings.findUnique({
-        where: { id: "GLOBAL" },
+      prisma.brandSettings.findFirst({
+        where: { scope: "GLOBAL" },
         select: { id: true },
       }),
     ]);

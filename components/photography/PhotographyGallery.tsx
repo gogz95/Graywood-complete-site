@@ -9,6 +9,7 @@ import {
   Sparkles,
   Layers,
   X,
+  Camera,
 } from "lucide-react";
 
 interface PhotographyGalleryProps {
@@ -111,10 +112,9 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
         </div>
       </div>
 
-      {/* Filter and Search Controls: Side-by-side with border-b pb-4 */}
+      {/* Filter and Search Controls */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-nordic-border pb-4 mb-10">
-        {/* Category Pills */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
           {CATEGORIES.map((cat) => {
             const count = categoryCounts[cat.key];
             const isActive = activeCategory === cat.key;
@@ -122,7 +122,7 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
               <button
                 key={cat.key}
                 onClick={() => setActiveCategory(cat.key)}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 cursor-pointer ${
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   isActive
                     ? "bg-nordic-pine text-white shadow-xs border border-nordic-pine"
                     : "border border-nordic-border bg-nordic-surface text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink hover:bg-nordic-muted/60"
@@ -143,38 +143,24 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
           })}
         </div>
 
-        {/* Search / Filter Input: explicit width w-full md:w-72 */}
-        <div className="relative w-full md:w-72">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-nordic-ink/20 pointer-events-none" />
+        <div className="w-full md:w-72">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search camera, lens, tag..."
-            style={{ paddingLeft: "2.5rem" }}
-            className="w-full rounded-full border border-nordic-border bg-nordic-surface pr-8 py-2 text-xs text-nordic-ink placeholder:text-nordic-ink/25 focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition"
+            className="w-full px-3.5 py-2 rounded-xl bg-nordic-surface border border-nordic-border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition"
           />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-nordic-ink/30 hover:text-nordic-ink"
-              aria-label="Clear search"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          )}
         </div>
       </div>
 
       {/* Empty State */}
       {assets.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-nordic-border p-16 text-center bg-nordic-surface/60 max-w-xl mx-auto shadow-sm">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-nordic-muted border border-nordic-border mb-4 text-nordic-pine">
-            <SlidersHorizontal className="h-6 w-6" />
-          </div>
+        <div className="border border-nordic-border bg-nordic-surface rounded-2xl p-12 text-center max-w-xl mx-auto">
+          <Camera className="h-8 w-8 text-nordic-pine mx-auto mb-3 opacity-60" />
           <h3 className="text-base font-serif text-nordic-ink">No works currently indexed in public archive</h3>
           <p className="text-xs text-nordic-subtle max-w-sm mx-auto mt-1.5 leading-relaxed">
-            No media assets found. Access the Master Asset Library in the Command Suite and click &quot;Scan New Files&quot; to index your NAS photography portfolio.
+            No media assets found. Access the Master Asset Library in the Command Suite and click &quot;Scan NAS&quot; to index your NAS photography portfolio.
           </p>
         </div>
       ) : filteredAssets.length === 0 ? (
