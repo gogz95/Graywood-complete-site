@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import "./globals.css";
 
 import { type DomainKey, DOMAIN_HEADER, DOMAIN_META } from "@/lib/domain";
 import { DomainProvider } from "@/components/DomainProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { checkSetupStatus } from "@/lib/setup";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,9 +53,18 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const headersList = await headers();
   const domain = (headersList.get(DOMAIN_HEADER) ?? "PHOTOGRAPHY") as DomainKey;
+  const pathname = headersList.get("x-pathname") ?? "";
+
+  // Verify setup status; if incomplete and not on /setup, enforce setup redirection
+  const isSetupComplete = await checkSetupStatus();
+  const isSetupRoute = pathname.startsWith("/setup");
+
+  if (!isSetupComplete && !isSetupRoute && !pathname.startsWith("/_next") && !pathname.startsWith("/api")) {
+    redirect("/setup");
+  }
 
   return (
     <html
@@ -61,14 +73,20 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-dvh flex flex-col bg-background text-foreground">
-        <DomainProvider domain={domain}>
-          <Navbar />
-          <div className="flex-1 flex flex-col">
-            {children}
-          </div>
-          <Footer />
-        </DomainProvider>
+        <ThemeProvider domain={domain} />
+        {isSetupRoute ? (
+          <main className="flex-1 flex flex-col">{children}</main>
+        ) : (
+          <DomainProvider domain={domain}>
+            <Navbar />
+            <div className="flex-1 flex flex-col">
+              {children}
+            </div>
+            <Footer />
+          </DomainProvider>
+        )}
       </body>
     </html>
   );
 }
+

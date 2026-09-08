@@ -12,7 +12,7 @@
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
     "generate:media": "tsx scripts/generate-mock-media.ts",
-    "test:all": "tsx tests/storage-security.test.ts && tsx tests/indexer.test.ts && tsx tests/transcoder.test.ts && tsx tests/phase3-e2e.test.ts && tsx tests/phase4-e2e.test.ts && tsx tests/code-review-audit.test.ts"
+    "test:all": "tsx tests/storage-security.test.ts && tsx tests/indexer.test.ts && tsx tests/transcoder.test.ts && tsx tests/phase3-e2e.test.ts && tsx tests/phase4-e2e.test.ts && tsx tests/code-review-audit.test.ts && tsx tests/setup-wizard.test.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

@@ -1,0 +1,214 @@
+"use server";
+
+import { z } from "zod";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import { checkSetupStatus } from "@/lib/setup";
+import { getAdminSession } from "@/lib/admin-session";
+
+const BootstrapSchema = z.object({
+  // Admin Account
+  name: z.string().min(2, "Administrator name must be at least 2 characters"),
+  email: z.string().email("Please provide a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+
+  // Brand Identity
+  siteTitle: z.string().min(1, "Site title is required"),
+  tagline: z.string().optional(),
+  backgroundColor: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid 6-digit hex color (#RRGGBB)")
+    .default("#09090b"),
+  accentColor: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid 6-digit hex color (#RRGGBB)")
+    .default("#3b82f6"),
+
+  // Module Toggles
+  enableClientPortal: z.boolean().default(true),
+  enableGearDesk: z.boolean().default(true),
+  enableMangaReader: z.boolean().default(true),
+  enableGameServers: z.boolean().default(true),
+});
+
+export type BootstrapInput = z.infer<typeof BootstrapSchema>;
+
+export interface BootstrapResult {
+  success: boolean;
+  message: string;
+  redirectUrl?: string;
+  fieldErrors?: Record<string, string[]>;
+}
+
+/**
+ * Server Action: bootstrapSystem
+ *
+ * Atomically configures the platform upon initial installation:
+ * - Guards against unauthorized resets if already setup.
+ * - Creates primary Administrator user.
+ * - Seeds BrandSettings for GLOBAL, PHOTOGRAPHY, and MEDIA domains.
+ * - Seeds SystemModule operational flags.
+ * - Issues an authenticated admin session cookie so the administrator lands logged in.
+ */
+export async function bootstrapSystem(
+  rawInput: BootstrapInput
+): Promise<BootstrapResult> {
+  // 1. Lockout verification: prevent malicious re-initialization
+  const isSetupComplete = await checkSetupStatus();
+  if (isSetupComplete) {
+    return {
+      success: false,
+      message:
+        "Security lockout: The platform has already been initialized. Setup is locked.",
+    };
+  }
+
+  // 2. Validate input
+  const validation = BootstrapSchema.safeParse(rawInput);
+  if (!validation.success) {
+    const flattened = validation.error.flatten();
+    return {
+      success: false,
+      message: "Please correct the highlighted errors.",
+      fieldErrors: flattened.fieldErrors,
+    };
+  }
+
+  const {
+    name,
+    email,
+    password,
+    siteTitle,
+    backgroundColor,
+    accentColor,
+    enableClientPortal,
+    enableGearDesk,
+    enableMangaReader,
+    enableGameServers,
+  } = validation.data;
+
+  try {
+    // 3. Hash admin password
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // 4. Atomic Bootstrap Transaction
+    const [adminUser] = await prisma.$transaction([
+      // Create initial Admin User
+      prisma.user.create({
+        data: {
+          name: name.trim(),
+          email: email.toLowerCase().trim(),
+          passwordHash,
+          role: "ADMIN",
+        },
+      }),
+
+      // Seed/Upsert System Modules
+      prisma.systemModule.upsert({
+        where: { id: "CLIENT_PORTAL" },
+        update: { enabled: enableClientPortal },
+        create: {
+          id: "CLIENT_PORTAL",
+          name: "Client Proofing Portal",
+          enabled: enableClientPortal,
+        },
+      }),
+      prisma.systemModule.upsert({
+        where: { id: "GEAR_DESK" },
+        update: { enabled: enableGearDesk },
+        create: {
+          id: "GEAR_DESK",
+          name: "Co-Owner Gear Desk",
+          enabled: enableGearDesk,
+        },
+      }),
+      prisma.systemModule.upsert({
+        where: { id: "MANGA_READER" },
+        update: { enabled: enableMangaReader },
+        create: {
+          id: "MANGA_READER",
+          name: "Manga Reader Integration",
+          enabled: enableMangaReader,
+        },
+      }),
+      prisma.systemModule.upsert({
+        where: { id: "GAME_SERVERS" },
+        update: { enabled: enableGameServers },
+        create: {
+          id: "GAME_SERVERS",
+          name: "Game Server Monitors",
+          enabled: enableGameServers,
+        },
+      }),
+
+      // Seed/Upsert Brand Settings
+      prisma.brandSettings.upsert({
+        where: { id: "GLOBAL" },
+        update: {
+          siteTitle,
+          accentColor,
+          backgroundColor,
+        },
+        create: {
+          id: "GLOBAL",
+          siteTitle,
+          primaryColor: "#18181b",
+          accentColor,
+          backgroundColor,
+        },
+      }),
+      prisma.brandSettings.upsert({
+        where: { id: "PHOTOGRAPHY" },
+        update: {
+          siteTitle: `${siteTitle} Photography`,
+          accentColor,
+          backgroundColor,
+        },
+        create: {
+          id: "PHOTOGRAPHY",
+          siteTitle: `${siteTitle} Photography`,
+          primaryColor: "#18181b",
+          accentColor,
+          backgroundColor,
+        },
+      }),
+      prisma.brandSettings.upsert({
+        where: { id: "MEDIA" },
+        update: {
+          siteTitle: `${siteTitle} Media`,
+          accentColor,
+          backgroundColor,
+        },
+        create: {
+          id: "MEDIA",
+          siteTitle: `${siteTitle} Media`,
+          primaryColor: "#18181b",
+          accentColor,
+          backgroundColor,
+        },
+      }),
+    ]);
+
+    // 5. Automatically issue admin iron-session cookie
+    const session = await getAdminSession();
+    session.user = {
+      userId: adminUser.id,
+      email: adminUser.email,
+      name: adminUser.name,
+      role: "ADMIN",
+    };
+    await session.save();
+
+    return {
+      success: true,
+      message: "Platform successfully bootstrapped! Welcome aboard.",
+      redirectUrl: "/admin/dashboard",
+    };
+  } catch (error: unknown) {
+    console.error("bootstrapSystem error:", error);
+    return {
+      success: false,
+      message: "An unexpected error occurred during platform initialization.",
+    };
+  }
+}
