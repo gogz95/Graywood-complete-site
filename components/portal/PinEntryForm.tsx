@@ -93,8 +93,8 @@ export function PinEntryForm({ albumSlug, albumTitle }: PinEntryFormProps) {
             >
               Security Access PIN
             </label>
-            <div className="relative">
-              <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
+            <div className="relative flex items-center">
+              <KeyRound className="absolute left-4 h-4 w-4 text-nordic-ink/20 pointer-events-none transition-colors z-10" />
               <input
                 id="client-pin-input"
                 type="password"
@@ -104,7 +104,8 @@ export function PinEntryForm({ albumSlug, albumTitle }: PinEntryFormProps) {
                 onChange={(e) => setPin(e.target.value)}
                 placeholder="••••"
                 autoFocus
-                className="w-full rounded-xl border border-nordic-border bg-nordic-canvas pl-11 pr-4 py-3.5 text-center text-lg font-mono tracking-widest text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition shadow-xs"
+                style={{ paddingLeft: "3rem" }}
+                className="w-full rounded-xl border border-nordic-border bg-nordic-canvas pr-4 py-3.5 text-center text-lg font-mono tracking-widest text-nordic-ink placeholder:text-nordic-ink/25 focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition shadow-xs"
               />
             </div>
           </div>

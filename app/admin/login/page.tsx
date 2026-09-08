@@ -93,8 +93,8 @@ export default function AdminLoginPage() {
             >
               Operator Email
             </label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
+            <div className="relative flex items-center">
+              <Mail className="absolute left-4 h-4 w-4 text-nordic-ink/20 pointer-events-none transition-colors z-10" />
               <input
                 id="admin-email-input"
                 type="email"
@@ -103,7 +103,8 @@ export default function AdminLoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@graywood.no"
                 autoFocus
-                className="w-full rounded-xl border border-nordic-border bg-nordic-canvas pl-11 pr-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint/70 focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition shadow-xs"
+                style={{ paddingLeft: "3rem" }}
+                className="w-full rounded-xl border border-nordic-border bg-nordic-canvas pr-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-ink/25 focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition shadow-xs"
               />
             </div>
           </div>
@@ -115,8 +116,8 @@ export default function AdminLoginPage() {
             >
               Security Password
             </label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
+            <div className="relative flex items-center">
+              <Lock className="absolute left-4 h-4 w-4 text-nordic-ink/20 pointer-events-none transition-colors z-10" />
               <input
                 id="admin-password-input"
                 type="password"
@@ -124,7 +125,8 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full rounded-xl border border-nordic-border bg-nordic-canvas pl-11 pr-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint/70 focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition shadow-xs"
+                style={{ paddingLeft: "3rem" }}
+                className="w-full rounded-xl border border-nordic-border bg-nordic-canvas pr-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-ink/25 focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition shadow-xs"
               />
             </div>
           </div>

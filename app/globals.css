@@ -47,16 +47,18 @@ html, body {
    Scandinavian Editorial Form Controls & Reset
    ============================================================ */
 @layer base {
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="search"],
-  input[type="tel"],
-  input[type="number"],
-  input[type="url"],
-  input[type="date"],
-  textarea,
-  select {
+  :where(
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="url"],
+    input[type="date"],
+    textarea,
+    select
+  ) {
     font-family: inherit;
     font-size: 0.875rem;
     line-height: 1.5;
@@ -64,21 +66,22 @@ html, body {
     background-color: #FFFFFF;
     border: 1px solid #E8E5DF;
     border-radius: 0.75rem;
-    padding: 0.625rem 0.875rem;
     outline: none;
     transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
   }
 
-  input[type="text"]:focus,
-  input[type="email"]:focus,
-  input[type="password"]:focus,
-  input[type="search"]:focus,
-  input[type="tel"]:focus,
-  input[type="number"]:focus,
-  input[type="url"]:focus,
-  input[type="date"]:focus,
-  textarea:focus,
-  select:focus {
+  :where(
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="url"],
+    input[type="date"],
+    textarea,
+    select
+  ):focus {
     border-color: #2D3B36;
     box-shadow: 0 0 0 1px #2D3B36;
     background-color: #FFFFFF;
@@ -86,8 +89,8 @@ html, body {
 
   input::placeholder,
   textarea::placeholder {
-    color: #9E9B93;
-    opacity: 0.6;
+    color: #1C1B19;
+    opacity: 0.25;
   }
 
   select {
