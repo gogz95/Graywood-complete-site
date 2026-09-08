@@ -27,7 +27,7 @@
   --gw-primary:      var(--nordic-pine);
   --gw-accent:       var(--nordic-pine);
 
-  --font-serif:      'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+  --font-serif:      var(--font-playfair, 'Playfair Display'), Georgia, Cambria, 'Times New Roman', serif;
   --font-sans:       var(--font-geist-sans, 'Inter', system-ui, -apple-system, sans-serif);
   --font-mono:       var(--font-geist-mono, 'JetBrains Mono', monospace);
 }

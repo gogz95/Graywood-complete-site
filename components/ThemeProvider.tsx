@@ -28,9 +28,13 @@ export async function ThemeProvider({ domain }: ThemeProviderProps) {
     // Graceful fallback during setup or database bootstrap
   }
 
-  const backgroundColor = brandSettings?.canvasColor || "#F9F8F6";
-  const accentColor = brandSettings?.pineColor || "#2D3B36";
-  const primaryColor = brandSettings?.inkColor || "#1C1B19";
+  const HEX_RE = /^#[0-9A-Fa-f]{3,8}$/;
+  const safeHex = (c: string | undefined | null, fallback: string) =>
+    c && HEX_RE.test(c.trim()) ? c.trim() : fallback;
+
+  const backgroundColor = safeHex(brandSettings?.canvasColor, "#F9F8F6");
+  const accentColor = safeHex(brandSettings?.pineColor, "#2D3B36");
+  const primaryColor = safeHex(brandSettings?.inkColor, "#1C1B19");
 
   return (
     <style

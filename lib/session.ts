@@ -9,9 +9,14 @@ export interface ProofingSessionData {
   authorizedAlbums?: string[];
 }
 
+const sessionSecret = process.env.SESSION_SECRET;
+if (!sessionSecret && process.env.NODE_ENV === "production") {
+  throw new Error("FATAL: SESSION_SECRET environment variable is required in production.");
+}
+
 export const proofingSessionOptions: SessionOptions = {
   password:
-    process.env.SESSION_SECRET ??
+    sessionSecret ||
     "complex_secret_password_at_least_32_characters_long_graywood_2026",
   cookieName: "gw_proofing_session",
   cookieOptions: {
@@ -30,6 +35,7 @@ export interface CompatibleCookieSource {
   set?: (...args: any[]) => unknown;
 }
 
+const MAX_STORE_ENTRIES = 100;
 const globalProofingMemoryStore = new Map<string, string>();
 
 /**
@@ -70,6 +76,10 @@ export async function getProofingSession(
           }));
         },
         set(name: string, value: string) {
+          if (globalProofingMemoryStore.size >= MAX_STORE_ENTRIES) {
+            const oldestKey = globalProofingMemoryStore.keys().next().value;
+            if (oldestKey) globalProofingMemoryStore.delete(oldestKey);
+          }
           globalProofingMemoryStore.set(name, value);
         },
       };

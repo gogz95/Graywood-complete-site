@@ -19,6 +19,11 @@ export async function assignAssetToArtist(rawInput: {
   artistId: string;
 }) {
   await requireAdminSession(["ADMIN"]);
+  const parsed = AssignArtistSchema.safeParse(rawInput);
+  if (!parsed.success) {
+    return { success: false, message: "Invalid parameters." };
+  }
+
   return {
     success: true,
     message: "Attributed to studio archive collection.",

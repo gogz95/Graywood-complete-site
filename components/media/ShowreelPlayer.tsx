@@ -12,7 +12,11 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export function ShowreelPlayer() {
+interface ShowreelPlayerProps {
+  content?: Record<string, string>;
+}
+
+export function ShowreelPlayer({ content = {} }: ShowreelPlayerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
@@ -79,13 +83,16 @@ export function ShowreelPlayer() {
             <div>
               <div className="inline-flex items-center gap-1.5 rounded-full border border-nordic-clay/40 bg-nordic-clay/15 px-3 py-1 text-[11px] font-mono uppercase tracking-widest text-nordic-clay">
                 <Sparkles className="h-3 w-3" />
-                <span>Official Showreel · 2026 Edition</span>
+                <span>
+                  {content["SHOWREEL.badge"] || "Official Showreel · 2026 Edition"}
+                </span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-serif text-white mt-2 tracking-tight">
-                Visual Cadence 2026
+                {content["SHOWREEL.title"] || "Visual Cadence 2026"}
               </h2>
               <p className="text-xs sm:text-sm text-nordic-muted mt-2 max-w-md mx-auto leading-relaxed">
-                Click to launch high-fidelity 4K stream with directional sound design and original score.
+                {content["SHOWREEL.description"] ||
+                  "Click to launch high-fidelity 4K stream with directional sound design and original score."}
               </p>
             </div>
           </div>

@@ -6,10 +6,8 @@ import { ProofingGallery } from "@/components/portal/ProofingGallery";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ albumSlug: string }>;
+export async function generateMetadata(_props?: {
+  params?: Promise<{ albumSlug: string }>;
 }) {
   return {
     title: "Client Proofing Portal | Graywood",

@@ -62,7 +62,7 @@ export async function checkoutGearItem(rawInput: CheckoutInput) {
           gearItemId: gearId,
           custodian: userId,
           action: "CHECKOUT",
-          notes: notes ?? null,
+          notes: notes?.trim() || null,
         },
       }),
       prisma.gearItem.update({
@@ -72,7 +72,7 @@ export async function checkoutGearItem(rawInput: CheckoutInput) {
           custodian: userId,
           checkedOutAt: new Date(),
           expectedReturn: returnDate,
-          notes: notes ?? gear.notes,
+          notes: notes?.trim() || gear.notes,
         },
       }),
     ]);
@@ -121,7 +121,7 @@ export async function checkinGearItem(rawInput: CheckinInput) {
           gearItemId: gearId,
           custodian: gear.custodian || "Unknown",
           action: "CHECKIN",
-          notes: returnNotes ?? null,
+          notes: returnNotes?.trim() || null,
         },
       }),
       prisma.gearItem.update({
@@ -131,7 +131,7 @@ export async function checkinGearItem(rawInput: CheckinInput) {
           custodian: null,
           checkedOutAt: null,
           expectedReturn: null,
-          notes: returnNotes ?? gear.notes,
+          notes: returnNotes?.trim() || gear.notes,
         },
       }),
     ]);

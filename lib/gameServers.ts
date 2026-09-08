@@ -52,7 +52,7 @@ export async function queryGameServers(): Promise<LiveGameServerStatus[]> {
             endpoint: server.endpoint,
             enabled: server.enabled,
             online: true,
-            ping: state.ping ?? 12,
+            ping: typeof state.ping === "number" ? state.ping : null,
             currentPlayers: state.players?.length ?? 0,
             maxPlayers: state.maxplayers ?? 0,
             map: state.map || undefined,

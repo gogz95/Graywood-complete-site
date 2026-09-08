@@ -17,9 +17,14 @@ export interface AdminSessionData {
   user?: AdminUserSession;
 }
 
+const sessionSecret = process.env.SESSION_SECRET;
+if (!sessionSecret && process.env.NODE_ENV === "production") {
+  throw new Error("FATAL: SESSION_SECRET environment variable is required in production.");
+}
+
 export const adminSessionOptions: SessionOptions = {
   password:
-    process.env.SESSION_SECRET ??
+    sessionSecret ||
     "complex_secret_password_at_least_32_characters_long_graywood_2026",
   cookieName: "gw_admin_session",
   cookieOptions: {
@@ -38,6 +43,7 @@ export interface CompatibleCookieSource {
   set?: (...args: any[]) => unknown;
 }
 
+const MAX_STORE_ENTRIES = 100;
 const globalAdminMemoryStore = new Map<string, string>();
 
 /**
@@ -75,6 +81,10 @@ export async function getAdminSession(customSource?: CompatibleCookieSource) {
           );
         },
         set(name: string, value: string) {
+          if (globalAdminMemoryStore.size >= MAX_STORE_ENTRIES) {
+            const oldestKey = globalAdminMemoryStore.keys().next().value;
+            if (oldestKey) globalAdminMemoryStore.delete(oldestKey);
+          }
           globalAdminMemoryStore.set(name, value);
         },
       };

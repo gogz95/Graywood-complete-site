@@ -20,6 +20,7 @@ interface HubPillarsProps {
   mediaTitle?: string;
   photographyDomain?: string;
   mediaDomain?: string;
+  content?: Record<string, string>;
 }
 
 export function HubPillars({
@@ -30,6 +31,7 @@ export function HubPillars({
   mediaTitle = "Graywood Media",
   photographyDomain = "graywoodphotography.no",
   mediaDomain = "graywoodmedia.no",
+  content = {},
 }: HubPillarsProps) {
   const [timeString, setTimeString] = useState<string>("");
 
@@ -62,7 +64,9 @@ export function HubPillars({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-nordic-pine" />
             </span>
             <span className="tracking-wider uppercase text-[11px] text-nordic-faint">Ecosystem Status:</span>
-            <span className="font-semibold text-nordic-pine">All 3 Nodes Operational</span>
+            <span className="font-semibold text-nordic-pine">
+              {content["TELEMETRY.status"] || "All Ecosystem Nodes Operational"}
+            </span>
           </div>
 
           <div className="flex items-center gap-6 text-xs font-mono text-nordic-subtle">
@@ -76,7 +80,9 @@ export function HubPillars({
 
             <div className="hidden sm:flex items-center gap-2 text-nordic-faint">
               <Radio className="h-3.5 w-3.5 text-nordic-clay" />
-              <span className="text-[11px]">59.9139° N, 10.7522° E</span>
+              <span className="text-[11px]">
+                {content["TELEMETRY.location"] || "59.9139° N, 10.7522° E"}
+              </span>
             </div>
           </div>
         </div>
@@ -87,17 +93,17 @@ export function HubPillars({
         <div className="inline-flex items-center gap-2 rounded-full border border-nordic-border bg-nordic-surface px-4 py-1.5 text-xs text-nordic-subtle shadow-xs mb-8">
           <Sparkles className="h-3.5 w-3.5 text-nordic-clay" />
           <span className="font-mono text-[11px] tracking-widest uppercase">
-            Graywood Unified Visual Platform
+            {content["HERO.badge"] || "Graywood Unified Visual Platform"}
           </span>
         </div>
 
         <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-tight text-nordic-ink leading-[1.08]">
-          Two specialized studios. <br className="hidden sm:inline" />
-          <span className="italic font-light">One coherent standard.</span>
+          {content["HERO.title"] || "Two specialized studios. One coherent standard."}
         </h1>
 
         <p className="text-base sm:text-lg text-nordic-subtle mt-6 max-w-2xl mx-auto font-light leading-relaxed">
-          Select an entity to explore our medium-format still archives, cinematic motion productions, or private client proofing vaults.
+          {content["HERO.description"] ||
+            "Select an entity to explore our medium-format still archives, cinematic motion productions, or private client proofing vaults."}
         </p>
       </section>
 
@@ -125,7 +131,8 @@ export function HubPillars({
                 {photoTitle}
               </h2>
               <p className="text-sm sm:text-base text-nordic-subtle font-light leading-relaxed">
-                Nordic editorial commissions, architectural documentation, and commercial still photography. Engineered around Hasselblad medium-format precision and authentic atmospheric light.
+                {content["PILLAR_PHOTO.description"] ||
+                  "Nordic editorial commissions, architectural documentation, and commercial still photography. Engineered around Hasselblad medium-format precision and authentic atmospheric light."}
               </p>
 
               {/* Feature Chips */}
@@ -189,7 +196,8 @@ export function HubPillars({
                 {mediaTitle}
               </h2>
               <p className="text-sm sm:text-base text-nordic-subtle font-light leading-relaxed">
-                Creative motion collective specializing in high-impact brand films, 3D motion design, and spatial soundscapes. Built on ARRI cinema workflows, Unreal Engine 5.4, and DaVinci color mastering.
+                {content["PILLAR_MEDIA.description"] ||
+                  "Creative motion collective specializing in high-impact brand films, 3D motion design, and spatial soundscapes. Built on ARRI cinema workflows, Unreal Engine 5.4, and DaVinci color mastering."}
               </p>
 
               {/* Feature Chips */}

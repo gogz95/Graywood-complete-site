@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -19,6 +19,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
 });
@@ -70,7 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang="no"
       data-domain={domain}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
       <body className="bg-[#F9F8F6] text-[#1C1B19] min-h-screen flex flex-col font-sans">
         <ThemeProvider domain={domain} />

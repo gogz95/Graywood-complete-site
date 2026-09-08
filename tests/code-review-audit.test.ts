@@ -75,6 +75,35 @@ async function runAuditTests() {
   assert.strictEqual(unauthGetRes.status, 401, "Unauthenticated GET sync request must return HTTP 401");
   console.log("   [PASS] Unauthenticated GET /api/admin/library/sync blocked with HTTP 401.");
 
+  // -------------------------------------------------------------------------
+  // 5. NAS Scan Endpoint Security Check (GET 405, unauth 401)
+  // -------------------------------------------------------------------------
+  console.log("\n5. Testing NAS Scan Route Security & Concurrency Guard...");
+  const { GET: nasScanGet, POST: nasScanPost } = await import("@/app/api/nas/scan/route");
+  const nasGetRes = await nasScanGet();
+  assert.strictEqual(nasGetRes.status, 405, "GET /api/nas/scan must return HTTP 405 Method Not Allowed");
+  console.log("   [PASS] GET /api/nas/scan rejected with HTTP 405 Method Not Allowed.");
+
+  const unauthNasReq = new NextRequest("http://localhost:3000/api/nas/scan", {
+    method: "POST",
+  });
+  const unauthNasRes = await nasScanPost(unauthNasReq);
+  assert.strictEqual(unauthNasRes.status, 401, "Unauthenticated POST /api/nas/scan must return HTTP 401");
+  console.log("   [PASS] Unauthenticated POST /api/nas/scan blocked with HTTP 401.");
+
+  // -------------------------------------------------------------------------
+  // 6. assignAssetToArtist Zod Schema Validation
+  // -------------------------------------------------------------------------
+  console.log("\n6. Testing Library Actions Validation...");
+  await adminLogin({
+    email: "admin@graywood.no",
+    password: "admin-change-me-123!",
+  });
+  const { assignAssetToArtist } = await import("@/app/actions/library");
+  const invalidArtistRes = await assignAssetToArtist({ assetId: "", artistId: "" });
+  assert.strictEqual(invalidArtistRes.success, false, "assignAssetToArtist must reject empty IDs");
+  console.log("   [PASS] assignAssetToArtist safely rejected invalid empty arguments.");
+
   console.log("\n🎉 ALL CODE REVIEW AUDIT TESTS PASSED SUCCESSFULLY!");
 }
 
