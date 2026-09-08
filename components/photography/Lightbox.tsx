@@ -119,16 +119,26 @@ export function Lightbox({
   }, []);
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen?.();
-    } else {
-      document.exitFullscreen?.();
+    try {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.().catch(() => {});
+      } else {
+        document.exitFullscreen?.().catch(() => {});
+      }
+    } catch {
+      // Non-fatal if browser blocks fullscreen
     }
   };
 
   // Keyboard navigation
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
+      if (
+        (e.target as HTMLElement)?.tagName === "INPUT" ||
+        (e.target as HTMLElement)?.tagName === "TEXTAREA"
+      ) {
+        return;
+      }
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") handleNext();
       if (e.key === "ArrowLeft") handlePrev();
@@ -158,11 +168,30 @@ export function Lightbox({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose, handleNext, handlePrev]);
 
+  // Global mouseup & touchend listener to prevent sticky drag state
+  useEffect(() => {
+    const handleGlobalRelease = () => {
+      setIsDragging(false);
+    };
+    window.addEventListener("mouseup", handleGlobalRelease);
+    window.addEventListener("touchend", handleGlobalRelease);
+    return () => {
+      window.removeEventListener("mouseup", handleGlobalRelease);
+      window.removeEventListener("touchend", handleGlobalRelease);
+    };
+  }, []);
+
   const handleShare = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard
+        .writeText(window.location.href)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => {
+          // Clipboard write denied
+        });
     }
   };
 
@@ -186,6 +215,51 @@ export function Lightbox({
 
   const handleMouseUp = () => {
     setIsDragging(false);
+  };
+
+  // Touch handlers for mobile swipe (when unzoomed) and pan (when zoomed)
+  const touchStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+
+    if (zoomLevel > 1) {
+      setIsDragging(true);
+      dragStartRef.current = {
+        x: touch.clientX - panPosition.x,
+        y: touch.clientY - panPosition.y,
+      };
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    if (zoomLevel > 1 && isDragging) {
+      setPanPosition({
+        x: touch.clientX - dragStartRef.current.x,
+        y: touch.clientY - dragStartRef.current.y,
+      });
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    setIsDragging(false);
+    if (zoomLevel <= 1 && e.changedTouches[0]) {
+      const deltaX = e.changedTouches[0].clientX - touchStartRef.current.x;
+      const deltaY = e.changedTouches[0].clientY - touchStartRef.current.y;
+      // Horizontal swipe threshold: 50px, with horizontal movement > vertical movement
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+        if (deltaX > 0) {
+          handlePrev();
+        } else {
+          handleNext();
+        }
+      }
+    }
   };
 
   const handleDoubleClick = () => {
@@ -376,9 +450,12 @@ export function Lightbox({
 
       {/* Main Image Area with Viewfinder & Zoom Pan Canvas */}
       <div
-        className="relative flex-1 w-full max-w-7xl flex items-center justify-center px-4 py-2 overflow-hidden"
+        className="relative flex-1 w-full max-w-7xl flex items-center justify-center px-4 py-2 overflow-hidden touch-none"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Navigation Arrows */}
         {assets.length > 1 && (

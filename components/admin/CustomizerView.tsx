@@ -49,6 +49,11 @@ export function CustomizerView({
 
   const activeBrand = brands.find((b) => b.id === activeBrandTab) ?? brands[0];
 
+  const safeHex = (color: string | undefined, fallback: string): string => {
+    if (!color) return fallback;
+    return /^#[0-9A-Fa-f]{6}$/.test(color.trim()) ? color.trim() : fallback;
+  };
+
   const handleToggleModule = async (id: string, currentStatus: boolean) => {
     const newStatus = !currentStatus;
     // Optimistic UI update
@@ -243,7 +248,7 @@ export function CustomizerView({
                 <div className="flex items-center gap-3">
                   <input
                     type="color"
-                    value={activeBrand.accentColor}
+                    value={safeHex(activeBrand.accentColor, "#3b82f6")}
                     onChange={(e) => handleBrandChange("accentColor", e.target.value)}
                     className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
                   />
@@ -264,7 +269,7 @@ export function CustomizerView({
                 <div className="flex items-center gap-3">
                   <input
                     type="color"
-                    value={activeBrand.primaryColor}
+                    value={safeHex(activeBrand.primaryColor, "#18181b")}
                     onChange={(e) => handleBrandChange("primaryColor", e.target.value)}
                     className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
                   />
@@ -285,7 +290,7 @@ export function CustomizerView({
                 <div className="flex items-center gap-3">
                   <input
                     type="color"
-                    value={activeBrand.backgroundColor}
+                    value={safeHex(activeBrand.backgroundColor, "#09090b")}
                     onChange={(e) => handleBrandChange("backgroundColor", e.target.value)}
                     className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
                   />

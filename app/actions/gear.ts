@@ -7,7 +7,13 @@ import { requireAdminSession } from "@/lib/admin-session";
 const CheckoutSchema = z.object({
   gearId: z.string().min(1, "Gear item is required"),
   userId: z.string().min(1, "Assignee is required"),
-  expectedReturn: z.string().min(1, "Expected return date is required"),
+  expectedReturn: z
+    .string()
+    .min(1, "Expected return date is required")
+    .refine(
+      (val) => !isNaN(new Date(val).getTime()),
+      "Invalid date format for expected return"
+    ),
   notes: z.string().optional(),
 });
 

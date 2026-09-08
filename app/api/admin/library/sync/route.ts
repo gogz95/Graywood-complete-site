@@ -1,4 +1,6 @@
+import { NextRequest } from "next/server";
 import { runIncrementalScan, type ScanProgress } from "@/lib/indexer";
+import { getAdminSession } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 
@@ -8,8 +10,17 @@ export const dynamic = "force-dynamic";
  * Scans NAS storage incrementally, diffs against SQLite in batches of 50,
  * extracts EXIF metadata, and streams real-time Server-Sent Events (SSE)
  * detailing { indexed, scanned } back to the client.
+ * Protected by admin iron-session authentication.
  */
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const session = await getAdminSession(request.cookies);
+  if (process.env.NODE_ENV === "production" && (!session.user || session.user.role !== "ADMIN")) {
+    return new Response("Unauthorized: Admin authentication required.", {
+      status: 401,
+      headers: { "Content-Type": "text/plain" },
+    });
+  }
+
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
@@ -65,6 +76,6 @@ export async function POST() {
 }
 
 // Convenience GET handler for easy manual testing or EventSource consumption
-export async function GET() {
-  return POST();
+export async function GET(request: NextRequest) {
+  return POST(request);
 }

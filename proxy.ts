@@ -23,9 +23,10 @@ export function proxy(request: NextRequest) {
       ? (explicitDomain as "PHOTOGRAPHY" | "MEDIA" | "MAIN")
       : resolveDomainKey(host);
 
-  // Clone headers and inject our domain key
+  // Clone headers and inject our domain key & pathname
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(DOMAIN_HEADER, domainKey);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname);
 
   return NextResponse.next({
     request: {

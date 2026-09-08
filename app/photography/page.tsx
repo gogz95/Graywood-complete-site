@@ -7,6 +7,15 @@ export const dynamic = "force-dynamic";
 
 export default async function PhotographyPage() {
   const rawAssets = await prisma.mediaAsset.findMany({
+    where: {
+      albums: {
+        none: {
+          album: {
+            type: "CLIENT_PROOFING",
+          },
+        },
+      },
+    },
     orderBy: { createdAt: "desc" },
     take: 30,
   });

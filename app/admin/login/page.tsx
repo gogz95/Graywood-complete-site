@@ -149,35 +149,37 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        {/* Quick Credentials Sandbox Autofill */}
-        <div className="mt-8 pt-6 border-t border-zinc-800/80 space-y-2">
-          <span className="block text-[10px] font-mono uppercase tracking-wider text-zinc-500 text-center">
-            Development Quick-Fill Credentials
-          </span>
-          <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
-            <button
-              type="button"
-              onClick={() =>
-                autofillCredentials("admin@graywood.no", "admin-change-me-123!")
-              }
-              className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-2 text-zinc-300 hover:text-white hover:border-zinc-700 transition text-center"
-            >
-              <div className="font-semibold text-blue-400">ADMIN</div>
-              <div className="text-[10px] text-zinc-500 truncate">admin@graywood.no</div>
-            </button>
+        {/* Quick Credentials Sandbox Autofill (Development / Staging Only) */}
+        {process.env.NODE_ENV !== "production" && (
+          <div className="mt-8 pt-6 border-t border-zinc-800/80 space-y-2">
+            <span className="block text-[10px] font-mono uppercase tracking-wider text-zinc-500 text-center">
+              Development Quick-Fill Credentials
+            </span>
+            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
+              <button
+                type="button"
+                onClick={() =>
+                  autofillCredentials("admin@graywood.no", "admin-change-me-123!")
+                }
+                className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-2 text-zinc-300 hover:text-white hover:border-zinc-700 transition text-center cursor-pointer"
+              >
+                <div className="font-semibold text-blue-400">ADMIN</div>
+                <div className="text-[10px] text-zinc-500 truncate">admin@graywood.no</div>
+              </button>
 
-            <button
-              type="button"
-              onClick={() =>
-                autofillCredentials("partner@graywood.no", "coowner-change-me-123!")
-              }
-              className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-2 text-zinc-300 hover:text-white hover:border-zinc-700 transition text-center"
-            >
-              <div className="font-semibold text-amber-400">CO_OWNER</div>
-              <div className="text-[10px] text-zinc-500 truncate">partner@graywood.no</div>
-            </button>
+              <button
+                type="button"
+                onClick={() =>
+                  autofillCredentials("partner@graywood.no", "coowner-change-me-123!")
+                }
+                className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-2 text-zinc-300 hover:text-white hover:border-zinc-700 transition text-center cursor-pointer"
+              >
+                <div className="font-semibold text-amber-400">CO_OWNER</div>
+                <div className="text-[10px] text-zinc-500 truncate">partner@graywood.no</div>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="mt-6 flex items-center justify-center gap-2 text-[10px] text-zinc-500 font-mono">
           <KeyRound className="h-3 w-3 text-emerald-400" />
