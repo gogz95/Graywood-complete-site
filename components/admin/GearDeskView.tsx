@@ -18,7 +18,11 @@ import {
   Loader2,
   Sparkles,
   Plus,
+  User,
+  Building2,
+  Trash2,
 } from "lucide-react";
+import { deleteGearItem } from "@/app/actions/gear";
 
 export interface SerializedGearItem {
   id: string;
@@ -29,6 +33,8 @@ export interface SerializedGearItem {
   status: string;
   storageLocation: string;
   notes: string | null;
+  ownerId?: string | null;
+  ownerName?: string | null;
   activeCheckout?: {
     id: string;
     userId: string;
@@ -64,18 +70,21 @@ interface GearDeskViewProps {
   initialItems: SerializedGearItem[];
   users: SerializedUser[];
   logs: SerializedCheckoutLog[];
+  currentUser?: { id: string; name: string; email: string; role: string };
 }
 
 export function GearDeskView({
   initialItems,
   users,
   logs,
+  currentUser,
 }: GearDeskViewProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"inventory" | "audit">("inventory");
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [ownerFilter, setOwnerFilter] = useState<"ALL" | "STUDIO" | "MY_GEAR">("ALL");
 
   // Modal states
   const [checkoutItem, setCheckoutItem] = useState<SerializedGearItem | null>(null);
@@ -100,7 +109,9 @@ export function GearDeskView({
     name: "",
     category: "BODY",
     serialNumber: "",
-    storageLocation: "Studio Locker",
+    ownerId: "STUDIO",
+    ownerName: "Studio Shared",
+    storageLocation: "Main Studio Locker",
     condition: "Good",
     notes: "",
   });
@@ -113,6 +124,19 @@ export function GearDeskView({
 
   const categories = ["ALL", "BODY", "LENS", "LIGHTING", "AUDIO", "SUPPORT", "ACCESSORY"];
 
+  const studioCount = initialItems.filter(
+    (item) => !item.ownerId || item.ownerName === "Studio Shared"
+  ).length;
+
+  const myGearCount = currentUser
+    ? initialItems.filter(
+        (item) =>
+          item.ownerId === currentUser.id ||
+          item.ownerName === currentUser.name ||
+          (currentUser.email && item.ownerName === currentUser.email)
+      ).length
+    : 0;
+
   const filteredItems = useMemo(() => {
     return initialItems.filter((item) => {
       const q = searchQuery.toLowerCase().trim();
@@ -120,7 +144,8 @@ export function GearDeskView({
         !q ||
         item.name.toLowerCase().includes(q) ||
         item.serialNumber.toLowerCase().includes(q) ||
-        item.storageLocation.toLowerCase().includes(q);
+        item.storageLocation.toLowerCase().includes(q) ||
+        (item.ownerName && item.ownerName.toLowerCase().includes(q));
 
       const matchesCat =
         categoryFilter === "ALL" || item.category === categoryFilter;
@@ -128,9 +153,17 @@ export function GearDeskView({
       const matchesStatus =
         statusFilter === "ALL" || item.status === statusFilter;
 
-      return matchesSearch && matchesCat && matchesStatus;
+      const matchesOwner =
+        ownerFilter === "ALL" ||
+        (ownerFilter === "STUDIO"
+          ? !item.ownerId || item.ownerName === "Studio Shared"
+          : item.ownerId === currentUser?.id ||
+            item.ownerName === currentUser?.name ||
+            (currentUser?.email && item.ownerName === currentUser.email));
+
+      return matchesSearch && matchesCat && matchesStatus && matchesOwner;
     });
-  }, [initialItems, searchQuery, categoryFilter, statusFilter]);
+  }, [initialItems, searchQuery, categoryFilter, statusFilter, ownerFilter, currentUser]);
 
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -192,6 +225,8 @@ export function GearDeskView({
       brand: "Sony",
       category: newItemData.category,
       serialNumber: newItemData.serialNumber,
+      ownerId: newItemData.ownerId,
+      ownerName: newItemData.ownerName,
       storageLocation: newItemData.storageLocation,
       condition: newItemData.condition,
       notes: newItemData.notes,
@@ -205,10 +240,26 @@ export function GearDeskView({
         name: "",
         category: "BODY",
         serialNumber: "",
-        storageLocation: "Studio Locker",
+        ownerId: "STUDIO",
+        ownerName: "Studio Shared",
+        storageLocation: "Main Studio Locker",
         condition: "Good",
         notes: "",
       });
+      router.refresh();
+    } else {
+      setFeedback({ type: "error", text: res.message });
+    }
+  };
+
+  const handleDeleteEquipment = async (id: string, name: string) => {
+    if (!window.confirm(`Are you sure you want to remove "${name}" from inventory?`)) return;
+    setIsSubmitting(true);
+    setFeedback(null);
+    const res = await deleteGearItem(id);
+    setIsSubmitting(false);
+    if (res.success) {
+      setFeedback({ type: "success", text: res.message });
       router.refresh();
     } else {
       setFeedback({ type: "error", text: res.message });
@@ -319,14 +370,56 @@ export function GearDeskView({
               />
             </div>
 
-            {/* Status & Category Filter Tabs */}
-            <div className="flex flex-wrap gap-2">
+            {/* Status, Category & Ownership Filter Tabs */}
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Ownership Segment */}
+              <div className="flex items-center rounded-xl bg-nordic-muted p-0.5 border border-nordic-border">
+                <button
+                  type="button"
+                  onClick={() => setOwnerFilter("ALL")}
+                  className={`flex items-center gap-1 rounded-lg px-2.5 py-1 text-[10px] font-mono transition cursor-pointer ${
+                    ownerFilter === "ALL"
+                      ? "bg-nordic-pine text-white font-medium shadow-xs"
+                      : "text-nordic-subtle hover:text-nordic-ink"
+                  }`}
+                >
+                  <span>ALL ({initialItems.length})</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOwnerFilter("STUDIO")}
+                  className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[10px] font-mono transition cursor-pointer ${
+                    ownerFilter === "STUDIO"
+                      ? "bg-nordic-pine text-white font-medium shadow-xs"
+                      : "text-nordic-subtle hover:text-nordic-ink"
+                  }`}
+                >
+                  <Building2 className="h-3 w-3" />
+                  <span>STUDIO ({studioCount})</span>
+                </button>
+                {currentUser && (
+                  <button
+                    type="button"
+                    onClick={() => setOwnerFilter("MY_GEAR")}
+                    className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[10px] font-mono transition cursor-pointer ${
+                      ownerFilter === "MY_GEAR"
+                        ? "bg-nordic-pine text-white font-medium shadow-xs"
+                        : "text-nordic-subtle hover:text-nordic-ink"
+                    }`}
+                  >
+                    <User className="h-3 w-3" />
+                    <span>MY GEAR ({myGearCount})</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Status Segment */}
               <div className="flex items-center rounded-xl bg-nordic-muted p-0.5 border border-nordic-border">
                 {["ALL", "AVAILABLE", "CHECKED_OUT", "MAINTENANCE"].map((st) => (
                   <button
                     key={st}
                     onClick={() => setStatusFilter(st)}
-                    className={`rounded-lg px-2.5 py-1 text-[10px] font-mono transition ${
+                    className={`rounded-lg px-2.5 py-1 text-[10px] font-mono transition cursor-pointer ${
                       statusFilter === st
                         ? "bg-nordic-pine text-white font-medium shadow-xs"
                         : "text-nordic-subtle hover:text-nordic-ink"
@@ -337,12 +430,13 @@ export function GearDeskView({
                 ))}
               </div>
 
+              {/* Category Segment */}
               <div className="flex flex-wrap gap-1">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setCategoryFilter(cat)}
-                    className={`rounded-lg px-2.5 py-1 text-[10px] font-mono transition ${
+                    className={`rounded-lg px-2.5 py-1 text-[10px] font-mono transition cursor-pointer ${
                       categoryFilter === cat
                         ? "bg-nordic-surface text-nordic-ink font-semibold border border-nordic-border shadow-xs"
                         : "bg-nordic-muted/60 text-nordic-subtle hover:text-nordic-ink border border-nordic-border/60"
@@ -363,6 +457,7 @@ export function GearDeskView({
                   <tr>
                     <th className="px-6 py-4">Item & Serial</th>
                     <th className="px-4 py-4">Category</th>
+                    <th className="px-4 py-4">Ownership</th>
                     <th className="px-4 py-4">Status</th>
                     <th className="px-4 py-4">Condition</th>
                     <th className="px-4 py-4">Location / Custody</th>
@@ -372,7 +467,7 @@ export function GearDeskView({
                 <tbody className="divide-y divide-nordic-border/70">
                   {filteredItems.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-nordic-faint">
+                      <td colSpan={7} className="px-6 py-12 text-center text-nordic-faint">
                         No equipment records found matching the active filters.
                       </td>
                     </tr>
@@ -399,6 +494,20 @@ export function GearDeskView({
                             <span className="rounded-md bg-nordic-muted border border-nordic-border px-2.5 py-1 text-[10px] font-mono text-nordic-subtle">
                               {item.category}
                             </span>
+                          </td>
+
+                          <td className="px-4 py-4">
+                            {item.ownerName && item.ownerName !== "Studio Shared" ? (
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-nordic-muted border border-nordic-border px-2.5 py-1 text-[10px] font-mono text-nordic-ink font-medium">
+                                <User className="h-3 w-3 text-nordic-pine" />
+                                <span className="truncate max-w-[120px]">{item.ownerName}</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-nordic-canvas border border-nordic-border px-2.5 py-1 text-[10px] font-mono text-nordic-subtle">
+                                <Building2 className="h-3 w-3 text-nordic-subtle" />
+                                Studio Shared
+                              </span>
+                            )}
                           </td>
 
                           <td className="px-4 py-4">
@@ -429,8 +538,13 @@ export function GearDeskView({
                           <td className="px-4 py-4">
                             {isCheckedOut && item.activeCheckout ? (
                               <div className="space-y-0.5">
-                                <div className="font-medium text-nordic-clay flex items-center gap-1">
+                                <div className="font-medium text-nordic-clay flex items-center gap-1.5">
                                   <span>{item.activeCheckout.userName}</span>
+                                  {new Date(item.activeCheckout.expectedReturn) < new Date() && (
+                                    <span className="rounded bg-[#FDF3EE] border border-[#F4D7C8] px-1.5 py-0.5 text-[9px] font-mono font-semibold text-[#9C4B33]">
+                                      OVERDUE
+                                    </span>
+                                  )}
                                 </div>
                                 <div className="text-[10px] text-nordic-faint font-mono">
                                   Due: {new Date(item.activeCheckout.expectedReturn).toLocaleDateString("nb-NO")}
@@ -444,25 +558,36 @@ export function GearDeskView({
                           </td>
 
                           <td className="px-6 py-4 text-right">
-                            {isAvailable && (
-                              <button
-                                onClick={() => setCheckoutItem(item)}
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-nordic-pine px-3.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-nordic-pine/90 transition cursor-pointer"
-                              >
-                                <ArrowUpRight className="h-3.5 w-3.5" />
-                                <span>Check Out</span>
-                              </button>
-                            )}
+                            <div className="flex items-center justify-end gap-2">
+                              {isAvailable && (
+                                <button
+                                  onClick={() => setCheckoutItem(item)}
+                                  className="inline-flex items-center gap-1.5 rounded-xl bg-nordic-pine px-3.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-nordic-pine/90 transition cursor-pointer"
+                                >
+                                  <ArrowUpRight className="h-3.5 w-3.5" />
+                                  <span>Check Out</span>
+                                </button>
+                              )}
 
-                            {isCheckedOut && (
+                              {isCheckedOut && (
+                                <button
+                                  onClick={() => setCheckinItem(item)}
+                                  className="inline-flex items-center gap-1.5 rounded-xl bg-nordic-clay px-3.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-nordic-clay/90 transition cursor-pointer"
+                                >
+                                  <ArrowDownLeft className="h-3.5 w-3.5" />
+                                  <span>Check In</span>
+                                </button>
+                              )}
+
                               <button
-                                onClick={() => setCheckinItem(item)}
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-nordic-clay px-3.5 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-nordic-clay/90 transition cursor-pointer"
+                                type="button"
+                                onClick={() => handleDeleteEquipment(item.id, item.name)}
+                                title="Remove from inventory"
+                                className="p-1.5 text-nordic-subtle/60 hover:text-red-600 rounded-lg hover:bg-nordic-muted transition cursor-pointer"
                               >
-                                <ArrowDownLeft className="h-3.5 w-3.5" />
-                                <span>Check In</span>
+                                <Trash2 className="h-3.5 w-3.5" />
                               </button>
-                            )}
+                            </div>
                           </td>
                         </tr>
                       );
@@ -758,6 +883,40 @@ export function GearDeskView({
                   }
                   className="w-full rounded-xl border border-nordic-border bg-nordic-canvas px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle mb-1.5">
+                  Equipment Ownership *
+                </label>
+                <select
+                  value={newItemData.ownerId}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "STUDIO") {
+                      setNewItemData((prev) => ({
+                        ...prev,
+                        ownerId: "STUDIO",
+                        ownerName: "Studio Shared",
+                      }));
+                    } else {
+                      const u = users.find((user) => user.id === val);
+                      setNewItemData((prev) => ({
+                        ...prev,
+                        ownerId: val,
+                        ownerName: u?.name || "Co-Owner",
+                      }));
+                    }
+                  }}
+                  className="w-full rounded-xl border border-nordic-border bg-nordic-canvas px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine text-xs"
+                >
+                  <option value="STUDIO">🏢 Studio Shared Locker (Common Property)</option>
+                  {users.map((u) => (
+                    <option key={u.id} value={u.id}>
+                      👤 Personal Property — {u.name} ({u.role})
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

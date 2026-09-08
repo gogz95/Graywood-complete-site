@@ -35,6 +35,7 @@ export interface GalleryAsset {
   shutterSpeed: string | null;
   iso: number | null;
   capturedAt: string | null;
+  albumIds?: string[];
 }
 
 interface LightboxProps {

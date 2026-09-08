@@ -10,15 +10,25 @@ export default async function AdminLibraryPage() {
   const [rawAssets, rawAlbums] = await Promise.all([
     prisma.mediaAsset.findMany({
       orderBy: { indexedAt: "desc" },
-      take: 100,
+      include: {
+        albumItems: {
+          select: { albumId: true },
+        },
+      },
+      take: 200,
     }),
     prisma.album.findMany({
-      orderBy: { title: "asc" },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         title: true,
         slug: true,
         type: true,
+        clientName: true,
+        createdAt: true,
+        _count: {
+          select: { items: true },
+        },
       },
     }),
   ]);
@@ -35,13 +45,24 @@ export default async function AdminLibraryPage() {
     focalLength: a.focalLength,
     aperture: a.aperture,
     iso: a.iso,
+    albumIds: a.albumItems.map((ai) => ai.albumId),
+  }));
+
+  const albums = rawAlbums.map((a) => ({
+    id: a.id,
+    title: a.title,
+    slug: a.slug,
+    type: a.type,
+    clientName: a.clientName,
+    createdAt: a.createdAt.toISOString(),
+    itemCount: a._count.items,
   }));
 
   return (
     <LibraryManager
       assets={assets}
       artists={[]}
-      albums={rawAlbums}
+      albums={albums}
     />
   );
 }

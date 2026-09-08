@@ -5,7 +5,7 @@ import { GearDeskView } from "@/components/admin/GearDeskView";
 export const dynamic = "force-dynamic";
 
 export default async function AdminGearPage() {
-  await requireAdminSession(["ADMIN", "CO_OWNER"]);
+  const adminUser = await requireAdminSession(["ADMIN", "CO_OWNER"]);
 
   const [rawItems, rawUsers, rawLogs] = await Promise.all([
     prisma.gearItem.findMany({
@@ -35,13 +35,18 @@ export default async function AdminGearPage() {
     }),
   ]);
 
+  const userMap = new Map(rawUsers.map((u) => [u.id, u.name]));
+
   const items = rawItems.map((item) => {
+    const custodianName = item.custodian ? (userMap.get(item.custodian) || item.custodian) : "Unknown Custodian";
     return {
       id: item.id,
       name: item.name,
       brand: item.brand,
       category: item.category,
       serialNumber: item.serialNumber || "",
+      ownerId: item.ownerId,
+      ownerName: item.ownerName || "Studio Shared",
       condition: "Good",
       status: item.status,
       storageLocation: item.storageLocation,
@@ -50,7 +55,7 @@ export default async function AdminGearPage() {
         ? {
             id: item.id,
             userId: item.custodian || "Unknown",
-            userName: item.custodian || "Unknown Custodian",
+            userName: custodianName,
             checkoutDate: item.checkedOutAt ? item.checkedOutAt.toISOString() : new Date().toISOString(),
             expectedReturn: item.expectedReturn ? item.expectedReturn.toISOString() : new Date().toISOString(),
             checkoutNotes: item.notes,
@@ -65,7 +70,7 @@ export default async function AdminGearPage() {
     gearName: log.gearItem?.name || "Equipment Item",
     serialNumber: log.gearItem?.serialNumber || "N/A",
     userId: log.custodian,
-    userName: log.custodian,
+    userName: userMap.get(log.custodian) || log.custodian,
     checkoutDate: log.timestamp.toISOString(),
     expectedReturn: log.timestamp.toISOString(),
     actualReturn: log.action === "CHECKIN" ? log.timestamp.toISOString() : null,
@@ -78,6 +83,12 @@ export default async function AdminGearPage() {
       initialItems={items}
       users={rawUsers}
       logs={logs}
+      currentUser={{
+        id: adminUser.userId,
+        name: adminUser.name,
+        email: adminUser.email,
+        role: adminUser.role,
+      }}
     />
   );
 }

@@ -7,7 +7,7 @@ export type DomainKey = "PHOTOGRAPHY" | "MEDIA" | "MAIN";
  * Maps incoming hostnames to domain keys.
  * localhost uses NEXT_PUBLIC_DEV_DOMAIN (default: PHOTOGRAPHY).
  */
-export function resolveDomainKey(host: string): DomainKey {
+export function resolveDomainKey(host: string, pathname?: string): DomainKey {
   const h = host.split(":")[0].toLowerCase(); // strip port
 
   if (h === "graywoodphotography.no" || h === "www.graywoodphotography.no") {
@@ -20,7 +20,20 @@ export function resolveDomainKey(host: string): DomainKey {
     return "MAIN";
   }
 
-  // Local dev / unknown — fall back to env or PHOTOGRAPHY
+  // Local dev / preview hosts — inspect pathname for explicit studio routing
+  if (pathname) {
+    if (pathname.startsWith("/media")) {
+      return "MEDIA";
+    }
+    if (pathname.startsWith("/hub")) {
+      return "MAIN";
+    }
+    if (pathname.startsWith("/photography")) {
+      return "PHOTOGRAPHY";
+    }
+  }
+
+  // Fall back to env or PHOTOGRAPHY
   const devDomain = process.env.NEXT_PUBLIC_DEV_DOMAIN as DomainKey | undefined;
   if (
     devDomain === "PHOTOGRAPHY" ||

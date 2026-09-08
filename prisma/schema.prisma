@@ -103,6 +103,8 @@ model GearItem {
   brand           String
   category        String            // "BODY", "LENS", "LIGHTING", "DRONE", "AUDIO"
   serialNumber    String?
+  ownerId         String?           // Reference to User.id (Co-Owner or Admin)
+  ownerName       String?           // Display name e.g. "Lars", "Studio Shared"
   storageLocation String            @default("Main Studio Locker")
   status          String            @default("AVAILABLE") // "AVAILABLE" | "CHECKED_OUT" | "MAINTENANCE"
   custodian       String?

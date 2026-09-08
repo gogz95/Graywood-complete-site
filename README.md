@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Graywood Visual Platform
 
-## Getting Started
+A unified multi-brand visual studio platform engineered for **Graywood Photography** (Medium-Format Still Imagery), **Graywood Media** (Motion & Sound Collective), and the **Graywood Studio Hub** (Ecosystem & Shared Infrastructure).
 
-First, run the development server:
+Built with **Next.js 16 (Turbopack)**, **React 19**, **Prisma ORM**, **Sharp**, **Iron-Session**, and styled with a bespoke **Scandinavian / Nordic Editorial Design System**.
 
+---
+
+## 🧭 Master Product Roadmap
+
+For the complete prioritized delivery schedule, architectural breakdowns, and integration tracks, please see:
+
+👉 **[Master Product Roadmap (ROADMAP.md)](./ROADMAP.md)**
+
+### Priority Overview:
+1. **Priority 1**: Portfolio Engine, Admin Album Creator & Password-Protected Client Proofing Vaults.
+2. **Priority 2**: Gated Gear Desk with Equipment Owner Attribution & Custody Auditing.
+3. **Priority 3**: NAS Storage Integration (SMB/NFS Read-Only Ingestion) & NVMe/SSD Preview Caching.
+4. **Priority 4**: Multi-Brand Landing Hub & Dynamic Hostname/Sub-path Routing.
+5. **Deferred Roadmap (Paused)**: Manga/Comic Reader Suite (`reader.graywood.no`) & Game Server Telemetry Nodes (`play.graywood.no`).
+
+---
+
+## 🚀 Quick Start
+
+### 1. Environment Setup
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/gogz95/Graywood-complete-site.git
+cd Graywood-complete-site
+
+# Install dependencies
+npm install
+
+# Setup environment variables
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Database Initialization
+```bash
+# Run migrations & generate Prisma client
+npm run db:migrate
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Seed baseline users, brands, modules, and albums
+npm run db:seed
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Run Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the unified studio hub.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Key Routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **`/hub` (or `/`)**: Multi-Brand Landing & Ecosystem Hub.
+- **`/photography`**: Photography Studio & Medium-Format Archive.
+- **`/media`**: Motion Collective & Cinematic Showreel.
+- **`/portal/[albumSlug]`**: Zero-Discovery Password-Protected Client Proofing Vault.
+- **`/admin/login`**: Operations Command Suite Login.
+- **`/admin/library`**: Virtual Library Asset Browser & NAS Indexer.
+- **`/admin/gear`**: Gated Gear Desk & Equipment Custody Logs.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🧪 Testing & Validation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Run full automated test suite (Storage security, Indexer, Transcoder, E2E)
+npm run test:all
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Trigger manual NAS storage indexer
+npm run nas:index
+
+# Build for standalone production
+npm run build
+```

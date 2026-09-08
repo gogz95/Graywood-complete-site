@@ -37,6 +37,16 @@ export function Navbar() {
     setDomainDropdownOpen(false);
   }
 
+  // Determine active domain, allowing pathname to override for unified local/preview browsing
+  let activeDomain = domain;
+  if (pathname.startsWith("/media")) {
+    activeDomain = "MEDIA";
+  } else if (pathname.startsWith("/hub")) {
+    activeDomain = "MAIN";
+  } else if (pathname.startsWith("/photography")) {
+    activeDomain = "PHOTOGRAPHY";
+  }
+
   const domainConfig = {
     PHOTOGRAPHY: {
       name: "Graywood Photography",
@@ -46,6 +56,8 @@ export function Navbar() {
       accentClass: "text-nordic-pine",
       accentBg: "bg-nordic-pine",
       accentBorder: "border-nordic-pine/30",
+      homeHref: "/photography",
+      inquireHref: "/photography#contact",
       links: [
         { label: "Archive", href: "/photography#gallery" },
         { label: "Studio Info", href: "/photography#about" },
@@ -60,10 +72,13 @@ export function Navbar() {
       accentClass: "text-nordic-clay",
       accentBg: "bg-nordic-clay",
       accentBorder: "border-nordic-clay/30",
+      homeHref: "/media",
+      inquireHref: "/media#contact",
       links: [
         { label: "Showreel", href: "/media#showreel" },
-        { label: "Directors & Artists", href: "/media#artists" },
-        { label: "Production Portfolios", href: "/media#portfolios" },
+        { label: "Services", href: "/media#services" },
+        { label: "Portfolios", href: "/media#portfolios" },
+        { label: "Contact", href: "/media#contact" },
       ],
     },
     MAIN: {
@@ -74,13 +89,15 @@ export function Navbar() {
       accentClass: "text-nordic-pine",
       accentBg: "bg-nordic-pine",
       accentBorder: "border-nordic-pine/30",
+      homeHref: "/hub",
+      inquireHref: "/photography#contact",
       links: [
         { label: "Photography Studio", href: "/photography" },
         { label: "Media Collective", href: "/media" },
         { label: "Ecosystem Hub", href: "/hub" },
       ],
     },
-  }[domain] || {
+  }[activeDomain] || {
     name: "Graywood Studio",
     shortName: "Hub",
     badge: "Ecosystem Hub",
@@ -88,6 +105,8 @@ export function Navbar() {
     accentClass: "text-nordic-pine",
     accentBg: "bg-nordic-pine",
     accentBorder: "border-nordic-pine/30",
+    homeHref: "/hub",
+    inquireHref: "/photography#contact",
     links: [
       { label: "Photography Studio", href: "/photography" },
       { label: "Media Collective", href: "/media" },
@@ -109,14 +128,14 @@ export function Navbar() {
         {/* Brand Logo */}
         <div className="flex items-center gap-6">
           <Link
-            href="/"
+            href={domainConfig.homeHref}
             className="group flex items-center gap-3 transition focus-visible:outline-none"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-nordic-surface border border-nordic-border shadow-xs group-hover:border-nordic-pine transition-colors">
-              <CurrentIcon className="h-4.5 w-4.5 text-nordic-pine" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-nordic-surface border border-nordic-border shadow-xs group-hover:border-nordic-divider transition-colors">
+              <CurrentIcon className={`h-4.5 w-4.5 ${domainConfig.accentClass}`} />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-sm font-bold tracking-tight text-nordic-ink group-hover:text-nordic-pine transition-colors">
+              <span className="text-sm font-bold tracking-tight text-nordic-ink transition-colors">
                 {domainConfig.name}
               </span>
               <span className="text-[10px] font-mono uppercase tracking-widest text-nordic-subtle">
@@ -129,7 +148,7 @@ export function Navbar() {
           <div className="relative hidden md:block">
             <button
               onClick={() => setDomainDropdownOpen(!domainDropdownOpen)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-nordic-border bg-nordic-surface px-3 py-1 text-xs font-mono text-nordic-subtle hover:text-nordic-ink hover:border-nordic-pine/50 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-nordic-border bg-nordic-surface px-3 py-1 text-xs font-mono text-nordic-subtle hover:text-nordic-ink hover:border-nordic-divider transition cursor-pointer"
               aria-expanded={domainDropdownOpen}
             >
               <span>Domain: {domainConfig.shortName}</span>
@@ -143,21 +162,33 @@ export function Navbar() {
                 </div>
                 <Link
                   href="/photography"
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink transition mt-1"
+                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition mt-1 ${
+                    activeDomain === "PHOTOGRAPHY"
+                      ? "bg-nordic-muted font-medium text-nordic-ink"
+                      : "text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink"
+                  }`}
                 >
                   <Camera className="h-3.5 w-3.5 text-nordic-pine" />
                   <span>Graywood Photography</span>
                 </Link>
                 <Link
                   href="/media"
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink transition"
+                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition ${
+                    activeDomain === "MEDIA"
+                      ? "bg-nordic-muted font-medium text-nordic-ink"
+                      : "text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink"
+                  }`}
                 >
                   <Video className="h-3.5 w-3.5 text-nordic-clay" />
                   <span>Graywood Media</span>
                 </Link>
                 <Link
                   href="/hub"
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink transition"
+                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs transition ${
+                    activeDomain === "MAIN"
+                      ? "bg-nordic-muted font-medium text-nordic-ink"
+                      : "text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink"
+                  }`}
                 >
                   <Layers className="h-3.5 w-3.5 text-nordic-pine" />
                   <span>Graywood Hub</span>
@@ -180,8 +211,8 @@ export function Navbar() {
           ))}
 
           <Link
-            href="/photography#contact"
-            className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium text-white transition shadow-xs bg-nordic-pine hover:bg-nordic-pine/90"
+            href={domainConfig.inquireHref}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium text-white transition shadow-xs ${domainConfig.accentBg} hover:opacity-90`}
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>Inquire</span>
@@ -223,7 +254,11 @@ export function Navbar() {
               </div>
               <Link
                 href="/photography"
-                className="flex items-center justify-between text-xs py-1.5 text-nordic-subtle hover:text-nordic-ink"
+                className={`flex items-center justify-between text-xs py-2 px-2.5 rounded-lg transition ${
+                  activeDomain === "PHOTOGRAPHY"
+                    ? "bg-nordic-muted font-medium text-nordic-ink"
+                    : "text-nordic-subtle hover:text-nordic-ink hover:bg-nordic-muted/50"
+                }`}
               >
                 <span className="flex items-center gap-2">
                   <Camera className="h-3.5 w-3.5 text-nordic-pine" />
@@ -233,7 +268,11 @@ export function Navbar() {
               </Link>
               <Link
                 href="/media"
-                className="flex items-center justify-between text-xs py-1.5 text-nordic-subtle hover:text-nordic-ink"
+                className={`flex items-center justify-between text-xs py-2 px-2.5 rounded-lg transition ${
+                  activeDomain === "MEDIA"
+                    ? "bg-nordic-muted font-medium text-nordic-ink"
+                    : "text-nordic-subtle hover:text-nordic-ink hover:bg-nordic-muted/50"
+                }`}
               >
                 <span className="flex items-center gap-2">
                   <Video className="h-3.5 w-3.5 text-nordic-clay" />
@@ -243,13 +282,27 @@ export function Navbar() {
               </Link>
               <Link
                 href="/hub"
-                className="flex items-center justify-between text-xs py-1.5 text-nordic-subtle hover:text-nordic-ink"
+                className={`flex items-center justify-between text-xs py-2 px-2.5 rounded-lg transition ${
+                  activeDomain === "MAIN"
+                    ? "bg-nordic-muted font-medium text-nordic-ink"
+                    : "text-nordic-subtle hover:text-nordic-ink hover:bg-nordic-muted/50"
+                }`}
               >
                 <span className="flex items-center gap-2">
                   <Layers className="h-3.5 w-3.5 text-nordic-pine" />
                   Graywood Hub
                 </span>
                 <ExternalLink className="h-3 w-3 text-nordic-faint" />
+              </Link>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                href={domainConfig.inquireHref}
+                className={`flex items-center justify-center gap-2 w-full rounded-xl py-3 text-xs font-medium text-white shadow-xs ${domainConfig.accentBg} hover:opacity-90 transition`}
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                <span>Inquire with Studio</span>
               </Link>
             </div>
           </div>

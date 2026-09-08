@@ -15,7 +15,7 @@ const FEATURE_ICONS: Record<string, React.ComponentType<{ className?: string }>>
 };
 
 export default async function PhotographyPage() {
-  const [content, features, rawAssets] = await Promise.all([
+  const [content, features, rawAssets, publicAlbums] = await Promise.all([
     getSiteContent("PHOTOGRAPHY"),
     getStudioFeatures("PHOTOGRAPHY"),
     prisma.mediaAsset.findMany({
@@ -29,7 +29,21 @@ export default async function PhotographyPage() {
           },
         },
       },
+      include: {
+        albumItems: {
+          select: { albumId: true },
+        },
+      },
       orderBy: { indexedAt: "desc" },
+    }),
+    prisma.album.findMany({
+      where: { type: "PORTFOLIO" },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+      },
     }),
   ]);
 
@@ -46,6 +60,7 @@ export default async function PhotographyPage() {
     shutterSpeed: a.shutterSpeed,
     iso: a.iso,
     capturedAt: a.capturedAt ? a.capturedAt.toISOString() : null,
+    albumIds: a.albumItems.map((ai) => ai.albumId),
   }));
 
   const heroBadge = content["HERO.badge"] || "";
@@ -62,7 +77,7 @@ export default async function PhotographyPage() {
     <main className="w-full min-h-screen bg-nordic-canvas text-nordic-ink">
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 flex flex-col space-y-20">
         {/* Editorial Hero */}
-        <section className="relative w-full py-20 px-6 sm:px-10 flex flex-col items-center justify-center text-center rounded-3xl border border-nordic-border bg-nordic-surface/60 overflow-hidden">
+        <section id="about" className="relative w-full py-20 px-6 sm:px-10 flex flex-col items-center justify-center text-center rounded-3xl border border-nordic-border bg-nordic-surface/60 overflow-hidden">
           {/* Subtle ambient atmospheric tone */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-nordic-pine/5 blur-[120px] pointer-events-none" />
 
@@ -132,6 +147,7 @@ export default async function PhotographyPage() {
         <div id="gallery">
           <PhotographyGallery
             assets={assets}
+            albums={publicAlbums}
             title={archiveTitle}
             description={archiveDescription}
           />

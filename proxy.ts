@@ -15,7 +15,7 @@ export function proxy(request: NextRequest) {
     request.headers.get("x-forwarded-host") ??
     request.headers.get("host") ??
     "";
-  const domainKey = resolveDomainKey(host);
+  const domainKey = resolveDomainKey(host, request.nextUrl.pathname);
 
   // Clone headers and inject our domain key & pathname
   const requestHeaders = new Headers(request.headers);

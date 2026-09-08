@@ -186,6 +186,8 @@ const CreateGearSchema = z.object({
   brand: z.string().optional().default("Sony"),
   category: z.string().min(1, "Category is required"),
   serialNumber: z.string().min(1, "Serial number is required"),
+  ownerId: z.string().optional(),
+  ownerName: z.string().optional(),
   storageLocation: z.string().default("Main Studio Locker"),
   condition: z.string().default("Good"),
   notes: z.string().optional(),
@@ -204,8 +206,16 @@ export async function createGearItem(rawInput: CreateGearInput) {
     };
   }
 
-  const { name, brand, category, serialNumber, storageLocation, notes } =
-    parsed.data;
+  const {
+    name,
+    brand,
+    category,
+    serialNumber,
+    ownerId,
+    ownerName,
+    storageLocation,
+    notes,
+  } = parsed.data;
 
   try {
     const existing = await prisma.gearItem.findFirst({
@@ -225,6 +235,8 @@ export async function createGearItem(rawInput: CreateGearInput) {
         brand: brand?.trim() || "Sony",
         category,
         serialNumber: serialNumber.trim(),
+        ownerId: ownerId && ownerId !== "STUDIO" ? ownerId : null,
+        ownerName: ownerName?.trim() || "Studio Shared",
         storageLocation: storageLocation.trim() || "Main Studio Locker",
         notes: notes?.trim() || null,
         status: "AVAILABLE",
@@ -239,5 +251,59 @@ export async function createGearItem(rawInput: CreateGearInput) {
   } catch (error: unknown) {
     console.error("createGearItem error:", error);
     return { success: false, message: "Failed to create equipment item." };
+  }
+}
+
+export async function updateGearOwner(input: {
+  gearId: string;
+  ownerId?: string | null;
+  ownerName: string;
+}) {
+  await requireAdminSession(["ADMIN", "CO_OWNER"]);
+
+  const { gearId, ownerId, ownerName } = input;
+  if (!gearId) {
+    return { success: false, message: "Gear item ID is required." };
+  }
+
+  try {
+    const updated = await prisma.gearItem.update({
+      where: { id: gearId },
+      data: {
+        ownerId: ownerId && ownerId !== "STUDIO" ? ownerId : null,
+        ownerName: ownerName?.trim() || "Studio Shared",
+      },
+    });
+
+    return {
+      success: true,
+      message: `Equipment ownership updated to "${updated.ownerName}".`,
+      item: updated,
+    };
+  } catch (error: unknown) {
+    console.error("updateGearOwner error:", error);
+    return { success: false, message: "Failed to update equipment owner." };
+  }
+}
+
+export async function deleteGearItem(gearId: string) {
+  await requireAdminSession(["ADMIN", "CO_OWNER"]);
+
+  if (!gearId) {
+    return { success: false, message: "Gear ID is required." };
+  }
+
+  try {
+    await prisma.gearItem.delete({
+      where: { id: gearId },
+    });
+
+    return {
+      success: true,
+      message: "Gear item removed from inventory.",
+    };
+  } catch (error: unknown) {
+    console.error("deleteGearItem error:", error);
+    return { success: false, message: "Failed to delete equipment item." };
   }
 }

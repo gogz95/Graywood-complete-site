@@ -12,6 +12,7 @@ import {
 
 interface PhotographyGalleryProps {
   assets: GalleryAsset[];
+  albums?: { id: string; title: string; slug: string }[];
   title?: string;
   description?: string;
 }
@@ -44,9 +45,10 @@ function getAssetCategory(asset: GalleryAsset, index: number): CategoryKey {
   return fallbackKeys[index % fallbackKeys.length];
 }
 
-export function PhotographyGallery({ assets, title, description }: PhotographyGalleryProps) {
+export function PhotographyGallery({ assets, albums = [], title, description }: PhotographyGalleryProps) {
   const [activeLightboxIndex, setActiveLightboxIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("all");
+  const [selectedAlbumId, setSelectedAlbumId] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const enrichedAssets = useMemo(() => {
@@ -75,6 +77,9 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
     return enrichedAssets.filter((item) => {
       const matchesCategory =
         activeCategory === "all" || item.category === activeCategory;
+      const matchesAlbum =
+        selectedAlbumId === "all" ||
+        (item.albumIds && item.albumIds.includes(selectedAlbumId));
       const q = searchQuery.trim().toLowerCase();
       const matchesSearch =
         !q ||
@@ -82,9 +87,9 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
         (item.cameraModel && item.cameraModel.toLowerCase().includes(q)) ||
         (item.lensModel && item.lensModel.toLowerCase().includes(q));
 
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesAlbum && matchesSearch;
     });
-  }, [enrichedAssets, activeCategory, searchQuery]);
+  }, [enrichedAssets, activeCategory, selectedAlbumId, searchQuery]);
 
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -109,6 +114,38 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
           </span>
         </div>
       </div>
+
+      {/* Portfolio Collection Albums Strip */}
+      {albums.length > 0 && (
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-4 text-xs font-mono">
+          <span className="text-[10px] uppercase tracking-wider text-nordic-faint shrink-0 pr-1">
+            Portfolios:
+          </span>
+          <button
+            onClick={() => setSelectedAlbumId("all")}
+            className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer ${
+              selectedAlbumId === "all"
+                ? "bg-nordic-ink text-white font-medium shadow-xs"
+                : "bg-nordic-surface border border-nordic-border text-nordic-subtle hover:text-nordic-ink hover:border-nordic-pine/50"
+            }`}
+          >
+            All Collections
+          </button>
+          {albums.map((alb) => (
+            <button
+              key={alb.id}
+              onClick={() => setSelectedAlbumId(alb.id)}
+              className={`px-3 py-1 rounded-full text-xs font-mono transition cursor-pointer whitespace-nowrap ${
+                selectedAlbumId === alb.id
+                  ? "bg-nordic-ink text-white font-medium shadow-xs"
+                  : "bg-nordic-surface border border-nordic-border text-nordic-subtle hover:text-nordic-ink hover:border-nordic-pine/50"
+              }`}
+            >
+              {alb.title}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Filter and Search Controls */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-nordic-border pb-4 mb-10">

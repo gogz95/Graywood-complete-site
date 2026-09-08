@@ -110,7 +110,7 @@ export default async function MediaPage() {
 
         {/* Dynamic Public Portfolio Strip */}
         {publicAlbums.length > 0 && (
-          <section className="w-full rounded-3xl border border-nordic-border bg-nordic-surface p-6 sm:p-8">
+          <section id="portfolios" className="w-full rounded-3xl border border-nordic-border bg-nordic-surface p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <span className="text-xs font-mono uppercase tracking-widest text-nordic-subtle">
                 Active Production Portfolios
@@ -242,7 +242,7 @@ export default async function MediaPage() {
         </section>
 
         {/* Technical Specification Banner */}
-        <section className="rounded-3xl border border-nordic-border bg-nordic-surface p-8 sm:p-12">
+        <section id="artists" className="rounded-3xl border border-nordic-border bg-nordic-surface p-8 sm:p-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-nordic-clay">
