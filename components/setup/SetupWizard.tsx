@@ -243,7 +243,7 @@ export function SetupWizard() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Henrik Graywood"
+                    placeholder="Administrator Name"
                     value={formData.name}
                     onChange={(e) => updateField("name", e.target.value)}
                     autoFocus

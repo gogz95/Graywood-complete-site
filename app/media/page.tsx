@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getSiteContent } from "@/lib/content";
 import { ShowreelPlayer } from "@/components/media/ShowreelPlayer";
 import {
   Video,
@@ -18,7 +19,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function MediaPage() {
-  const [publicAlbums] = await Promise.all([
+  const [publicAlbums, content] = await Promise.all([
     prisma.album.findMany({
       where: { type: "PORTFOLIO" },
       include: {
@@ -26,6 +27,7 @@ export default async function MediaPage() {
       },
       take: 6,
     }),
+    getSiteContent("MEDIA"),
   ]);
 
   return (
@@ -40,16 +42,17 @@ export default async function MediaPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-nordic-border bg-nordic-surface px-4 py-1.5 text-xs text-nordic-clay">
               <Video className="h-3.5 w-3.5 text-nordic-clay" />
               <span className="font-mono uppercase tracking-widest text-nordic-clay">
-                Nordic Motion Collective
+                {content["HERO.badge"] || "Nordic Motion Collective"}
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl font-serif tracking-tight text-nordic-ink leading-[1.1]">
-              Motion, sound, and story in harmonious tension.
+              {content["HERO.title"] || "Motion, sound, and story in harmonious tension."}
             </h1>
 
             <p className="text-base sm:text-lg text-nordic-subtle max-w-2xl mx-auto leading-relaxed">
-              Graywood Media is a collaborative studio crafting commercial brand films, high-end motion design, and immersive digital artifacts for visionary brands across Northern Europe.
+              {content["HERO.description"] ||
+                "Graywood Media is a collaborative studio crafting commercial brand films, high-end motion design, and immersive digital artifacts for visionary brands across Northern Europe."}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
@@ -57,14 +60,14 @@ export default async function MediaPage() {
                 href="#showreel"
                 className="inline-flex items-center gap-2 rounded-xl bg-nordic-clay px-6 py-3 text-sm font-medium text-white transition hover:bg-nordic-clay/90 shadow-sm cursor-pointer"
               >
-                <span>Watch 2026 Reel</span>
+                <span>{content["HERO.ctaPrimary"] || "Watch 2026 Reel"}</span>
                 <MonitorPlay className="h-4 w-4" />
               </a>
               <a
                 href="#services"
                 className="inline-flex items-center gap-2 rounded-xl border border-nordic-border bg-nordic-surface px-6 py-3 text-sm font-medium text-nordic-ink transition hover:bg-nordic-muted cursor-pointer"
               >
-                Explore Production Services
+                {content["HERO.ctaSecondary"] || "Explore Production Services"}
               </a>
             </div>
           </div>
@@ -72,20 +75,36 @@ export default async function MediaPage() {
           {/* Key Metric Highlights */}
           <div className="relative z-10 mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl w-full border-t border-nordic-border pt-8 text-left">
             <div>
-              <p className="text-3xl font-serif text-nordic-ink">8K RAW</p>
-              <p className="text-xs text-nordic-subtle mt-0.5">RED & ARRI Capture</p>
+              <p className="text-3xl font-serif text-nordic-ink">
+                {content["METRICS.m1_title"] || "8K RAW"}
+              </p>
+              <p className="text-xs text-nordic-subtle mt-0.5">
+                {content["METRICS.m1_sub"] || "RED & ARRI Capture"}
+              </p>
             </div>
             <div>
-              <p className="text-3xl font-serif text-nordic-ink">Davinci</p>
-              <p className="text-xs text-nordic-subtle mt-0.5">ACES Color Pipeline</p>
+              <p className="text-3xl font-serif text-nordic-ink">
+                {content["METRICS.m2_title"] || "Davinci"}
+              </p>
+              <p className="text-xs text-nordic-subtle mt-0.5">
+                {content["METRICS.m2_sub"] || "ACES Color Pipeline"}
+              </p>
             </div>
             <div>
-              <p className="text-3xl font-serif text-nordic-ink">Spatial</p>
-              <p className="text-xs text-nordic-subtle mt-0.5">Dolby Atmos Audio</p>
+              <p className="text-3xl font-serif text-nordic-ink">
+                {content["METRICS.m3_title"] || "Spatial"}
+              </p>
+              <p className="text-xs text-nordic-subtle mt-0.5">
+                {content["METRICS.m3_sub"] || "Dolby Atmos Audio"}
+              </p>
             </div>
             <div>
-              <p className="text-3xl font-serif text-nordic-ink">Oslo & Arctic</p>
-              <p className="text-xs text-nordic-subtle mt-0.5">Extreme Field Readiness</p>
+              <p className="text-3xl font-serif text-nordic-ink">
+                {content["METRICS.m4_title"] || "Oslo & Arctic"}
+              </p>
+              <p className="text-xs text-nordic-subtle mt-0.5">
+                {content["METRICS.m4_sub"] || "Extreme Field Readiness"}
+              </p>
             </div>
           </div>
         </section>
@@ -121,20 +140,21 @@ export default async function MediaPage() {
         )}
 
         {/* Showreel Cinematic Feature Banner with interactive modal */}
-        <ShowreelPlayer />
+        <ShowreelPlayer content={content} />
 
         {/* Core Production Capabilities Grid */}
         <section id="services" className="space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-nordic-clay">
               <Layers className="h-3.5 w-3.5" />
-              <span>Full-Spectrum Production</span>
+              <span>{content["SERVICES.badge"] || "Full-Spectrum Production"}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-nordic-ink">
-              End-to-End Craft
+              {content["SERVICES.title"] || "End-to-End Craft"}
             </h2>
             <p className="text-sm text-nordic-subtle leading-relaxed">
-              From concept development and treatment pitch decks through extreme on-location principal photography to master finishing and digital distribution.
+              {content["SERVICES.description"] ||
+                "From concept development and treatment pitch decks through extreme on-location principal photography to master finishing and digital distribution."}
             </p>
           </div>
 
@@ -143,9 +163,12 @@ export default async function MediaPage() {
               <div className="h-12 w-12 rounded-2xl bg-nordic-muted border border-nordic-border flex items-center justify-center text-nordic-clay mb-6">
                 <Clapperboard className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-serif text-nordic-ink mb-2">Commercial Brand Films</h3>
+              <h3 className="text-xl font-serif text-nordic-ink mb-2">
+                {content["SERVICES.s1_title"] || "Commercial Brand Films"}
+              </h3>
               <p className="text-xs text-nordic-subtle leading-relaxed mb-6">
-                High-concept short films and broadcast-ready advertisements crafted for Nordic architecture, mobility, and luxury goods brands.
+                {content["SERVICES.s1_desc"] ||
+                  "High-concept short films and broadcast-ready advertisements crafted for Nordic architecture, mobility, and luxury goods brands."}
               </p>
               <ul className="space-y-2 text-xs text-nordic-subtle border-t border-nordic-border/60 pt-4">
                 <li className="flex items-center gap-2">
@@ -167,9 +190,12 @@ export default async function MediaPage() {
               <div className="h-12 w-12 rounded-2xl bg-nordic-muted border border-nordic-border flex items-center justify-center text-nordic-clay mb-6">
                 <Tv className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-serif text-nordic-ink mb-2">Motion Graphics & 3D</h3>
+              <h3 className="text-xl font-serif text-nordic-ink mb-2">
+                {content["SERVICES.s2_title"] || "Motion Graphics & 3D"}
+              </h3>
               <p className="text-xs text-nordic-subtle leading-relaxed mb-6">
-                Algorithmic simulations, typographic animation, and 3D architectural visualizations crafted in Houdini and Unreal Engine.
+                {content["SERVICES.s2_desc"] ||
+                  "Algorithmic simulations, typographic animation, and 3D architectural visualizations crafted in Houdini and Unreal Engine."}
               </p>
               <ul className="space-y-2 text-xs text-nordic-subtle border-t border-nordic-border/60 pt-4">
                 <li className="flex items-center gap-2">
@@ -191,9 +217,12 @@ export default async function MediaPage() {
               <div className="h-12 w-12 rounded-2xl bg-nordic-muted border border-nordic-border flex items-center justify-center text-nordic-clay mb-6">
                 <Award className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-serif text-nordic-ink mb-2">Editorial Color & Sound</h3>
+              <h3 className="text-xl font-serif text-nordic-ink mb-2">
+                {content["SERVICES.s3_title"] || "Editorial Color & Sound"}
+              </h3>
               <p className="text-xs text-nordic-subtle leading-relaxed mb-6">
-                Precise color-science grading on reference displays and immersive bespoke sound design tuned for cinema and high-end digital.
+                {content["SERVICES.s3_desc"] ||
+                  "Precise color-science grading on reference displays and immersive bespoke sound design tuned for cinema and high-end digital."}
               </p>
               <ul className="space-y-2 text-xs text-nordic-subtle border-t border-nordic-border/60 pt-4">
                 <li className="flex items-center gap-2">
@@ -266,14 +295,15 @@ export default async function MediaPage() {
         {/* Contact CTA */}
         <section id="contact" className="rounded-3xl border border-nordic-border bg-nordic-surface p-10 sm:p-16 text-center max-w-4xl mx-auto space-y-6">
           <h2 className="text-3xl sm:text-5xl font-serif tracking-tight text-nordic-ink">
-            Initiate a Motion Commission
+            {content["COMMISSION.title"] || "Initiate a Motion Commission"}
           </h2>
           <p className="text-sm sm:text-base text-nordic-subtle max-w-xl mx-auto leading-relaxed">
-            Accepting commercial campaigns, documentary productions, and interactive installations for the 2026/2027 seasons across Scandinavia and Europe.
+            {content["COMMISSION.description"] ||
+              "Accepting commercial campaigns, documentary productions, and interactive installations for the 2026/2027 seasons across Scandinavia and Europe."}
           </p>
           <div>
             <a
-              href="mailto:productions@graywood.no"
+              href={`mailto:${content["COMMISSION.email"] || "productions@graywood.no"}`}
               className="inline-flex items-center gap-2 rounded-xl bg-nordic-clay px-8 py-3.5 text-sm font-medium text-white transition hover:bg-nordic-clay/90 shadow-sm"
             >
               <span>Contact Productions Desk</span>
@@ -281,7 +311,7 @@ export default async function MediaPage() {
             </a>
           </div>
           <p className="text-xs font-mono text-nordic-faint">
-            productions@graywood.no · Oslo, Norway
+            {content["COMMISSION.email"] || "productions@graywood.no"} · Oslo, Norway
           </p>
         </section>
       </div>

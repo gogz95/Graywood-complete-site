@@ -258,7 +258,7 @@ export function ContactForm({ title, description }: ContactFormProps = {}) {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Henrik Ibsen"
+                placeholder="Your full name"
                 className={`w-full px-3.5 py-2.5 rounded-xl bg-nordic-canvas border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition ${
                   fieldErrors.name ? "border-red-500" : "border-nordic-border"
                 }`}
@@ -282,7 +282,7 @@ export function ContactForm({ title, description }: ContactFormProps = {}) {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="director@agency.no"
+                placeholder="contact@domain.no"
                 className={`w-full px-3.5 py-2.5 rounded-xl bg-nordic-canvas border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition ${
                   fieldErrors.email ? "border-red-500" : "border-nordic-border"
                 }`}
@@ -307,7 +307,7 @@ export function ContactForm({ title, description }: ContactFormProps = {}) {
               type="tel"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="+47 982 00 000"
+              placeholder="+47 ..."
               className="w-full px-3.5 py-2.5 rounded-xl bg-nordic-canvas border border-nordic-border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition"
             />
           </div>

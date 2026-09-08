@@ -26,6 +26,8 @@ import {
   ArrowDown,
   Sparkles,
   X,
+  Film,
+  Video,
 } from "lucide-react";
 
 export interface SerializedModule {
@@ -461,127 +463,510 @@ export function CustomizerView({
             </div>
 
             <form onSubmit={handleSaveCopy} className="space-y-6">
-              {/* HERO SECTION */}
-              <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  <span>Hero Header Section</span>
-                </div>
+              {/* ================= PHOTOGRAPHY SCOPE ================= */}
+              {activeContentScope === "PHOTOGRAPHY" && (
+                <>
+                  {/* HERO SECTION */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>Hero Header Section</span>
+                    </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-nordic-subtle mb-1">
-                      Header Pill Badge (`HERO.badge`)
-                    </label>
-                    <input
-                      type="text"
-                      value={getCopyValue("HERO", "badge", "GRAYWOOD STUDIO")}
-                      onChange={(e) => handleCopyChange("HERO", "badge", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
-                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Header Pill Badge (`HERO.badge`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "badge", "GRAYWOOD PHOTOGRAPHY STUDIO")}
+                          onChange={(e) => handleCopyChange("HERO", "badge", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Primary Headline (`HERO.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "title", "Visual narratives across the Nordic landscape.")}
+                          onChange={(e) => handleCopyChange("HERO", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Editorial Description (`HERO.description`)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={getCopyValue(
+                          "HERO",
+                          "description",
+                          "Specialized in commercial campaigns, architectural documentation, and editorial storytelling. Captured with medium-format precision and authentic atmospheric light."
+                        )}
+                        onChange={(e) => handleCopyChange("HERO", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-nordic-subtle mb-1">
-                      Primary Headline (`HERO.title`)
-                    </label>
-                    <input
-                      type="text"
-                      value={getCopyValue("HERO", "title", "Visual narratives across the Nordic landscape.")}
-                      onChange={(e) => handleCopyChange("HERO", "title", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
-                    />
-                  </div>
-                </div>
+                  {/* ARCHIVE SECTION */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
+                      <Layers className="h-3.5 w-3.5" />
+                      <span>Gallery Archive Intro</span>
+                    </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-nordic-subtle mb-1">
-                    Editorial Description (`HERO.description`)
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={getCopyValue(
-                      "HERO",
-                      "description",
-                      "Specialized in commercial campaigns, architectural documentation, and editorial storytelling."
-                    )}
-                    onChange={(e) => handleCopyChange("HERO", "description", e.target.value)}
-                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
-                  />
-                </div>
-              </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Archive Title (`ARCHIVE.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("ARCHIVE", "title", "Visual Archive")}
+                          onChange={(e) => handleCopyChange("ARCHIVE", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
 
-              {/* ARCHIVE SECTION */}
-              <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
-                  <Layers className="h-3.5 w-3.5" />
-                  <span>Gallery Archive Intro</span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-nordic-subtle mb-1">
-                      Archive Title (`ARCHIVE.title`)
-                    </label>
-                    <input
-                      type="text"
-                      value={getCopyValue("ARCHIVE", "title", "Visual Archive")}
-                      onChange={(e) => handleCopyChange("ARCHIVE", "title", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
-                    />
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Archive Subtitle (`ARCHIVE.description`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("ARCHIVE", "description", "Selected editorial collections captured across Svalbard, Lofoten, Oslofjord, and bespoke studio environments.")}
+                          onChange={(e) => handleCopyChange("ARCHIVE", "description", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-nordic-subtle mb-1">
-                      Archive Subtitle (`ARCHIVE.description`)
-                    </label>
-                    <input
-                      type="text"
-                      value={getCopyValue("ARCHIVE", "description", "Curated master files and commissions.")}
-                      onChange={(e) => handleCopyChange("ARCHIVE", "description", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
+                  {/* COMMISSION SECTION */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
+                      <Camera className="h-3.5 w-3.5" />
+                      <span>Commission Intro</span>
+                    </div>
 
-              {/* COMMISSION SECTION */}
-              <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
-                  <Camera className="h-3.5 w-3.5" />
-                  <span>Commission Intro</span>
-                </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Commission Title (`COMMISSION.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("COMMISSION", "title", "Initiate a Commission")}
+                          onChange={(e) => handleCopyChange("COMMISSION", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-nordic-subtle mb-1">
-                      Commission Title (`COMMISSION.title`)
-                    </label>
-                    <input
-                      type="text"
-                      value={getCopyValue("COMMISSION", "title", "Initiate a Commission")}
-                      onChange={(e) => handleCopyChange("COMMISSION", "title", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
-                    />
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Commission Subtitle (`COMMISSION.description`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue(
+                            "COMMISSION",
+                            "description",
+                            "Available for editorial campaigns, architectural documentation, and select commercial projects throughout the Nordic region."
+                          )}
+                          onChange={(e) => handleCopyChange("COMMISSION", "description", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* ================= MEDIA SCOPE ================= */}
+              {activeContentScope === "MEDIA" && (
+                <>
+                  {/* HERO SECTION */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-clay">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>Hero Header Section (MEDIA)</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Badge (`HERO.badge`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "badge", "Nordic Motion Collective")}
+                          onChange={(e) => handleCopyChange("HERO", "badge", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Title (`HERO.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "title", "Motion, sound, and story in harmonious tension.")}
+                          onChange={(e) => handleCopyChange("HERO", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Description (`HERO.description`)
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={getCopyValue(
+                          "HERO",
+                          "description",
+                          "Graywood Media is a collaborative studio crafting commercial brand films, high-end motion design, and immersive digital artifacts for visionary brands across Northern Europe."
+                        )}
+                        onChange={(e) => handleCopyChange("HERO", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Primary Button (`HERO.ctaPrimary`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "ctaPrimary", "Watch 2026 Reel")}
+                          onChange={(e) => handleCopyChange("HERO", "ctaPrimary", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Secondary Button (`HERO.ctaSecondary`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "ctaSecondary", "Explore Production Services")}
+                          onChange={(e) => handleCopyChange("HERO", "ctaSecondary", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-nordic-subtle mb-1">
-                      Commission Subtitle (`COMMISSION.description`)
-                    </label>
-                    <input
-                      type="text"
-                      value={getCopyValue(
-                        "COMMISSION",
-                        "description",
-                        "Available for editorial campaigns, architectural documentation, and select commercial projects."
-                      )}
-                      onChange={(e) => handleCopyChange("COMMISSION", "description", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
-                    />
+                  {/* SHOWREEL SECTION */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-clay">
+                      <Video className="h-3.5 w-3.5" />
+                      <span>Showreel Feature (`SHOWREEL`)</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Badge (`SHOWREEL.badge`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("SHOWREEL", "badge", "Official Showreel · 2026 Edition")}
+                          onChange={(e) => handleCopyChange("SHOWREEL", "badge", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Title (`SHOWREEL.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("SHOWREEL", "title", "Visual Cadence 2026")}
+                          onChange={(e) => handleCopyChange("SHOWREEL", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Description (`SHOWREEL.description`)
+                      </label>
+                      <input
+                        type="text"
+                        value={getCopyValue("SHOWREEL", "description", "Click to launch high-fidelity 4K stream with directional sound design and original score.")}
+                        onChange={(e) => handleCopyChange("SHOWREEL", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
                   </div>
-                </div>
-              </div>
+
+                  {/* SERVICES SECTION */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-clay">
+                      <Layers className="h-3.5 w-3.5" />
+                      <span>Production Services Header (`SERVICES`)</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Badge (`SERVICES.badge`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("SERVICES", "badge", "Full-Spectrum Production")}
+                          onChange={(e) => handleCopyChange("SERVICES", "badge", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Title (`SERVICES.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("SERVICES", "title", "End-to-End Craft")}
+                          onChange={(e) => handleCopyChange("SERVICES", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Description (`SERVICES.description`)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={getCopyValue("SERVICES", "description", "From concept development and treatment pitch decks through extreme on-location principal photography to master finishing and digital distribution.")}
+                        onChange={(e) => handleCopyChange("SERVICES", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* COMMISSION SECTION (MEDIA) */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-clay">
+                      <Film className="h-3.5 w-3.5" />
+                      <span>Commission / Inquiries (`COMMISSION`)</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Commission Title (`COMMISSION.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("COMMISSION", "title", "Initiate a Motion Commission")}
+                          onChange={(e) => handleCopyChange("COMMISSION", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Contact Email (`COMMISSION.email`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("COMMISSION", "email", "productions@graywood.no")}
+                          onChange={(e) => handleCopyChange("COMMISSION", "email", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Commission Description (`COMMISSION.description`)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={getCopyValue(
+                          "COMMISSION",
+                          "description",
+                          "Accepting commercial campaigns, documentary productions, and interactive installations for the 2026/2027 seasons across Scandinavia and Europe."
+                        )}
+                        onChange={(e) => handleCopyChange("COMMISSION", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* ================= GLOBAL SCOPE ================= */}
+              {activeContentScope === "GLOBAL" && (
+                <>
+                  {/* APEX HERO */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>Apex Gateway Hero (GLOBAL)</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Badge (`HERO.badge`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "badge", "Graywood Unified Visual Platform")}
+                          onChange={(e) => handleCopyChange("HERO", "badge", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Title (`HERO.title`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("HERO", "title", "Two specialized studios. One coherent standard.")}
+                          onChange={(e) => handleCopyChange("HERO", "title", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Description (`HERO.description`)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={getCopyValue("HERO", "description", "Select an entity to explore our medium-format still archives, cinematic motion productions, or private client proofing vaults.")}
+                        onChange={(e) => handleCopyChange("HERO", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* PILLARS COPY */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
+                      <Layers className="h-3.5 w-3.5" />
+                      <span>Entity Pillar Descriptions (`PILLARS`)</span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Photography Pillar (`PILLAR_PHOTO.description`)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={getCopyValue("PILLAR_PHOTO", "description", "Nordic editorial commissions, architectural documentation, and commercial still photography. Engineered around Hasselblad medium-format precision and authentic atmospheric light.")}
+                        onChange={(e) => handleCopyChange("PILLAR_PHOTO", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Media Pillar (`PILLAR_MEDIA.description`)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={getCopyValue("PILLAR_MEDIA", "description", "Creative motion collective specializing in high-impact brand films, 3D motion design, and spatial soundscapes. Built on ARRI cinema workflows, Unreal Engine 5.4, and DaVinci color mastering.")}
+                        onChange={(e) => handleCopyChange("PILLAR_MEDIA", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* TELEMETRY & FOOTER */}
+                  <div className="p-5 rounded-2xl border border-nordic-border bg-nordic-canvas/50 space-y-4">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-nordic-pine">
+                      <FileText className="h-3.5 w-3.5" />
+                      <span>Telemetry & Footer Information (`GLOBAL`)</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Telemetry Status (`TELEMETRY.status`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("TELEMETRY", "status", "All Ecosystem Nodes Operational")}
+                          onChange={(e) => handleCopyChange("TELEMETRY", "status", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Studio Coordinates (`TELEMETRY.location`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("TELEMETRY", "location", "59.9139° N, 10.7522° E")}
+                          onChange={(e) => handleCopyChange("TELEMETRY", "location", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                        Footer Description (`FOOTER.description`)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={getCopyValue("FOOTER", "description", "Unified Norwegian visual production monolith serving high-end still photography, cinematic motion, and client galleries.")}
+                        onChange={(e) => handleCopyChange("FOOTER", "description", e.target.value)}
+                        className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Presence Address (`FOOTER.address`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("FOOTER", "address", "Dronning Eufemias gate 16, 0191 Oslo, Norway")}
+                          onChange={(e) => handleCopyChange("FOOTER", "address", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-nordic-subtle mb-1">
+                          Inquiries (`FOOTER.inquiries`)
+                        </label>
+                        <input
+                          type="text"
+                          value={getCopyValue("FOOTER", "inquiries", "Inquiries: contact@graywood.no")}
+                          onChange={(e) => handleCopyChange("FOOTER", "inquiries", e.target.value)}
+                          className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
 
               <div className="flex items-center justify-end pt-2">
                 <button
