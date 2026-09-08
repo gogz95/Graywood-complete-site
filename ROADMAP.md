@@ -85,27 +85,18 @@
 ### 3.1 Production Network Storage Connection
 - [x] **Read-Only Ingestion Security**: `lib/storage.ts` strictly enforces directory jail and traversal (`..`) blocks.
 - [x] **Path Config via Environment**: `NAS_STORAGE_PATH` and `LOCAL_CACHE_PATH` configured in `.env`.
-- [ ] **Production Mount Procedures**:
-  - **Windows**: Map network drive (`Z:\media`) or direct UNC path (`//192.168.1.50/media`).
-  - **Linux / Production Host**: CIFS/NFS read-only mount point at `/mnt/nas/graywood`:
-    ```bash
-    sudo mount -t cifs //192.168.1.50/media /mnt/nas/graywood -o username=studio,password=secret,ro
-    ```
-  - **Docker Deployment**: Pass read-only volume `-v /mnt/nas/graywood:/storage/nas:ro`.
+- [x] **Production Mount Procedures**: Full runbook in [`docs/NAS_SETUP.md`](./docs/NAS_SETUP.md) covering Windows UNC/drive-letter, Linux CIFS/NFS with `/etc/fstab` persistence, and Docker read-only volume bind-mounts.
 
 ### 3.2 High-Speed NVMe/SSD Preview Cache & Transcoder
 - [x] **On-Demand WebP Transcoder (`/api/media/[assetId]`)**:
   - Sharp streams master file from NAS on first access, writes optimized WebP to `cache/previews/`, and serves it.
   - Subsequent hits serve from SSD cache with `X-Cache-Status: HIT` and immutable caching headers.
-- [ ] **Cache Maintenance CLI**: Utility script to flush or warm up thumbnail caches for newly indexed folders.
+- [x] **Cache Maintenance CLI** (`scripts/cache-maintenance.ts`): `npm run cache:stats`, `npm run cache:flush [--dry-run]`, `npm run cache:warm`.
 
 ### 3.3 Automated Ingestion Sync
 - [x] **Incremental SHA-256 Scanner**: `lib/indexer.ts` skips unchanged files and indexes new additions with EXIF parsing.
 - [x] **Admin Trigger**: *"Sync Storage"* button in Admin Library triggers `POST /api/nas/scan`.
-- [ ] **Scheduled Cron Job**: Automatic recurring background scan (e.g., every 30 minutes) via system cron or Docker sidecar:
-  ```bash
-  npm run nas:index
-  ```
+- [x] **Scheduled Cron Job** (`scripts/cron-nas-index.ts`): Lock-file-protected daemon with structured JSON logging. `npm run nas:index:cron` (one-shot for system cron) or `npm run nas:cron:daemon` (loop). Docker sidecar service `graywood-cron` in `docker-compose.yml`.
 
 ---
 
@@ -120,7 +111,7 @@
 ### 4.2 Client Commission & Booking Ledger
 - [x] **Public Inquiries Form**: Zod-validated commission request form with project type and budget selection.
 - [x] **Database Ledger**: Inquiries captured in SQLite `ContactInquiry` table.
-- [ ] **Admin Inquiries Inbox**: Review, archive, or reply to incoming client requests inside `app/admin/dashboard`.
+- [x] **Admin Inquiries Inbox**: Review, archive, or reply to incoming client requests inside `app/admin/inquiries`.
 
 ---
 

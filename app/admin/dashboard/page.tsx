@@ -202,8 +202,14 @@ export default async function AdminDashboardPage() {
               New client submissions awaiting response
             </p>
           </div>
-          <div className="mt-4 pt-4 border-t border-nordic-border text-xs font-mono text-nordic-faint">
-            Indexed Total: {totalAssets} Assets
+          <div className="mt-4 pt-4 border-t border-nordic-border">
+            <Link
+              href="/admin/inquiries"
+              className="text-xs font-medium text-nordic-pine hover:underline flex items-center gap-1"
+            >
+              <span>Open Inquiries Inbox</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </div>

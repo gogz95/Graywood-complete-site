@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getAdminSession } from "@/lib/admin-session";
+import { prisma } from "@/lib/prisma";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 export const dynamic = "force-dynamic";
@@ -41,9 +42,15 @@ export default async function AdminLayout({
     }
   }
 
+  // Fetch unread inquiry count for sidebar badge (admin only)
+  const newInquiriesCount =
+    session.user?.role === "ADMIN"
+      ? await prisma.contactInquiry.count({ where: { status: "NEW" } })
+      : 0;
+
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-nordic-canvas text-nordic-ink">
-      <AdminSidebar user={session.user} />
+      <AdminSidebar user={session.user} newInquiriesCount={newInquiriesCount} />
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
         <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
           {children}

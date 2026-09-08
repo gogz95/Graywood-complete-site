@@ -15,13 +15,15 @@ import {
   Shield,
   ExternalLink,
   ChevronRight,
+  Inbox,
 } from "lucide-react";
 
 interface AdminSidebarProps {
   user: AdminUserSession;
+  newInquiriesCount?: number;
 }
 
-export function AdminSidebar({ user }: AdminSidebarProps) {
+export function AdminSidebar({ user, newInquiriesCount = 0 }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -33,7 +35,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
 
   const isAdmin = user.role === "ADMIN";
 
-  const navItems = [
+  const navItems: { label: string; href: string; icon: React.ElementType; adminOnly: boolean; badge?: number }[] = [
     {
       label: "Operations Dashboard",
       href: "/admin/dashboard",
@@ -51,6 +53,13 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       href: "/admin/library",
       icon: Images,
       adminOnly: true,
+    },
+    {
+      label: "Client Inquiries",
+      href: "/admin/inquiries",
+      icon: Inbox,
+      adminOnly: true,
+      badge: newInquiriesCount > 0 ? newInquiriesCount : undefined,
     },
     {
       label: "Manga Suite",
@@ -132,7 +141,18 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                   <Icon className="h-4 w-4 shrink-0" />
                   <span>{item.label}</span>
                 </div>
-                {isActive && <ChevronRight className="h-3.5 w-3.5" />}
+                <div className="flex items-center gap-1.5">
+                  {item.badge !== undefined && (
+                    <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold font-mono leading-none ${
+                      isActive
+                        ? "bg-white/20 text-white"
+                        : "bg-[#EAF3EE] text-[#2D5A3D] border border-[#C5DFD0]"
+                    }`}>
+                      {item.badge}
+                    </span>
+                  )}
+                  {isActive && <ChevronRight className="h-3.5 w-3.5" />}
+                </div>
               </Link>
             );
           })}

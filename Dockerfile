@@ -50,6 +50,12 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 RUN mkdir -p /app/data /app/cache/previews /app/storage/nas && \
     chown -R nextjs:nodejs /app/data /app/cache /app/storage/nas
 
+# Copy source files needed by the cron sidecar (scripts + lib + config)
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
+COPY --from=builder --chown=nextjs:nodejs /app/lib ./lib
+COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+
 USER nextjs
 
 EXPOSE 3000

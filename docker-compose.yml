@@ -14,4 +14,29 @@ services:
     volumes:
       - ./data:/app/data:rw
       - ./cache:/app/cache:rw
-      - /mnt/nas/photography:/mnt/storage:rw
+      - /mnt/nas/photography:/mnt/storage:ro   # Host NAS mount — read-only in container
+
+  # ---------------------------------------------------------------------------
+  # NAS Indexer Cron Sidecar
+  # Runs the incremental SHA-256 scanner on a configurable schedule.
+  # Shares data + NAS volumes with the main app, writes only to SQLite.
+  # Set SCAN_INTERVAL_MINUTES to control how often it polls (default: 30).
+  # ---------------------------------------------------------------------------
+  graywood-cron:
+    build: .
+    container_name: graywood-nas-cron
+    restart: unless-stopped
+    # Override the CMD to run the indexer daemon instead of the web server
+    entrypoint: ["node", "--import", "tsx/esm", "scripts/cron-nas-index.ts"]
+    depends_on:
+      - graywood-platform
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/prod.db
+      - NAS_STORAGE_PATH=/mnt/storage
+      - LOCAL_CACHE_PATH=/app/cache/previews
+      - SCAN_INTERVAL_MINUTES=30
+    volumes:
+      - ./data:/app/data:rw             # Shared SQLite database
+      - ./cache:/app/cache:rw           # Shared WebP preview cache
+      - /mnt/nas/photography:/mnt/storage:ro  # Same NAS mount, read-only
