@@ -23,18 +23,35 @@ async function runSetupWizardTests() {
   // 1. Setup Status Detection
   // -------------------------------------------------------------------------
   console.log("1. Testing Setup Status Detection...");
-  const isComplete = await checkSetupStatus();
+  let isComplete = await checkSetupStatus();
   assert.strictEqual(
     typeof isComplete,
     "boolean",
     "checkSetupStatus must return a boolean"
   );
+  if (!isComplete) {
+    console.log("   Database is currently uninitialized. Bootstrapping test admin...");
+    const initRes = await bootstrapSystem({
+      name: "Graywood Superadmin",
+      email: "admin@graywood.no",
+      password: "password1234!",
+      siteTitle: "Graywood",
+      backgroundColor: "#F9F8F6",
+      accentColor: "#2D3B36",
+      enableClientPortal: true,
+      enableGearDesk: true,
+      enableMangaReader: true,
+      enableGameServers: true,
+    });
+    assert.strictEqual(initRes.success, true, "Initial bootstrap must succeed");
+    isComplete = await checkSetupStatus();
+  }
   assert.strictEqual(
     isComplete,
     true,
-    "With seeded database, setup must report as complete"
+    "After initialization, setup must report as complete"
   );
-  console.log("   [PASS] checkSetupStatus correctly detected existing setup.");
+  console.log("   [PASS] checkSetupStatus correctly verified system initialization.");
 
   // -------------------------------------------------------------------------
   // 2. Setup Page Lockout Guard

@@ -94,7 +94,7 @@ export function PinEntryForm({ albumSlug, albumTitle }: PinEntryFormProps) {
               Security Access PIN
             </label>
             <div className="relative">
-              <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
+              <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
               <input
                 id="client-pin-input"
                 type="password"

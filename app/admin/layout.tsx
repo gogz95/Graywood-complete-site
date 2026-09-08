@@ -45,7 +45,9 @@ export default async function AdminLayout({
     <div className="min-h-screen flex flex-col lg:flex-row bg-nordic-canvas text-nordic-ink">
       <AdminSidebar user={session.user} />
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
-        {children}
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
+          {children}
+        </div>
       </main>
     </div>
   );

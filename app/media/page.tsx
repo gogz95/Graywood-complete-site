@@ -32,84 +32,84 @@ export default async function MediaPage() {
   ]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Cinematic Hero */}
-      <section className="relative w-full py-28 sm:py-36 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center border-b border-nordic-border overflow-hidden">
-        {/* Subtle warm ambient glow for MEDIA theme */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-nordic-clay/5 blur-[120px] pointer-events-none" />
+    <main className="w-full min-h-screen bg-nordic-canvas text-nordic-ink">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
+        {/* Cinematic Hero */}
+        <section className="relative w-full py-20 px-6 sm:px-10 flex flex-col items-center justify-center text-center rounded-3xl border border-nordic-border bg-nordic-surface/60 overflow-hidden">
+          {/* Subtle warm ambient glow for MEDIA theme */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-nordic-clay/5 blur-[120px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-nordic-border bg-nordic-surface px-4 py-1.5 text-xs text-nordic-clay">
-            <Video className="h-3.5 w-3.5 text-nordic-clay" />
-            <span className="font-mono uppercase tracking-widest text-nordic-clay">
-              Nordic Motion Collective
-            </span>
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl font-serif tracking-tight text-nordic-ink leading-[1.1]">
-            Motion, sound, and story in harmonious tension.
-          </h1>
-
-          <p className="text-base sm:text-lg text-nordic-subtle max-w-2xl mx-auto leading-relaxed">
-            Graywood Media is a collaborative studio crafting commercial brand films, high-end motion design, and immersive digital artifacts for visionary brands across Northern Europe.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-            <a
-              href="#showreel"
-              className="inline-flex items-center gap-2 rounded-xl bg-nordic-clay px-6 py-3.5 text-sm font-medium text-white transition hover:bg-nordic-clay/90 shadow-sm"
-            >
-              <MonitorPlay className="h-4 w-4" />
-              Watch 2026 Showreel
-            </a>
-            <a
-              href="#collective"
-              className="inline-flex items-center gap-2 rounded-xl border border-nordic-border bg-nordic-surface px-6 py-3.5 text-sm font-medium text-nordic-ink transition hover:bg-nordic-muted"
-            >
-              Meet the Collective
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-
-        {/* Feature Highlights Banner */}
-        <div className="relative z-10 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full border-t border-nordic-border pt-8 text-left">
-          <div className="flex items-start gap-3">
-            <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border">
-              <Film className="h-4 w-4 text-nordic-clay" />
+          <div className="relative z-10 max-w-3xl space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-nordic-border bg-nordic-surface px-4 py-1.5 text-xs text-nordic-clay">
+              <Video className="h-3.5 w-3.5 text-nordic-clay" />
+              <span className="font-mono uppercase tracking-widest text-nordic-clay">
+                Nordic Motion Collective
+              </span>
             </div>
-            <div>
-              <p className="text-xs font-semibold text-nordic-ink">ARRI Cinema Pipeline</p>
-              <p className="text-xs text-nordic-subtle">Large format sensors with anamorphic glass and raw ProRes workflows.</p>
+
+            <h1 className="text-4xl sm:text-6xl font-serif tracking-tight text-nordic-ink leading-[1.1]">
+              Motion, sound, and story in harmonious tension.
+            </h1>
+
+            <p className="text-base sm:text-lg text-nordic-subtle max-w-2xl mx-auto leading-relaxed">
+              Graywood Media is a collaborative studio crafting commercial brand films, high-end motion design, and immersive digital artifacts for visionary brands across Northern Europe.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <a
+                href="#showreel"
+                className="inline-flex items-center gap-2 rounded-xl bg-nordic-clay px-6 py-3.5 text-sm font-medium text-white transition hover:bg-nordic-clay/90 shadow-sm cursor-pointer"
+              >
+                <MonitorPlay className="h-4 w-4" />
+                Watch 2026 Showreel
+              </a>
+              <a
+                href="#collective"
+                className="inline-flex items-center gap-2 rounded-xl border border-nordic-border bg-nordic-surface px-6 py-3.5 text-sm font-medium text-nordic-ink transition hover:bg-nordic-muted cursor-pointer"
+              >
+                Meet the Collective
+                <ArrowRight className="h-4 w-4" />
+              </a>
             </div>
           </div>
 
-          <div className="flex items-start gap-3">
-            <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border">
-              <Tv className="h-4 w-4 text-nordic-clay" />
+          {/* Feature Highlights Banner */}
+          <div className="relative z-10 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full border-t border-nordic-border pt-8 text-left">
+            <div className="flex items-start gap-3">
+              <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border">
+                <Film className="h-4 w-4 text-nordic-clay" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-nordic-ink">ARRI Cinema Pipeline</p>
+                <p className="text-xs text-nordic-subtle">Large format sensors with anamorphic glass and raw ProRes workflows.</p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs font-semibold text-nordic-ink">Spatial Audio Mastering</p>
-              <p className="text-xs text-nordic-subtle">Dolby Atmos downmixing and proprietary acoustic field captures.</p>
+
+            <div className="flex items-start gap-3">
+              <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border">
+                <Tv className="h-4 w-4 text-nordic-clay" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-nordic-ink">Spatial Audio Mastering</p>
+                <p className="text-xs text-nordic-subtle">Dolby Atmos downmixing and proprietary acoustic field captures.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border">
+                <Award className="h-4 w-4 text-nordic-clay" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-nordic-ink">International Recognition</p>
+                <p className="text-xs text-nordic-subtle">Selected at Nordic Creative Festivals, Cannes Lions, and EuroDocs.</p>
+              </div>
             </div>
           </div>
+        </section>
 
-          <div className="flex items-start gap-3">
-            <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border">
-              <Award className="h-4 w-4 text-nordic-clay" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-nordic-ink">International Recognition</p>
-              <p className="text-xs text-nordic-subtle">Selected at Nordic Creative Festivals, Cannes Lions, and EuroDocs.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Dynamic Public Portfolio Strip */}
-      {publicAlbums.length > 0 && (
-        <section className="w-full border-b border-nordic-border bg-nordic-surface py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Dynamic Public Portfolio Strip */}
+        {publicAlbums.length > 0 && (
+          <section className="w-full rounded-3xl border border-nordic-border bg-nordic-surface p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <span className="text-xs font-mono uppercase tracking-widest text-nordic-subtle">
                 Active Production Portfolios
@@ -134,12 +134,11 @@ export default async function MediaPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
 
-      {/* Showreel Cinematic Feature Banner with interactive modal */}
-      <ShowreelPlayer />
+        {/* Showreel Cinematic Feature Banner with interactive modal */}
+        <ShowreelPlayer />
 
       {/* Member Spotlights (ArtistProfile Table) */}
       <section id="collective" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-nordic-border">
@@ -331,6 +330,7 @@ export default async function MediaPage() {
           </Link>
         </div>
       </section>
-    </div>
+      </div>
+    </main>
   );
 }

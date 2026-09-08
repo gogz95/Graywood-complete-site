@@ -94,14 +94,18 @@ export default async function ClientProofingPage({ params }: PortalPageProps) {
   }));
 
   return (
-    <ProofingGallery
-      album={{
-        id: album.id,
-        slug: album.slug,
-        title: album.title,
-        allowDownload: album.allowDownload,
-      }}
-      assets={mappedAssets}
-    />
+    <main className="w-full min-h-screen bg-nordic-canvas text-nordic-ink">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
+        <ProofingGallery
+          album={{
+            id: album.id,
+            slug: album.slug,
+            title: album.title,
+            allowDownload: album.allowDownload,
+          }}
+          assets={mappedAssets}
+        />
+      </div>
+    </main>
   );
 }

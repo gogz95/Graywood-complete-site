@@ -239,7 +239,7 @@ export function SetupWizard() {
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
                   <input
                     type="text"
                     required
@@ -247,7 +247,7 @@ export function SetupWizard() {
                     value={formData.name}
                     onChange={(e) => updateField("name", e.target.value)}
                     autoFocus
-                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-11 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint/70 focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                   />
                 </div>
               </div>
@@ -257,14 +257,14 @@ export function SetupWizard() {
                   Admin Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
                   <input
                     type="email"
                     required
                     placeholder="admin@graywood.no"
                     value={formData.email}
                     onChange={(e) => updateField("email", e.target.value)}
-                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-11 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint/70 focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                   />
                 </div>
               </div>
@@ -275,19 +275,19 @@ export function SetupWizard() {
                     Security Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
                     <input
                       type={showPassword ? "text" : "password"}
                       required
                       placeholder="At least 8 characters"
                       value={formData.password}
                       onChange={(e) => updateField("password", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-10 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
+                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-11 pr-10 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint/70 focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-nordic-faint hover:text-nordic-ink"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-nordic-ink/35 hover:text-nordic-ink transition-colors p-1"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -299,14 +299,14 @@ export function SetupWizard() {
                     Confirm Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
                     <input
                       type={showPassword ? "text" : "password"}
                       required
                       placeholder="Repeat password"
                       value={formData.confirmPassword}
                       onChange={(e) => updateField("confirmPassword", e.target.value)}
-                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
+                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-11 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint/70 focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                     />
                   </div>
                 </div>

@@ -25,16 +25,18 @@ export default async function HubPage() {
     process.env.NEXT_PUBLIC_MEDIA_DOMAIN || "graywoodmedia.no";
 
   return (
-    <div className="flex flex-col min-h-screen bg-nordic-canvas text-nordic-ink">
-      <HubPillars
-        photoCount={photoCount}
-        artistCount={artistCount}
-        proofingCount={proofingCount}
-        photoTitle={photoBrand?.siteTitle || "Graywood Photography"}
-        mediaTitle={mediaBrand?.siteTitle || "Graywood Media"}
-        photographyDomain={photographyDomain}
-        mediaDomain={mediaDomain}
-      />
-    </div>
+    <main className="w-full min-h-screen bg-nordic-canvas text-nordic-ink">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
+        <HubPillars
+          photoCount={photoCount}
+          artistCount={artistCount}
+          proofingCount={proofingCount}
+          photoTitle={photoBrand?.siteTitle || "Graywood Photography"}
+          mediaTitle={mediaBrand?.siteTitle || "Graywood Media"}
+          photographyDomain={photographyDomain}
+          mediaDomain={mediaDomain}
+        />
+      </div>
+    </main>
   );
 }

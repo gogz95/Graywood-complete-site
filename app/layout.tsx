@@ -1,8 +1,8 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import "./globals.css";
 
 import { type DomainKey, DOMAIN_HEADER, DOMAIN_META } from "@/lib/domain";
 import { DomainProvider } from "@/components/DomainProvider";
@@ -72,7 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       data-domain={domain}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-dvh flex flex-col bg-nordic-canvas text-nordic-ink font-sans">
+      <body className="bg-[#F9F8F6] text-[#1C1B19] min-h-screen flex flex-col font-sans">
         <ThemeProvider domain={domain} />
         {isSetupRoute ? (
           <main className="flex-1 flex flex-col">{children}</main>

@@ -179,7 +179,7 @@ export function LibraryManager({
   };
 
   return (
-    <div className="p-6 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full space-y-8">
+    <div className="w-full flex flex-col space-y-8">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-nordic-border">
         <div>
@@ -236,7 +236,7 @@ export function LibraryManager({
       {/* Search Bar & Total */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="relative w-full sm:max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-ink/30 pointer-events-none transition-colors" />
           <input
             type="text"
             value={searchQuery}

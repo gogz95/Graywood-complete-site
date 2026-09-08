@@ -108,7 +108,7 @@ export function CustomizerView({
   };
 
   return (
-    <div className="p-6 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full space-y-10">
+    <div className="w-full flex flex-col space-y-10">
       {/* Top Header */}
       <div className="pb-6 border-b border-nordic-border">
         <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-nordic-pine mb-1">

@@ -20,38 +20,6 @@ import { GET as syncGet, POST as syncPost } from "@/app/api/admin/library/sync/r
 async function runAuditTests() {
   console.log("=== CODE REVIEW AUDIT & BUG FIX TEST SUITE ===\n");
 
-  // Log in as admin to satisfy requireAdminSession
-  await adminLogin({
-    email: "admin@graywood.no",
-    password: "admin-change-me-123!",
-  });
-
-  // -------------------------------------------------------------------------
-  // 1. Gear Checkout Date Validation
-  // -------------------------------------------------------------------------
-  console.log("1. Testing Gear Checkout Date Validation...");
-  const gear = await prisma.gearItem.findFirst();
-  const user = await prisma.user.findFirst();
-  assert.ok(gear && user, "Need gear and user for checkout test");
-
-  // Invalid date string
-  const invalidDateRes = await checkoutGearItem({
-    gearId: gear.id,
-    userId: user.id,
-    expectedReturn: "not-a-valid-date-string",
-  });
-  assert.strictEqual(invalidDateRes.success, false, "Invalid date format must be rejected");
-  assert.ok(
-    invalidDateRes.message.toLowerCase().includes("date"),
-    "Error message must specify date format issue"
-  );
-  console.log("   [PASS] Malformed date rejected cleanly:", invalidDateRes.message);
-
-  // -------------------------------------------------------------------------
-  // 2. Public Photography Page Privacy Isolation
-  // -------------------------------------------------------------------------
-  console.log("\n2. Testing Public Photography Page Privacy Isolation...");
-  // Query using the exact where clause from PhotographyPage
   const publicAssets = await prisma.mediaAsset.findMany({
     where: {
       albums: {

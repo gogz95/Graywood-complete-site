@@ -197,10 +197,10 @@ export function ContactForm() {
                     key={type}
                     type="button"
                     onClick={() => setSelectedProjectType(type)}
-                    className={`rounded-xl px-4 py-2 text-xs font-medium transition cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg border text-xs font-mono transition cursor-pointer ${
                       isSelected
-                        ? "bg-nordic-pine text-white shadow-xs border border-nordic-pine"
-                        : "border border-nordic-border bg-nordic-muted/60 text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink"
+                        ? "bg-nordic-pine text-white border-nordic-pine shadow-xs"
+                        : "bg-nordic-surface border-nordic-border text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink"
                     }`}
                   >
                     {type}
@@ -223,10 +223,10 @@ export function ContactForm() {
                     key={range}
                     type="button"
                     onClick={() => setSelectedBudget(range)}
-                    className={`rounded-xl px-4 py-2 text-xs font-mono transition cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg border text-xs font-mono transition cursor-pointer ${
                       isSelected
-                        ? "bg-nordic-pine text-white shadow-xs border border-nordic-pine"
-                        : "border border-nordic-border bg-nordic-muted/60 text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink"
+                        ? "bg-nordic-pine text-white border-nordic-pine shadow-xs"
+                        : "bg-nordic-surface border-nordic-border text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink"
                     }`}
                   >
                     {range}
@@ -253,7 +253,7 @@ export function ContactForm() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Henrik Ibsen"
-                className={`w-full rounded-xl border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition ${
+                className={`w-full px-3.5 py-2.5 rounded-xl bg-nordic-canvas border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition ${
                   fieldErrors.name ? "border-red-500" : "border-nordic-border"
                 }`}
               />
@@ -277,7 +277,7 @@ export function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="director@agency.no"
-                className={`w-full rounded-xl border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition ${
+                className={`w-full px-3.5 py-2.5 rounded-xl bg-nordic-canvas border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition ${
                   fieldErrors.email ? "border-red-500" : "border-nordic-border"
                 }`}
               />
@@ -293,16 +293,16 @@ export function ContactForm() {
               htmlFor="contact-phone"
               className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle mb-2"
             >
-              Phone / Signal <span className="text-nordic-faint lowercase">(optional)</span>
+              Contact Phone (Optional)
             </label>
             <input
               id="contact-phone"
               name="phone"
               type="tel"
-              value={formData.phone || ""}
+              value={formData.phone}
               onChange={handleChange}
               placeholder="+47 982 00 000"
-              className="w-full rounded-xl border border-nordic-border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-nordic-canvas border border-nordic-border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition"
             />
           </div>
 
@@ -313,10 +313,10 @@ export function ContactForm() {
                 htmlFor="contact-message"
                 className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle"
               >
-                Project Details & Timeline <span className="text-nordic-clay">*</span>
+                Project Scope & Deliverables <span className="text-nordic-clay">*</span>
               </label>
-              <span className="text-[11px] font-mono text-nordic-faint">
-                {formData.message.length} chars
+              <span className="text-[10px] font-mono text-nordic-faint">
+                Min. 10 characters
               </span>
             </div>
             <textarea
@@ -327,7 +327,7 @@ export function ContactForm() {
               value={formData.message}
               onChange={handleChange}
               placeholder="Outline project timeline, locations, deliverables, aesthetic vision..."
-              className={`w-full rounded-xl border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition ${
+              className={`w-full px-3.5 py-2.5 rounded-xl bg-nordic-canvas border text-xs text-nordic-ink placeholder-nordic-faint focus:outline-none focus:border-nordic-pine transition ${
                 fieldErrors.message ? "border-red-500" : "border-nordic-border"
               }`}
             />
@@ -346,7 +346,7 @@ export function ContactForm() {
               id="contact-submit-btn"
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-nordic-pine px-8 py-3.5 text-sm font-medium text-white transition hover:bg-nordic-pine/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm cursor-pointer"
+              className="w-full py-3 rounded-xl bg-nordic-pine hover:bg-nordic-ink text-white font-mono text-xs uppercase tracking-wider transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>

@@ -1,12 +1,12 @@
-@import "tailwindcss";
-@config "../tailwind.config.ts";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* ============================================================
    GRAYWOOD — Scandinavian Editorial Design System
    ============================================================ */
 
 :root {
-  /* Nordic Editorial Palette (DESIGN_SYSTEM.txt) */
   --nordic-canvas:   #F9F8F6;
   --nordic-surface:  #FFFFFF;
   --nordic-muted:    #F1EFEA;
@@ -18,214 +18,133 @@
   --nordic-pine:     #2D3B36;
   --nordic-clay:     #C86D51;
 
-  /* Standard Brand Tokens */
   --gw-bg:           var(--nordic-canvas);
   --gw-surface:      var(--nordic-surface);
   --gw-surface-2:    var(--nordic-muted);
   --gw-border:       var(--nordic-border);
   --gw-text:         var(--nordic-ink);
   --gw-text-muted:   var(--nordic-subtle);
-
-  /* Primary Editorial Accent (Nordic Pine) */
   --gw-primary:      var(--nordic-pine);
   --gw-accent:       var(--nordic-pine);
-  --gw-accent-hover: #1e2824;
 
-  /* Typography */
-  --gw-font-serif:   'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
-  --gw-font-sans:    var(--font-geist-sans, 'Inter', system-ui, sans-serif);
-  --gw-font-mono:    var(--font-geist-mono, 'JetBrains Mono', monospace);
-
-  /* Radius scale */
-  --gw-radius-sm:    0.375rem;
-  --gw-radius-md:    0.5rem;
-  --gw-radius-lg:    0.75rem;
-  --gw-radius-xl:    1rem;
-
-  /* Transitions */
-  --gw-transition:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --font-serif:      'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+  --font-sans:       var(--font-geist-sans, 'Inter', system-ui, -apple-system, sans-serif);
+  --font-mono:       var(--font-geist-mono, 'JetBrains Mono', monospace);
 }
 
-/* ============================================================
-   Tailwind v4 — expose CSS vars as theme tokens
-   ============================================================ */
-@theme inline {
-  --color-background:     var(--gw-bg);
-  --color-surface:        var(--gw-surface);
-  --color-surface-2:      var(--gw-surface-2);
-  --color-border:         var(--gw-border);
-  --color-foreground:     var(--gw-text);
-  --color-muted:          var(--gw-text-muted);
-  --color-accent:         var(--gw-accent);
-  --color-accent-hover:   var(--gw-accent-hover);
-
-  /* Direct Nordic Palette Tokens */
-  --color-nordic-canvas:  #F9F8F6;
-  --color-nordic-surface: #FFFFFF;
-  --color-nordic-muted:   #F1EFEA;
-  --color-nordic-border:  #E8E5DF;
-  --color-nordic-divider: #DDD9D0;
-  --color-nordic-ink:     #1C1B19;
-  --color-nordic-subtle:  #68655E;
-  --color-nordic-faint:   #9E9B93;
-  --color-nordic-pine:    #2D3B36;
-  --color-nordic-clay:    #C86D51;
-
-  --font-serif: var(--gw-font-serif);
-  --font-sans:  var(--gw-font-sans);
-  --font-mono:  var(--gw-font-mono);
-
-  --radius-sm:  var(--gw-radius-sm);
-  --radius-md:  var(--gw-radius-md);
-  --radius-lg:  var(--gw-radius-lg);
-  --radius-xl:  var(--gw-radius-xl);
-}
-
-/* ============================================================
-   Base reset & global styles
-   ============================================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
+html, body {
   background-color: #F9F8F6;
   color: #1C1B19;
-  font-family: var(--gw-font-sans);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100dvh;
-  line-height: 1.6;
+  font-family: var(--font-sans);
 }
 
-/* Focus ring — keyboard-accessible, invisible to mouse */
+/* ============================================================
+   Scandinavian Editorial Form Controls & Reset
+   ============================================================ */
+@layer base {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="url"],
+  input[type="date"],
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #1C1B19;
+    background-color: #FFFFFF;
+    border: 1px solid #E8E5DF;
+    border-radius: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    outline: none;
+    transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="search"]:focus,
+  input[type="tel"]:focus,
+  input[type="number"]:focus,
+  input[type="url"]:focus,
+  input[type="date"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #2D3B36;
+    box-shadow: 0 0 0 1px #2D3B36;
+    background-color: #FFFFFF;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #9E9B93;
+    opacity: 0.6;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2368655E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.25rem;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: #2D3B36;
+  }
+
+  button {
+    cursor: pointer;
+    font-family: inherit;
+  }
+}
+
+/* ============================================================
+   Focus rings, selection & scrollbar
+   ============================================================ */
 :focus-visible {
-  outline: 2px solid var(--nordic-pine);
+  outline: 2px solid #2D3B36;
   outline-offset: 2px;
-  border-radius: var(--gw-radius-sm);
+  border-radius: 0.375rem;
 }
 
-/* Selection */
 ::selection {
-  background-color: var(--nordic-pine);
+  background-color: #2D3B36;
   color: #ffffff;
 }
 
-/* Scrollbar (Webkit) */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--nordic-canvas);
+  background: #F9F8F6;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--nordic-border);
+  background: #E8E5DF;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--nordic-subtle);
+  background: #68655E;
 }
 
-/* ============================================================
-   Scandinavian Editorial Form Controls & Inputs
-   ============================================================ */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="search"],
-input[type="tel"],
-input[type="number"],
-input[type="url"],
-input[type="date"],
-textarea,
-select {
-  font-family: inherit;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: var(--nordic-ink);
-  background-color: var(--nordic-surface);
-  border: 1px solid var(--nordic-border);
-  border-radius: 0.75rem;
-  padding: 0.625rem 0.875rem;
-  outline: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="search"]:focus,
-input[type="tel"]:focus,
-input[type="number"]:focus,
-input[type="url"]:focus,
-input[type="date"]:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--nordic-pine);
-  box-shadow: 0 0 0 1px var(--nordic-pine);
-  background-color: var(--nordic-surface);
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--nordic-faint);
-  opacity: 1;
-}
-
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2368655E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 1rem;
-  padding-right: 2.25rem;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  accent-color: var(--nordic-pine);
-}
-
-button {
-  font-family: inherit;
-}
-
-/* ============================================================
-   Utility micro-animations
-   ============================================================ */
+/* Micro-animations */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes shimmer {
-  from { background-position: -200% center; }
-  to   { background-position:  200% center; }
-}
-
 .animate-fade-in {
   animation: fade-in 0.4s ease both;
-}
-
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--nordic-canvas) 25%,
-    var(--nordic-muted) 50%,
-    var(--nordic-canvas) 75%
-  );
-  background-size: 200% auto;
-  animation: shimmer 1.6s linear infinite;
 }
