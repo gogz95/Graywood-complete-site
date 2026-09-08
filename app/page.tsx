@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 import { type DomainKey, DOMAIN_HEADER } from "@/lib/domain";
-import PhotographyPage from "./(photography)/PhotographyPage";
-import MediaPage from "./(media)/MediaPage";
-import MainPage from "./(main)/MainPage";
+import PhotographyPage from "@/app/photography/page";
+import MediaPage from "@/app/media/page";
+import HubPage from "@/app/hub/page";
 
 /**
  * Root page — dispatches to the correct domain landing page.
@@ -16,7 +16,7 @@ export default async function RootPage() {
     case "MEDIA":
       return <MediaPage />;
     case "MAIN":
-      return <MainPage />;
+      return <HubPage />;
     case "PHOTOGRAPHY":
     default:
       return <PhotographyPage />;

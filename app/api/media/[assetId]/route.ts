@@ -112,13 +112,22 @@ export async function GET(
 
     // Atomic write to SSD cache: write to temp file then rename
     try {
-      await fs.promises.writeFile(tempFilePath, webpBuffer);
-      await fs.promises.rename(tempFilePath, cacheFilePath);
+      if (!fs.existsSync(cacheFilePath)) {
+        await fs.promises.writeFile(tempFilePath, webpBuffer);
+        try {
+          await fs.promises.rename(tempFilePath, cacheFilePath);
+        } catch {
+          // If concurrent request already wrote it or Windows locked target, cleanup temp
+          if (fs.existsSync(tempFilePath)) {
+            await fs.promises.unlink(tempFilePath).catch(() => {});
+          }
+        }
+      }
     } catch {
-      // If concurrent request already wrote it or temp cleanup is needed
+      // Non-fatal cache write failure: client still receives generated buffer
       try {
         if (fs.existsSync(tempFilePath)) {
-          await fs.promises.unlink(tempFilePath);
+          await fs.promises.unlink(tempFilePath).catch(() => {});
         }
       } catch {
         // Non-fatal

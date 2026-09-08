@@ -16,11 +16,11 @@ export default async function AdminLayout({
   // Bypass layout guard for the login page
   const session = await getAdminSession();
 
-  // If no user and not on login page, let page/action handle or redirect
-  // Note: in Next.js Server Components, we inspect user session
+  // Enforce layout-level guard for unauthenticated users
   if (!session.user) {
-    // If the child is not login, we must redirect
-    // We can safely allow the login route to render without sidebar
+    if (pathname && !pathname.startsWith("/admin/login")) {
+      redirect("/admin/login");
+    }
     return (
       <div className="min-h-screen bg-[#09090b] text-foreground">
         {children}

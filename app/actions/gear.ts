@@ -120,7 +120,7 @@ export async function checkinGearItem(rawInput: CheckinInput) {
         ? "MAINTENANCE"
         : "AVAILABLE";
 
-    const operations = [
+    const operations: Array<ReturnType<typeof prisma.gearItem.update> | ReturnType<typeof prisma.gearCheckoutLog.update>> = [
       prisma.gearItem.update({
         where: { id: gearId },
         data: {
@@ -138,7 +138,7 @@ export async function checkinGearItem(rawInput: CheckinInput) {
             actualReturn: new Date(),
             returnNotes: returnNotes ?? null,
           },
-        }) as unknown as typeof operations[0]
+        })
       );
     }
 

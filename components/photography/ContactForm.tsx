@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { submitContactInquiry } from "@/app/actions/contact";
 import { ContactInquirySchema, type ContactInquiryInput } from "@/lib/validations";
+import { useDomain } from "@/components/DomainProvider";
 import {
   Send,
   CheckCircle2,
@@ -30,6 +31,7 @@ const BUDGET_RANGES = [
 ];
 
 export function ContactForm() {
+  const domain = useDomain();
   const [selectedProjectType, setSelectedProjectType] = useState<string>("Editorial Campaign");
   const [selectedBudget, setSelectedBudget] = useState<string>("25,000 – 60,000 NOK");
 
@@ -38,7 +40,7 @@ export function ContactForm() {
     email: "",
     phone: "",
     message: "",
-    domainSource: "PHOTOGRAPHY",
+    domainSource: domain,
   });
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
@@ -66,12 +68,23 @@ export function ContactForm() {
     e.preventDefault();
     setStatusMessage(null);
 
-    // Append project type & budget to message payload if not already present
-    const enrichedMessage = `[Scope: ${selectedProjectType} | Budget: ${selectedBudget}]\n\n${formData.message.trim()}`;
+    // Validate raw user message length before prepending scope metadata
+    const rawMessage = formData.message.trim();
+    if (rawMessage.length < 10) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        message: ["Message must be at least 10 characters."],
+      }));
+      return;
+    }
+
+    // Append project type & budget to message payload
+    const enrichedMessage = `[Scope: ${selectedProjectType} | Budget: ${selectedBudget}]\n\n${rawMessage}`;
 
     const payload = {
       ...formData,
       message: enrichedMessage,
+      domainSource: domain,
     };
 
     // Client-side Zod validation
@@ -92,7 +105,7 @@ export function ContactForm() {
           email: "",
           phone: "",
           message: "",
-          domainSource: "PHOTOGRAPHY",
+          domainSource: domain,
         });
         setFieldErrors({});
       } else {

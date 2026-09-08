@@ -58,7 +58,7 @@ async function runE2ETests() {
   const photoRes = await request("/photography");
   console.log("   Status:", photoRes.status);
   const hasGallery = photoRes.data.includes("Visual Archive");
-  const hasForm = photoRes.data.includes("Initiate a Project");
+  const hasForm = photoRes.data.includes("Initiate a Commission");
   console.log("   Contains Visual Archive gallery:", hasGallery);
   console.log("   Contains Contact form:", hasForm);
   if (photoRes.status !== 200 || !hasGallery || !hasForm) {

@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
  */
 export async function POST(request: NextRequest) {
   const session = await getAdminSession(request.cookies);
-  if (process.env.NODE_ENV === "production" && (!session.user || session.user.role !== "ADMIN")) {
+  if (!session.user || session.user.role !== "ADMIN") {
     return new Response("Unauthorized: Admin authentication required.", {
       status: 401,
       headers: { "Content-Type": "text/plain" },

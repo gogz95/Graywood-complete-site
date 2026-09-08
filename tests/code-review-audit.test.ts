@@ -93,28 +93,19 @@ async function runAuditTests() {
   console.log("   [PASS] Proxy successfully processed request with x-pathname header.");
 
   // -------------------------------------------------------------------------
-  // 4. Library Sync Endpoint Security Check
+  // 4. Library Sync Endpoint Security Check (Enforced Unconditionally)
   // -------------------------------------------------------------------------
   console.log("\n4. Testing Library Sync Endpoint Security...");
-  // Simulate production environment
-  const envObj = process.env as Record<string, string | undefined>;
-  const originalEnv = envObj.NODE_ENV;
-  envObj.NODE_ENV = "production";
+  const unauthReq = new NextRequest("http://localhost:3000/api/admin/library/sync", {
+    method: "POST",
+  });
+  const syncRes = await syncPost(unauthReq);
+  assert.strictEqual(syncRes.status, 401, "Unauthenticated sync request must return HTTP 401");
+  console.log("   [PASS] Unauthenticated POST /api/admin/library/sync blocked with HTTP 401.");
 
-  try {
-    const unauthReq = new NextRequest("http://localhost:3000/api/admin/library/sync", {
-      method: "POST",
-    });
-    const syncRes = await syncPost(unauthReq);
-    assert.strictEqual(syncRes.status, 401, "Unauthenticated sync request in production must return HTTP 401");
-    console.log("   [PASS] Unauthenticated POST /api/admin/library/sync blocked with HTTP 401.");
-
-    const unauthGetRes = await syncGet(unauthReq);
-    assert.strictEqual(unauthGetRes.status, 401, "Unauthenticated GET sync request in production must return HTTP 401");
-    console.log("   [PASS] Unauthenticated GET /api/admin/library/sync blocked with HTTP 401.");
-  } finally {
-    envObj.NODE_ENV = originalEnv;
-  }
+  const unauthGetRes = await syncGet(unauthReq);
+  assert.strictEqual(unauthGetRes.status, 401, "Unauthenticated GET sync request must return HTTP 401");
+  console.log("   [PASS] Unauthenticated GET /api/admin/library/sync blocked with HTTP 401.");
 
   console.log("\n🎉 ALL CODE REVIEW AUDIT TESTS PASSED SUCCESSFULLY!");
 }

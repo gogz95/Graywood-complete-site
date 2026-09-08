@@ -30,6 +30,8 @@ export interface CompatibleCookieSource {
   set?: (...args: any[]) => unknown;
 }
 
+const globalProofingMemoryStore = new Map<string, string>();
+
 /**
  * Returns the decrypted iron-session instance.
  * Accepts optional cookie source (e.g. NextRequest.cookies or custom test store).
@@ -56,20 +58,19 @@ export async function getProofingSession(
       cookieStore = nextCookies as unknown as CookieStore;
     } catch {
       // In standalone test environments where RequestAsyncStorage is not mounted
-      const memoryStore = new Map<string, string>();
       cookieStore = {
         get(name: string) {
-          const val = memoryStore.get(name);
+          const val = globalProofingMemoryStore.get(name);
           return val ? { name, value: val } : undefined;
         },
         getAll() {
-          return Array.from(memoryStore.entries()).map(([name, value]) => ({
+          return Array.from(globalProofingMemoryStore.entries()).map(([name, value]) => ({
             name,
             value,
           }));
         },
         set(name: string, value: string) {
-          memoryStore.set(name, value);
+          globalProofingMemoryStore.set(name, value);
         },
       };
     }
