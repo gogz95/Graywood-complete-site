@@ -18,11 +18,11 @@ const BootstrapSchema = z.object({
   backgroundColor: z
     .string()
     .regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid 6-digit hex color (#RRGGBB)")
-    .default("#09090b"),
+    .default("#F9F8F6"),
   accentColor: z
     .string()
     .regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid 6-digit hex color (#RRGGBB)")
-    .default("#3b82f6"),
+    .default("#2D3B36"),
 
   // Module Toggles
   enableClientPortal: z.boolean().default(true),
@@ -141,18 +141,19 @@ export async function bootstrapSystem(
         },
       }),
 
-      // Seed/Upsert Brand Settings
+      // Seed/Upsert Brand Settings with Scandinavian tokens
       prisma.brandSettings.upsert({
         where: { id: "GLOBAL" },
         update: {
           siteTitle,
+          primaryColor: "#1C1B19",
           accentColor,
           backgroundColor,
         },
         create: {
           id: "GLOBAL",
           siteTitle,
-          primaryColor: "#18181b",
+          primaryColor: "#1C1B19",
           accentColor,
           backgroundColor,
         },
@@ -161,13 +162,14 @@ export async function bootstrapSystem(
         where: { id: "PHOTOGRAPHY" },
         update: {
           siteTitle: `${siteTitle} Photography`,
+          primaryColor: "#1C1B19",
           accentColor,
           backgroundColor,
         },
         create: {
           id: "PHOTOGRAPHY",
           siteTitle: `${siteTitle} Photography`,
-          primaryColor: "#18181b",
+          primaryColor: "#1C1B19",
           accentColor,
           backgroundColor,
         },
@@ -176,13 +178,14 @@ export async function bootstrapSystem(
         where: { id: "MEDIA" },
         update: {
           siteTitle: `${siteTitle} Media`,
+          primaryColor: "#1C1B19",
           accentColor,
           backgroundColor,
         },
         create: {
           id: "MEDIA",
           siteTitle: `${siteTitle} Media`,
-          primaryColor: "#18181b",
+          primaryColor: "#1C1B19",
           accentColor,
           backgroundColor,
         },

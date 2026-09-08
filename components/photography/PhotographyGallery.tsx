@@ -92,22 +92,22 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-border">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-nordic-border">
         <div>
-          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-accent mb-2">
+          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-nordic-pine mb-2">
             <Sparkles className="h-3.5 w-3.5" />
             <span>Curated Exhibition</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-nordic-ink">
             Visual Archive
           </h2>
-          <p className="text-sm text-muted mt-1 max-w-xl">
+          <p className="text-sm text-nordic-subtle mt-1 max-w-xl leading-relaxed">
             Selected editorial collections captured across Svalbard, Lofoten, Oslofjord, and bespoke studio environments.
           </p>
         </div>
         <div className="mt-4 md:mt-0 flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1 text-xs font-mono text-zinc-300">
-            <Layers className="h-3.5 w-3.5 text-accent" />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-nordic-border bg-nordic-surface px-3 py-1 text-xs font-mono text-nordic-subtle shadow-xs">
+            <Layers className="h-3.5 w-3.5 text-nordic-pine" />
             {filteredAssets.length} of {assets.length} Indexed Works
           </span>
         </div>
@@ -126,8 +126,8 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
                 onClick={() => setActiveCategory(cat.key)}
                 className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? "bg-accent text-white shadow-lg shadow-accent/25 border border-accent"
-                    : "border border-border/80 bg-surface-2/70 text-zinc-300 hover:border-zinc-500 hover:text-white hover:bg-surface-2"
+                    ? "bg-nordic-pine text-white shadow-xs border border-nordic-pine"
+                    : "border border-nordic-border bg-nordic-surface text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink hover:bg-nordic-muted/60"
                 }`}
               >
                 <span>{cat.label}</span>
@@ -135,7 +135,7 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
                   className={`rounded-full px-1.5 py-0.2 text-[10px] font-mono ${
                     isActive
                       ? "bg-white/20 text-white"
-                      : "bg-zinc-800 text-zinc-400"
+                      : "bg-nordic-muted text-nordic-subtle"
                   }`}
                 >
                   {count}
@@ -147,18 +147,18 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
 
         {/* Search / Filter Input */}
         <div className="relative min-w-[240px] max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-nordic-faint pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search camera, lens, tag..."
-            className="w-full rounded-full border border-border bg-surface-2/90 pl-9 pr-8 py-2 text-xs text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition"
+            className="w-full rounded-full border border-nordic-border bg-nordic-surface pl-9 pr-8 py-2 text-xs text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-nordic-faint hover:text-nordic-ink"
               aria-label="Clear search"
             >
               <X className="h-3 w-3" />
@@ -168,13 +168,23 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
       </div>
 
       {/* Empty State */}
-      {filteredAssets.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border p-16 text-center bg-surface/50">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-2 border border-border mb-4 text-muted">
+      {assets.length === 0 ? (
+        <div className="rounded-3xl border border-dashed border-nordic-border p-16 text-center bg-nordic-surface/60">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-nordic-muted border border-nordic-border mb-4 text-nordic-pine">
             <SlidersHorizontal className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-semibold text-foreground">No matching works discovered</h3>
-          <p className="text-xs text-muted max-w-sm mx-auto mt-1.5 leading-relaxed">
+          <h3 className="text-base font-serif text-nordic-ink">No works in public archive</h3>
+          <p className="text-xs text-nordic-subtle max-w-sm mx-auto mt-1.5 leading-relaxed">
+            No media assets indexed from NAS storage. Trigger indexing from the Virtual Library to display photography portfolio.
+          </p>
+        </div>
+      ) : filteredAssets.length === 0 ? (
+        <div className="rounded-3xl border border-dashed border-nordic-border p-16 text-center bg-nordic-surface/60">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-nordic-muted border border-nordic-border mb-4 text-nordic-pine">
+            <SlidersHorizontal className="h-6 w-6" />
+          </div>
+          <h3 className="text-base font-serif text-nordic-ink">No matching works discovered</h3>
+          <p className="text-xs text-nordic-subtle max-w-sm mx-auto mt-1.5 leading-relaxed">
             No assets in the archive match the active category and filter criteria.
           </p>
           <button
@@ -182,7 +192,7 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
               setActiveCategory("all");
               setSearchQuery("");
             }}
-            className="mt-5 inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2 text-xs font-semibold text-accent hover:bg-surface-2 transition"
+            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-nordic-border bg-nordic-surface px-4 py-2.5 text-xs font-medium text-nordic-ink hover:bg-nordic-muted hover:border-nordic-pine/40 transition cursor-pointer"
           >
             Reset All Filters
           </button>
@@ -203,11 +213,11 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
               <div
                 key={asset.id}
                 onClick={() => setActiveLightboxIndex(asset.originalIndex)}
-                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-surface shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-2xl hover:shadow-accent/10 break-inside-avoid"
+                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-nordic-border bg-nordic-surface shadow-[0_4px_20px_rgba(28,27,25,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-nordic-pine/50 hover:shadow-[0_12px_40px_rgba(28,27,25,0.08)] break-inside-avoid"
               >
                 {/* Image Canvas with Aspect Proportion */}
                 <div
-                  className="relative w-full bg-surface-2 overflow-hidden"
+                  className="relative w-full bg-nordic-muted overflow-hidden"
                   style={{ paddingBottom: `${Math.min(aspect, 133)}%` }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -221,26 +231,28 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
 
                   {/* Top Badges (Category & Aspect) */}
                   <div className="absolute top-3 inset-x-3 flex items-center justify-between pointer-events-none z-10">
-                    <span className="rounded-full bg-black/60 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-mono text-zinc-300 border border-white/10 uppercase">
+                    <span className="rounded-full bg-nordic-ink/70 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-mono text-nordic-canvas border border-white/10 uppercase">
                       {asset.category}
                     </span>
-                    <span className="rounded-md bg-black/50 backdrop-blur-md px-1.5 py-0.5 text-[9px] font-mono text-zinc-400">
+                    <span className="rounded-md bg-nordic-ink/60 backdrop-blur-md px-1.5 py-0.5 text-[9px] font-mono text-nordic-muted">
                       {aspectLabel}
                     </span>
                   </div>
 
                   {/* Gradient Hover Metadata Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-5 text-white">
+                  <div className="absolute inset-0 bg-gradient-to-t from-nordic-ink/90 via-nordic-ink/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-5 text-white">
                     <div className="flex items-end justify-between">
                       <div className="space-y-1 pr-2">
-                        <p className="text-sm font-bold text-zinc-100 line-clamp-1 tracking-tight">
+                        <p className="text-sm font-medium text-white line-clamp-1 tracking-tight">
                           {asset.fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ")}
                         </p>
-                        <p className="text-xs font-mono text-accent">
-                          {asset.cameraModel || "Hasselblad H6D-100c"}
-                        </p>
+                        {asset.cameraModel && (
+                          <p className="text-xs font-mono text-nordic-clay">
+                            {asset.cameraModel}
+                          </p>
+                        )}
                         {/* Camera telemetry chips */}
-                        <div className="flex items-center gap-2 pt-1 text-[10px] font-mono text-zinc-400">
+                        <div className="flex items-center gap-2 pt-1 text-[10px] font-mono text-nordic-muted">
                           {asset.focalLength && <span>{asset.focalLength}</span>}
                           {asset.aperture && <span>· {asset.aperture}</span>}
                           {asset.shutterSpeed && <span>· {asset.shutterSpeed}</span>}
@@ -248,7 +260,7 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
                         </div>
                       </div>
 
-                      <div className="rounded-xl bg-accent/90 p-2.5 text-white shadow-lg backdrop-blur-sm shrink-0 transition-transform group-hover:scale-110">
+                      <div className="rounded-xl bg-nordic-pine/90 p-2.5 text-white shadow-lg backdrop-blur-sm shrink-0 transition-transform group-hover:scale-110">
                         <Maximize2 className="h-4 w-4" />
                       </div>
                     </div>

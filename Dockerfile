@@ -44,8 +44,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Persistent data and cache directories
-RUN mkdir -p /app/data /app/cache/previews /app/mock_storage && \
-    chown -R nextjs:nodejs /app/data /app/cache /app/mock_storage
+RUN mkdir -p /app/data /app/cache/previews /app/storage/nas && \
+    chown -R nextjs:nodejs /app/data /app/cache /app/storage/nas
 
 USER nextjs
 

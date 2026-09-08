@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminSession } from "@/lib/admin-session";
 
@@ -34,6 +35,12 @@ export async function toggleSystemModule(rawInput: {
       where: { id },
       data: { enabled },
     });
+
+    try {
+      revalidatePath("/", "layout");
+    } catch {
+      // Safe fallback when executed outside Next.js request context (e.g. CLI/tests)
+    }
 
     return {
       success: true,
@@ -73,6 +80,12 @@ export async function updateBrandSettings(rawInput: {
         backgroundColor,
       },
     });
+
+    try {
+      revalidatePath("/", "layout");
+    } catch {
+      // Safe fallback when executed outside Next.js request context (e.g. CLI/tests)
+    }
 
     return {
       success: true,

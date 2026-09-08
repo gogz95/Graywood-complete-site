@@ -3,10 +3,10 @@ import fs from "fs";
 
 /**
  * Returns the absolute base path for NAS storage.
- * Defaults to ./mock_storage in the project root.
+ * Defaults to ./storage/nas in the project root.
  */
 export function getNasBasePath(): string {
-  const envPath = process.env.NAS_STORAGE_PATH || "./mock_storage";
+  const envPath = process.env.NAS_STORAGE_PATH || "./storage/nas";
   return path.resolve(/*turbopackIgnore: true*/ process.cwd(), envPath);
 }
 

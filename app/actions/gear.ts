@@ -153,3 +153,64 @@ export async function checkinGearItem(rawInput: CheckinInput) {
     return { success: false, message: "Failed to process check-in transaction." };
   }
 }
+
+const CreateGearSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  category: z.string().min(1, "Category is required"),
+  serialNumber: z.string().min(1, "Serial number is required"),
+  storageLocation: z.string().default("Studio Locker"),
+  condition: z.string().default("Good"),
+  notes: z.string().optional(),
+});
+
+export type CreateGearInput = z.infer<typeof CreateGearSchema>;
+
+export async function createGearItem(rawInput: CreateGearInput) {
+  await requireAdminSession(["ADMIN", "CO_OWNER"]);
+
+  const parsed = CreateGearSchema.safeParse(rawInput);
+  if (!parsed.success) {
+    return {
+      success: false,
+      message: parsed.error.issues[0]?.message ?? "Invalid equipment parameters.",
+    };
+  }
+
+  const { name, category, serialNumber, storageLocation, condition, notes } =
+    parsed.data;
+
+  try {
+    const existing = await prisma.gearItem.findUnique({
+      where: { serialNumber: serialNumber.trim() },
+    });
+
+    if (existing) {
+      return {
+        success: false,
+        message: `An item with serial number "${serialNumber}" already exists.`,
+      };
+    }
+
+    const item = await prisma.gearItem.create({
+      data: {
+        name: name.trim(),
+        category,
+        serialNumber: serialNumber.trim(),
+        storageLocation: storageLocation.trim() || "Studio Locker",
+        condition,
+        notes: notes?.trim() || null,
+        status: "AVAILABLE",
+      },
+    });
+
+    return {
+      success: true,
+      message: `Successfully cataloged "${item.name}" into inventory.`,
+      item,
+    };
+  } catch (error: unknown) {
+    console.error("createGearItem error:", error);
+    return { success: false, message: "Failed to create equipment item." };
+  }
+}
+

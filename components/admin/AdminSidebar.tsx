@@ -69,42 +69,42 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
   const visibleItems = navItems.filter((item) => isAdmin || !item.adminOnly);
 
   return (
-    <aside className="w-full lg:w-72 bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-800/80 flex flex-col justify-between shrink-0 p-6">
+    <aside className="w-full lg:w-72 bg-nordic-surface border-b lg:border-b-0 lg:border-r border-nordic-border flex flex-col justify-between shrink-0 p-6">
       <div>
         {/* Brand Header */}
-        <div className="flex items-center gap-3 pb-6 border-b border-zinc-800/80 mb-6">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600/10 border border-blue-500/30 text-blue-400">
+        <div className="flex items-center gap-3 pb-6 border-b border-nordic-border mb-6">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-nordic-muted border border-nordic-border text-nordic-pine">
             <Shield className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-white tracking-tight">
+            <span className="font-serif text-base font-medium text-nordic-ink tracking-tight">
               Graywood Operations
             </span>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-nordic-faint">
               Command Suite
             </span>
           </div>
         </div>
 
         {/* User Card */}
-        <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/60 p-4 mb-6">
+        <div className="rounded-2xl border border-nordic-border bg-nordic-muted/60 p-4 mb-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-white">{user.name}</span>
+            <span className="text-xs font-semibold text-nordic-ink">{user.name}</span>
             <span
               className={`rounded-full px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider ${
                 isAdmin
-                  ? "bg-blue-500/20 text-blue-400 border border-blue-500/40"
-                  : "bg-amber-500/20 text-amber-400 border border-amber-500/40"
+                  ? "bg-nordic-surface text-nordic-pine border border-nordic-border"
+                  : "bg-nordic-surface text-nordic-clay border border-nordic-border"
               }`}
             >
               {user.role}
             </span>
           </div>
-          <p className="text-[11px] font-mono text-zinc-400 truncate">
+          <p className="text-[11px] font-mono text-nordic-subtle truncate">
             {user.email}
           </p>
           {!isAdmin && (
-            <p className="text-[10px] text-amber-400/80 mt-2 font-mono">
+            <p className="text-[10px] text-nordic-clay mt-2 font-mono">
               Restricted clearance: Gear Desk access only
             </p>
           )}
@@ -112,7 +112,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
 
         {/* Navigation Links */}
         <nav className="space-y-1.5">
-          <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 px-3 py-1">
+          <div className="text-[10px] font-mono uppercase tracking-wider text-nordic-faint px-3 py-1">
             Modules
           </div>
           {visibleItems.map((item) => {
@@ -124,8 +124,8 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                 href={item.href}
                 className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-medium transition ${
                   isActive
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25 font-semibold"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-900/80"
+                    ? "bg-nordic-pine text-white shadow-xs font-medium"
+                    : "text-nordic-subtle hover:text-nordic-ink hover:bg-nordic-muted"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -140,21 +140,21 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       </div>
 
       {/* Footer / Logout */}
-      <div className="pt-6 border-t border-zinc-800/80 mt-6 space-y-3">
+      <div className="pt-6 border-t border-nordic-border mt-6 space-y-3">
         <Link
           href="/"
           target="_blank"
-          className="flex items-center justify-between rounded-xl px-3 py-2 text-xs text-zinc-400 hover:text-white hover:bg-zinc-900/80 transition"
+          className="flex items-center justify-between rounded-xl px-3 py-2 text-xs text-nordic-subtle hover:text-nordic-ink hover:bg-nordic-muted transition"
         >
           <span className="flex items-center gap-2">
             <span>View Public Platform</span>
           </span>
-          <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
+          <ExternalLink className="h-3.5 w-3.5 text-nordic-faint" />
         </Link>
 
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 rounded-xl border border-red-900/40 bg-red-950/20 px-4 py-2.5 text-xs font-semibold text-red-400 hover:bg-red-950/40 hover:border-red-800/60 transition cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 rounded-xl border border-nordic-border bg-nordic-muted/40 px-4 py-2.5 text-xs font-medium text-nordic-subtle hover:text-nordic-clay hover:border-nordic-clay/30 hover:bg-[#FDF3EE] transition cursor-pointer"
         >
           <LogOut className="h-3.5 w-3.5" />
           <span>Sign Out</span>

@@ -43,9 +43,9 @@ export function Navbar() {
       shortName: "Photography",
       badge: "Still Studio",
       icon: Camera,
-      accentClass: "text-amber-400",
-      accentBg: "bg-amber-500",
-      accentBorder: "border-amber-500/30",
+      accentClass: "text-nordic-pine",
+      accentBg: "bg-nordic-pine",
+      accentBorder: "border-nordic-pine/30",
       links: [
         { label: "Archive", href: "/photography#gallery" },
         { label: "Studio Info", href: "/photography#about" },
@@ -57,31 +57,43 @@ export function Navbar() {
       shortName: "Media",
       badge: "Motion Collective",
       icon: Video,
-      accentClass: "text-violet-400",
-      accentBg: "bg-violet-600",
-      accentBorder: "border-violet-500/30",
+      accentClass: "text-nordic-clay",
+      accentBg: "bg-nordic-clay",
+      accentBorder: "border-nordic-clay/30",
       links: [
         { label: "Showreel", href: "/media#showreel" },
-        { label: "Collective", href: "/media#collective" },
-        { label: "Disciplines", href: "/media#capabilities" },
-        { label: "Start Project", href: "/photography#contact" },
+        { label: "Directors & Artists", href: "/media#artists" },
+        { label: "Production Portfolios", href: "/media#portfolios" },
       ],
     },
     MAIN: {
-      name: "Graywood",
+      name: "Graywood Studio",
       shortName: "Hub",
-      badge: "Creative Ecosystem",
+      badge: "Ecosystem Hub",
       icon: Layers,
-      accentClass: "text-blue-400",
-      accentBg: "bg-blue-600",
-      accentBorder: "border-blue-500/30",
+      accentClass: "text-nordic-pine",
+      accentBg: "bg-nordic-pine",
+      accentBorder: "border-nordic-pine/30",
       links: [
         { label: "Photography Studio", href: "/photography" },
         { label: "Media Collective", href: "/media" },
         { label: "Ecosystem Hub", href: "/hub" },
       ],
     },
-  }[domain];
+  }[domain] || {
+    name: "Graywood Studio",
+    shortName: "Hub",
+    badge: "Ecosystem Hub",
+    icon: Layers,
+    accentClass: "text-nordic-pine",
+    accentBg: "bg-nordic-pine",
+    accentBorder: "border-nordic-pine/30",
+    links: [
+      { label: "Photography Studio", href: "/photography" },
+      { label: "Media Collective", href: "/media" },
+      { label: "Ecosystem Hub", href: "/hub" },
+    ],
+  };
 
   const CurrentIcon = domainConfig.icon;
 
@@ -89,8 +101,8 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-40 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-zinc-950/85 backdrop-blur-xl border-b border-border/80 shadow-2xl py-3.5"
-          : "bg-zinc-950/40 backdrop-blur-md border-b border-border/30 py-5"
+          ? "bg-nordic-surface/90 backdrop-blur-xl border-b border-nordic-border shadow-xs py-3.5"
+          : "bg-nordic-canvas/80 backdrop-blur-md border-b border-nordic-border/60 py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -100,14 +112,14 @@ export function Navbar() {
             href="/"
             className="group flex items-center gap-3 transition focus-visible:outline-none"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-2 border border-border shadow-inner group-hover:border-accent transition-colors">
-              <CurrentIcon className={`h-4.5 w-4.5 ${domainConfig.accentClass}`} />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-nordic-surface border border-nordic-border shadow-xs group-hover:border-nordic-pine transition-colors">
+              <CurrentIcon className="h-4.5 w-4.5 text-nordic-pine" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-sm font-bold tracking-tight text-white group-hover:text-zinc-200">
+              <span className="text-sm font-bold tracking-tight text-nordic-ink group-hover:text-nordic-pine transition-colors">
                 {domainConfig.name}
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-nordic-subtle">
                 {domainConfig.badge}
               </span>
             </div>
@@ -117,37 +129,37 @@ export function Navbar() {
           <div className="relative hidden md:block">
             <button
               onClick={() => setDomainDropdownOpen(!domainDropdownOpen)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-surface-2/60 px-3 py-1 text-xs font-mono text-zinc-300 hover:bg-surface-2 hover:text-white transition"
+              className="inline-flex items-center gap-1.5 rounded-full border border-nordic-border bg-nordic-surface px-3 py-1 text-xs font-mono text-nordic-subtle hover:text-nordic-ink hover:border-nordic-pine/50 transition cursor-pointer"
               aria-expanded={domainDropdownOpen}
             >
               <span>Domain: {domainConfig.shortName}</span>
-              <ChevronDown className="h-3 w-3 text-zinc-400" />
+              <ChevronDown className="h-3 w-3 text-nordic-faint" />
             </button>
 
             {domainDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-56 rounded-xl border border-border/90 bg-zinc-900/95 p-2 shadow-2xl backdrop-blur-xl animate-fade-in z-50">
-                <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500 border-b border-zinc-800">
+              <div className="absolute left-0 mt-2 w-56 rounded-xl border border-nordic-border bg-nordic-surface p-2 shadow-xl backdrop-blur-xl animate-fade-in z-50">
+                <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-nordic-faint border-b border-nordic-border">
                   Switch Portal
                 </div>
                 <Link
                   href="/photography"
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-white transition mt-1"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink transition mt-1"
                 >
-                  <Camera className="h-3.5 w-3.5 text-amber-400" />
+                  <Camera className="h-3.5 w-3.5 text-nordic-pine" />
                   <span>Graywood Photography</span>
                 </Link>
                 <Link
                   href="/media"
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-white transition"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink transition"
                 >
-                  <Video className="h-3.5 w-3.5 text-violet-400" />
+                  <Video className="h-3.5 w-3.5 text-nordic-clay" />
                   <span>Graywood Media</span>
                 </Link>
                 <Link
                   href="/hub"
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-white transition"
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-nordic-subtle hover:bg-nordic-muted hover:text-nordic-ink transition"
                 >
-                  <Layers className="h-3.5 w-3.5 text-blue-400" />
+                  <Layers className="h-3.5 w-3.5 text-nordic-pine" />
                   <span>Graywood Hub</span>
                 </Link>
               </div>
@@ -156,12 +168,12 @@ export function Navbar() {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-zinc-300">
+        <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-nordic-subtle">
           {domainConfig.links.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="hover:text-white transition-colors duration-200"
+              className="hover:text-nordic-ink transition-colors duration-200"
             >
               {link.label}
             </Link>
@@ -169,7 +181,7 @@ export function Navbar() {
 
           <Link
             href="/photography#contact"
-            className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold text-white transition shadow-sm ${domainConfig.accentBg} hover:opacity-90`}
+            className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium text-white transition shadow-xs bg-nordic-pine hover:bg-nordic-pine/90"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>Inquire</span>
@@ -180,7 +192,7 @@ export function Navbar() {
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="rounded-lg border border-border bg-surface-2 p-2 text-zinc-300 hover:text-white"
+            className="rounded-lg border border-nordic-border bg-nordic-surface p-2 text-nordic-subtle hover:text-nordic-ink transition cursor-pointer"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -190,54 +202,54 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-border bg-zinc-950/98 backdrop-blur-2xl px-6 py-6 animate-fade-in">
+        <div className="md:hidden border-b border-nordic-border bg-nordic-surface/98 backdrop-blur-2xl px-6 py-6 animate-fade-in">
           <div className="space-y-4">
-            <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+            <div className="text-[10px] font-mono uppercase tracking-widest text-nordic-faint">
               Navigation
             </div>
             {domainConfig.links.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="block text-sm font-medium text-zinc-200 hover:text-white"
+                className="block text-sm font-medium text-nordic-subtle hover:text-nordic-ink"
               >
                 {link.label}
               </Link>
             ))}
 
-            <div className="pt-4 border-t border-zinc-800 space-y-2">
-              <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+            <div className="pt-4 border-t border-nordic-border space-y-2">
+              <div className="text-[10px] font-mono uppercase tracking-widest text-nordic-faint">
                 Switch Studio Domain
               </div>
               <Link
                 href="/photography"
-                className="flex items-center justify-between text-xs py-1.5 text-zinc-300"
+                className="flex items-center justify-between text-xs py-1.5 text-nordic-subtle hover:text-nordic-ink"
               >
                 <span className="flex items-center gap-2">
-                  <Camera className="h-3.5 w-3.5 text-amber-400" />
+                  <Camera className="h-3.5 w-3.5 text-nordic-pine" />
                   Graywood Photography
                 </span>
-                <ExternalLink className="h-3 w-3 text-zinc-500" />
+                <ExternalLink className="h-3 w-3 text-nordic-faint" />
               </Link>
               <Link
                 href="/media"
-                className="flex items-center justify-between text-xs py-1.5 text-zinc-300"
+                className="flex items-center justify-between text-xs py-1.5 text-nordic-subtle hover:text-nordic-ink"
               >
                 <span className="flex items-center gap-2">
-                  <Video className="h-3.5 w-3.5 text-violet-400" />
+                  <Video className="h-3.5 w-3.5 text-nordic-clay" />
                   Graywood Media
                 </span>
-                <ExternalLink className="h-3 w-3 text-zinc-500" />
+                <ExternalLink className="h-3 w-3 text-nordic-faint" />
               </Link>
               <Link
                 href="/hub"
-                className="flex items-center justify-between text-xs py-1.5 text-zinc-300"
+                className="flex items-center justify-between text-xs py-1.5 text-nordic-subtle hover:text-nordic-ink"
               >
                 <span className="flex items-center gap-2">
-                  <Layers className="h-3.5 w-3.5 text-blue-400" />
+                  <Layers className="h-3.5 w-3.5 text-nordic-pine" />
                   Graywood Hub
                 </span>
-                <ExternalLink className="h-3 w-3 text-zinc-500" />
+                <ExternalLink className="h-3 w-3 text-nordic-faint" />
               </Link>
             </div>
           </div>

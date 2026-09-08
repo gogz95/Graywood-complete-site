@@ -125,34 +125,34 @@ export function ContactForm() {
   };
 
   return (
-    <section id="contact" className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-24">
-      <div className="rounded-3xl border border-border bg-surface p-8 sm:p-14 shadow-2xl relative overflow-hidden">
-        {/* Glow ambient background effect */}
-        <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-accent/10 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-amber-500/5 blur-3xl pointer-events-none" />
+    <section id="contact" className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="rounded-3xl border border-nordic-border bg-nordic-surface p-8 sm:p-12 shadow-[0_16px_50px_rgba(28,27,25,0.06)] relative overflow-hidden">
+        {/* Subtle warm ambient background tone */}
+        <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-nordic-pine/5 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-nordic-clay/5 blur-3xl pointer-events-none" />
 
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10 pb-8 border-b border-border/80">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10 pb-8 border-b border-nordic-border">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-accent mb-2">
+            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-nordic-pine mb-2">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Commission Inquiries</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-nordic-ink">
               Initiate a Commission
             </h2>
-            <p className="text-sm text-muted mt-2 max-w-xl leading-relaxed">
+            <p className="text-sm text-nordic-subtle mt-2 max-w-xl leading-relaxed">
               Available for editorial campaigns, architectural documentation, and select commercial projects throughout the Nordic region and internationally.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
-            <div className="flex items-center gap-2 rounded-xl bg-surface-2 border border-border px-3.5 py-2 text-xs text-zinc-300">
-              <Clock className="h-3.5 w-3.5 text-accent" />
+            <div className="flex items-center gap-2 rounded-xl bg-nordic-muted border border-nordic-border px-3.5 py-2 text-xs text-nordic-subtle">
+              <Clock className="h-3.5 w-3.5 text-nordic-pine" />
               <span>Response time: &lt; 4 hours</span>
             </div>
-            <div className="flex items-center gap-2 rounded-xl bg-surface-2 border border-border px-3.5 py-2 text-xs text-zinc-300">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+            <div className="flex items-center gap-2 rounded-xl bg-nordic-muted border border-nordic-border px-3.5 py-2 text-xs text-nordic-subtle">
+              <ShieldCheck className="h-3.5 w-3.5 text-nordic-pine" />
               <span>Direct Studio Contact</span>
             </div>
           </div>
@@ -161,19 +161,19 @@ export function ContactForm() {
         {statusMessage && (
           <div
             role="alert"
-            className={`mb-8 flex items-start gap-3 rounded-2xl p-5 text-sm border shadow-lg ${
+            className={`mb-8 flex items-start gap-3 rounded-2xl p-5 text-sm border shadow-xs ${
               statusMessage.type === "success"
-                ? "bg-emerald-950/50 text-emerald-200 border-emerald-800/80"
-                : "bg-red-950/50 text-red-200 border-red-800/80"
+                ? "bg-[#EAF3EE] text-[#2D5A3D] border-[#C5DFD0]"
+                : "bg-[#FDF3EE] text-[#9C4B33] border-[#F4D7C8]"
             }`}
           >
             {statusMessage.type === "success" ? (
-              <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-400 mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-[#2D5A3D] mt-0.5" />
             ) : (
-              <AlertCircle className="h-5 w-5 shrink-0 text-red-400 mt-0.5" />
+              <AlertCircle className="h-5 w-5 shrink-0 text-[#9C4B33] mt-0.5" />
             )}
             <div className="space-y-1">
-              <p className="font-semibold">
+              <p className="font-medium">
                 {statusMessage.type === "success"
                   ? "Inquiry Dispatched"
                   : "Submission Notice"}
@@ -186,7 +186,7 @@ export function ContactForm() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Project Type Selection Chips */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-3">
+            <label className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle mb-3">
               1. Project Discipline / Scope
             </label>
             <div className="flex flex-wrap gap-2.5">
@@ -199,8 +199,8 @@ export function ContactForm() {
                     onClick={() => setSelectedProjectType(type)}
                     className={`rounded-xl px-4 py-2 text-xs font-medium transition cursor-pointer ${
                       isSelected
-                        ? "bg-accent text-white shadow-md shadow-accent/20 border border-accent"
-                        : "border border-border bg-surface-2 text-zinc-300 hover:border-zinc-500 hover:text-white"
+                        ? "bg-nordic-pine text-white shadow-xs border border-nordic-pine"
+                        : "border border-nordic-border bg-nordic-muted/60 text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink"
                     }`}
                   >
                     {type}
@@ -212,7 +212,7 @@ export function ContactForm() {
 
           {/* Budget Range Selection Chips */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-muted mb-3">
+            <label className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle mb-3">
               2. Anticipated Production Budget (NOK)
             </label>
             <div className="flex flex-wrap gap-2.5">
@@ -225,8 +225,8 @@ export function ContactForm() {
                     onClick={() => setSelectedBudget(range)}
                     className={`rounded-xl px-4 py-2 text-xs font-mono transition cursor-pointer ${
                       isSelected
-                        ? "bg-accent text-white shadow-md shadow-accent/20 border border-accent"
-                        : "border border-border bg-surface-2 text-zinc-300 hover:border-zinc-500 hover:text-white"
+                        ? "bg-nordic-pine text-white shadow-xs border border-nordic-pine"
+                        : "border border-nordic-border bg-nordic-muted/60 text-nordic-subtle hover:border-nordic-pine/50 hover:text-nordic-ink"
                     }`}
                   >
                     {range}
@@ -241,9 +241,9 @@ export function ContactForm() {
             <div>
               <label
                 htmlFor="contact-name"
-                className="block text-xs font-semibold uppercase tracking-wider text-muted mb-2"
+                className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle mb-2"
               >
-                Full Name <span className="text-accent">*</span>
+                Full Name <span className="text-nordic-clay">*</span>
               </label>
               <input
                 id="contact-name"
@@ -253,21 +253,21 @@ export function ContactForm() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Henrik Ibsen"
-                className={`w-full rounded-xl border bg-surface-2 px-4 py-3 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent transition ${
-                  fieldErrors.name ? "border-red-500" : "border-border"
+                className={`w-full rounded-xl border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition ${
+                  fieldErrors.name ? "border-red-500" : "border-nordic-border"
                 }`}
               />
               {fieldErrors.name && (
-                <p className="text-xs text-red-400 mt-1">{fieldErrors.name[0]}</p>
+                <p className="text-xs text-[#9C4B33] mt-1">{fieldErrors.name[0]}</p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="contact-email"
-                className="block text-xs font-semibold uppercase tracking-wider text-muted mb-2"
+                className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle mb-2"
               >
-                Email Address <span className="text-accent">*</span>
+                Email Address <span className="text-nordic-clay">*</span>
               </label>
               <input
                 id="contact-email"
@@ -277,12 +277,12 @@ export function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="director@agency.no"
-                className={`w-full rounded-xl border bg-surface-2 px-4 py-3 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent transition ${
-                  fieldErrors.email ? "border-red-500" : "border-border"
+                className={`w-full rounded-xl border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition ${
+                  fieldErrors.email ? "border-red-500" : "border-nordic-border"
                 }`}
               />
               {fieldErrors.email && (
-                <p className="text-xs text-red-400 mt-1">{fieldErrors.email[0]}</p>
+                <p className="text-xs text-[#9C4B33] mt-1">{fieldErrors.email[0]}</p>
               )}
             </div>
           </div>
@@ -291,9 +291,9 @@ export function ContactForm() {
           <div>
             <label
               htmlFor="contact-phone"
-              className="block text-xs font-semibold uppercase tracking-wider text-muted mb-2"
+              className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle mb-2"
             >
-              Phone / Signal <span className="text-muted/60 lowercase">(optional)</span>
+              Phone / Signal <span className="text-nordic-faint lowercase">(optional)</span>
             </label>
             <input
               id="contact-phone"
@@ -302,7 +302,7 @@ export function ContactForm() {
               value={formData.phone || ""}
               onChange={handleChange}
               placeholder="+47 982 00 000"
-              className="w-full rounded-xl border border-border bg-surface-2 px-4 py-3 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent transition"
+              className="w-full rounded-xl border border-nordic-border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition"
             />
           </div>
 
@@ -311,11 +311,11 @@ export function ContactForm() {
             <div className="flex items-center justify-between mb-2">
               <label
                 htmlFor="contact-message"
-                className="block text-xs font-semibold uppercase tracking-wider text-muted"
+                className="block text-xs font-mono uppercase tracking-wider text-nordic-subtle"
               >
-                Project Details & Timeline <span className="text-accent">*</span>
+                Project Details & Timeline <span className="text-nordic-clay">*</span>
               </label>
-              <span className="text-[11px] font-mono text-muted">
+              <span className="text-[11px] font-mono text-nordic-faint">
                 {formData.message.length} chars
               </span>
             </div>
@@ -327,26 +327,26 @@ export function ContactForm() {
               value={formData.message}
               onChange={handleChange}
               placeholder="Outline project timeline, locations, deliverables, aesthetic vision..."
-              className={`w-full rounded-xl border bg-surface-2 px-4 py-3 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-accent transition ${
-                fieldErrors.message ? "border-red-500" : "border-border"
+              className={`w-full rounded-xl border bg-nordic-canvas px-4 py-3 text-sm text-nordic-ink placeholder:text-nordic-faint focus:outline-none focus:ring-1 focus:ring-nordic-pine focus:border-nordic-pine transition ${
+                fieldErrors.message ? "border-red-500" : "border-nordic-border"
               }`}
             />
             {fieldErrors.message && (
-              <p className="text-xs text-red-400 mt-1">{fieldErrors.message[0]}</p>
+              <p className="text-xs text-[#9C4B33] mt-1">{fieldErrors.message[0]}</p>
             )}
           </div>
 
           {/* Action Row */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border">
-            <div className="flex items-center gap-2 text-xs text-muted">
-              <Mail className="h-3.5 w-3.5 text-zinc-400" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-nordic-border">
+            <div className="flex items-center gap-2 text-xs text-nordic-subtle">
+              <Mail className="h-3.5 w-3.5 text-nordic-faint" />
               <span>Encrypted transmission · Stored in Oslo archive</span>
             </div>
             <button
               id="contact-submit-btn"
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-accent px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-accent/25 cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-nordic-pine px-8 py-3.5 text-sm font-medium text-white transition hover:bg-nordic-pine/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm cursor-pointer"
             >
               {isSubmitting ? (
                 <>

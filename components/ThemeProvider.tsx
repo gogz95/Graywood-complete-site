@@ -28,9 +28,9 @@ export async function ThemeProvider({ domain }: ThemeProviderProps) {
     // Graceful fallback during setup or database bootstrap
   }
 
-  const backgroundColor = brandSettings?.backgroundColor || "#09090b";
-  const accentColor = brandSettings?.accentColor || "#3b82f6";
-  const primaryColor = brandSettings?.primaryColor || "#18181b";
+  const backgroundColor = brandSettings?.backgroundColor || "#F9F8F6";
+  const accentColor = brandSettings?.accentColor || "#2D3B36";
+  const primaryColor = brandSettings?.primaryColor || "#1C1B19";
 
   return (
     <style

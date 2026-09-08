@@ -524,16 +524,16 @@ export function Lightbox({
           {showExif && (
             <aside
               id="lightbox-exif-hud"
-              className="absolute bottom-4 right-4 z-30 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-border/90 bg-zinc-950/95 p-5 shadow-2xl backdrop-blur-2xl animate-fade-in text-left text-zinc-100"
+              className="absolute bottom-4 right-4 z-30 w-80 max-w-[calc(100vw-3rem)] rounded-2xl border border-nordic-border bg-nordic-surface/95 p-5 shadow-2xl backdrop-blur-2xl animate-fade-in text-left text-nordic-ink"
             >
-              <div className="flex items-center justify-between border-b border-border/60 pb-3 mb-3">
+              <div className="flex items-center justify-between border-b border-nordic-border pb-3 mb-3">
                 <div className="flex items-center gap-2">
-                  <Camera className="h-4 w-4 text-amber-400" />
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-200">
+                  <Camera className="h-4 w-4 text-nordic-pine" />
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-nordic-ink">
                     Optics & Exposure HUD
                   </h2>
                 </div>
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                <span className="text-[10px] font-mono text-nordic-pine bg-nordic-pine/10 px-2 py-0.5 rounded border border-nordic-pine/20">
                   RAW METRICS
                 </span>
               </div>
@@ -541,10 +541,10 @@ export function Lightbox({
               <div className="space-y-2.5 text-xs">
                 {currentAsset.cameraModel && (
                   <div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-mono block">
+                    <span className="text-[10px] uppercase tracking-wider text-nordic-faint font-mono block">
                       Camera Sensor
                     </span>
-                    <span className="font-medium text-zinc-200">
+                    <span className="font-medium text-nordic-ink">
                       {currentAsset.cameraModel}
                     </span>
                   </div>
@@ -552,10 +552,10 @@ export function Lightbox({
 
                 {currentAsset.lensModel && (
                   <div>
-                    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-mono block">
+                    <span className="text-[10px] uppercase tracking-wider text-nordic-faint font-mono block">
                       Optics Rig
                     </span>
-                    <span className="font-medium text-zinc-300">
+                    <span className="font-medium text-nordic-subtle">
                       {currentAsset.lensModel}
                     </span>
                   </div>
@@ -563,37 +563,37 @@ export function Lightbox({
 
                 {/* Exposure telemetry grid */}
                 <div className="grid grid-cols-2 gap-2 pt-1">
-                  <div className="rounded-lg bg-surface-2/70 p-2 border border-border/50">
-                    <span className="text-[10px] text-zinc-500 block uppercase font-mono">Focal</span>
-                    <span className="font-mono text-zinc-200 font-semibold">
+                  <div className="rounded-lg bg-nordic-muted p-2 border border-nordic-border">
+                    <span className="text-[10px] text-nordic-faint block uppercase font-mono">Focal</span>
+                    <span className="font-mono text-nordic-ink font-semibold">
                       {currentAsset.focalLength || "—"}
                     </span>
                   </div>
-                  <div className="rounded-lg bg-surface-2/70 p-2 border border-border/50">
-                    <span className="text-[10px] text-zinc-500 block uppercase font-mono">Aperture</span>
-                    <span className="font-mono text-zinc-200 font-semibold">
+                  <div className="rounded-lg bg-nordic-muted p-2 border border-nordic-border">
+                    <span className="text-[10px] text-nordic-faint block uppercase font-mono">Aperture</span>
+                    <span className="font-mono text-nordic-ink font-semibold">
                       {currentAsset.aperture || "—"}
                     </span>
                   </div>
-                  <div className="rounded-lg bg-surface-2/70 p-2 border border-border/50">
-                    <span className="text-[10px] text-zinc-500 block uppercase font-mono">Shutter</span>
-                    <span className="font-mono text-zinc-200 font-semibold">
+                  <div className="rounded-lg bg-nordic-muted p-2 border border-nordic-border">
+                    <span className="text-[10px] text-nordic-faint block uppercase font-mono">Shutter</span>
+                    <span className="font-mono text-nordic-ink font-semibold">
                       {currentAsset.shutterSpeed || "—"}
                     </span>
                   </div>
-                  <div className="rounded-lg bg-surface-2/70 p-2 border border-border/50">
-                    <span className="text-[10px] text-zinc-500 block uppercase font-mono">Sensitivity</span>
-                    <span className="font-mono text-zinc-200 font-semibold">
+                  <div className="rounded-lg bg-nordic-muted p-2 border border-nordic-border">
+                    <span className="text-[10px] text-nordic-faint block uppercase font-mono">Sensitivity</span>
+                    <span className="font-mono text-nordic-ink font-semibold">
                       {currentAsset.iso ? `ISO ${currentAsset.iso}` : "—"}
                     </span>
                   </div>
                 </div>
 
                 {/* Dimensions & Capture Date */}
-                <div className="pt-2 border-t border-border/60 flex flex-col gap-1 text-[11px] text-zinc-400">
+                <div className="pt-2 border-t border-nordic-border flex flex-col gap-1 text-[11px] text-nordic-subtle">
                   {currentAsset.width && currentAsset.height && (
                     <div className="flex items-center gap-1.5">
-                      <Layers className="h-3 w-3 text-zinc-500" />
+                      <Layers className="h-3 w-3 text-nordic-faint" />
                       <span>
                         {currentAsset.width} × {currentAsset.height} px
                       </span>
@@ -601,7 +601,7 @@ export function Lightbox({
                   )}
                   {formattedDate && (
                     <div className="flex items-center gap-1.5">
-                      <Calendar className="h-3 w-3 text-zinc-500" />
+                      <Calendar className="h-3 w-3 text-nordic-faint" />
                       <span>{formattedDate}</span>
                     </div>
                   )}

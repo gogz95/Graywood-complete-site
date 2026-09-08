@@ -25,16 +25,15 @@ import {
 } from "lucide-react";
 
 const BG_PRESETS = [
-  { name: "Void Dark", hex: "#09090b" },
-  { name: "Obsidian", hex: "#030712" },
-  { name: "Deep Charcoal", hex: "#121214" },
+  { name: "Nordic Limestone", hex: "#F9F8F6" },
+  { name: "Pristine Canvas", hex: "#FFFFFF" },
+  { name: "Warm Muted", hex: "#F1EFEA" },
 ];
 
 const ACCENT_PRESETS = [
-  { name: "Royal Blue", hex: "#3b82f6" },
-  { name: "Nordic Amber", hex: "#f59e0b" },
-  { name: "Electric Violet", hex: "#8b5cf6" },
-  { name: "Emerald Glade", hex: "#10b981" },
+  { name: "Nordic Pine", hex: "#2D3B36" },
+  { name: "Terracotta Clay", hex: "#C86D51" },
+  { name: "Subtle Earth", hex: "#68655E" },
 ];
 
 export function SetupWizard() {
@@ -52,8 +51,8 @@ export function SetupWizard() {
     confirmPassword: "",
     siteTitle: "Graywood",
     tagline: "Nordic Creative Studio",
-    backgroundColor: "#09090b",
-    accentColor: "#3b82f6",
+    backgroundColor: "#F9F8F6",
+    accentColor: "#2D3B36",
     enableClientPortal: true,
     enableGearDesk: true,
     enableMangaReader: true,
@@ -133,18 +132,18 @@ export function SetupWizard() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-[#09090b] text-foreground">
-      <div className="w-full max-w-2xl rounded-3xl border border-zinc-800 bg-zinc-950/90 backdrop-blur-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
-        {/* Glow ambient background effect */}
+    <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-nordic-canvas text-nordic-ink">
+      <div className="w-full max-w-2xl rounded-3xl border border-nordic-border bg-nordic-surface p-6 sm:p-10 shadow-[0_8px_30px_rgba(28,27,25,0.06)] relative overflow-hidden">
+        {/* Ambient glow */}
         <div
-          className="absolute -top-32 -right-32 h-80 w-80 rounded-full blur-[100px] pointer-events-none opacity-30 transition-colors duration-500"
+          className="absolute -top-32 -right-32 h-80 w-80 rounded-full blur-[100px] pointer-events-none opacity-20 transition-colors duration-500"
           style={{ backgroundColor: formData.accentColor }}
         />
 
         {/* Top Header */}
         <div className="text-center mb-8">
           <div
-            className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border mb-4 shadow-inner transition-colors duration-500"
+            className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border mb-4 shadow-sm transition-colors duration-500"
             style={{
               backgroundColor: `${formData.accentColor}15`,
               borderColor: `${formData.accentColor}40`,
@@ -154,22 +153,22 @@ export function SetupWizard() {
             <Sparkles className="h-6 w-6" />
           </div>
 
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1 text-[11px] font-mono uppercase tracking-widest text-zinc-400 mb-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-nordic-border bg-nordic-muted px-3 py-1 text-[11px] font-mono uppercase tracking-widest text-nordic-pine mb-2">
             First-Time Installation · Setup Wizard
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif text-nordic-ink tracking-tight">
             Bootstrap Graywood Ecosystem
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-nordic-subtle mt-1 max-w-md mx-auto">
             Configure your root administrator, global visual branding, and active feature suites in 3 quick steps.
           </p>
         </div>
 
         {/* Multi-step progress bar */}
         <div className="flex items-center justify-between max-w-sm mx-auto mb-8 relative">
-          <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-zinc-800 -translate-y-1/2 z-0" />
+          <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-nordic-border -translate-y-1/2 z-0" />
           <div
-            className="absolute top-1/2 left-0 h-0.5 bg-blue-500 -translate-y-1/2 z-0 transition-all duration-300"
+            className="absolute top-1/2 left-0 h-0.5 bg-nordic-pine -translate-y-1/2 z-0 transition-all duration-300"
             style={{
               width:
                 currentStep === 1 ? "0%" : currentStep === 2 ? "50%" : "100%",
@@ -187,12 +186,12 @@ export function SetupWizard() {
             return (
               <div key={item.step} className="flex flex-col items-center relative z-10">
                 <div
-                  className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-all duration-300 ${
+                  className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-medium font-mono transition-all duration-300 ${
                     isCompleted
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                      ? "bg-nordic-pine text-white shadow-sm"
                       : isCurrent
-                      ? "border-2 border-blue-500 bg-zinc-900 text-blue-400"
-                      : "border border-zinc-800 bg-zinc-900 text-zinc-600"
+                      ? "border-2 border-nordic-pine bg-nordic-surface text-nordic-pine"
+                      : "border border-nordic-border bg-nordic-muted text-nordic-faint"
                   }`}
                 >
                   {isCompleted ? <Check className="h-4 w-4 stroke-[3]" /> : item.step}
@@ -200,8 +199,8 @@ export function SetupWizard() {
                 <span
                   className={`text-[10px] font-mono mt-1 ${
                     isCurrent
-                      ? "text-blue-400 font-semibold"
-                      : "text-zinc-500"
+                      ? "text-nordic-pine font-medium"
+                      : "text-nordic-faint"
                   }`}
                 >
                   {item.label}
@@ -214,35 +213,33 @@ export function SetupWizard() {
         {errorMessage && (
           <div
             role="alert"
-            className="mb-6 flex items-start gap-3 rounded-2xl bg-red-950/40 border border-red-800/60 p-4 text-xs text-red-300 shadow-md animate-fade-in"
+            className="mb-6 flex items-start gap-3 rounded-2xl bg-red-50 border border-red-200 p-4 text-xs text-red-700 shadow-sm animate-fade-in"
           >
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* =================================================================
-              STEP 1: ROOT ADMINISTRATOR
-              ================================================================= */}
+          {/* STEP 1: ROOT ADMINISTRATOR */}
           {currentStep === 1 && (
             <div className="space-y-4 animate-fade-in">
-              <div className="border-b border-zinc-800 pb-3 mb-4">
-                <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                  <User className="h-4 w-4 text-blue-400" />
+              <div className="border-b border-nordic-border pb-3 mb-4">
+                <h2 className="text-sm font-serif text-nordic-ink flex items-center gap-2">
+                  <User className="h-4 w-4 text-nordic-pine" />
                   <span>Step 1: Primary Administrator Account</span>
                 </h2>
-                <p className="text-xs text-zinc-500 mt-0.5">
+                <p className="text-xs text-nordic-subtle mt-0.5">
                   This account will have unrestricted root permissions across all three domains.
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-1.5">
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
                   <input
                     type="text"
                     required
@@ -250,47 +247,47 @@ export function SetupWizard() {
                     value={formData.name}
                     onChange={(e) => updateField("name", e.target.value)}
                     autoFocus
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none transition"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-1.5">
                   Admin Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
                   <input
                     type="email"
                     required
                     placeholder="admin@graywood.no"
                     value={formData.email}
                     onChange={(e) => updateField("email", e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none transition"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-1.5">
                     Security Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
                     <input
                       type={showPassword ? "text" : "password"}
                       required
                       placeholder="At least 8 characters"
                       value={formData.password}
                       onChange={(e) => updateField("password", e.target.value)}
-                      className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-10 pr-10 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none transition"
+                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-10 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-nordic-faint hover:text-nordic-ink"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -298,18 +295,18 @@ export function SetupWizard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-1.5">
                     Confirm Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-nordic-faint pointer-events-none" />
                     <input
                       type={showPassword ? "text" : "password"}
                       required
                       placeholder="Repeat password"
                       value={formData.confirmPassword}
                       onChange={(e) => updateField("confirmPassword", e.target.value)}
-                      className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:border-blue-500 focus:outline-none transition"
+                      className="w-full rounded-xl border border-nordic-border bg-nordic-muted pl-10 pr-4 py-2.5 text-sm text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none transition"
                     />
                   </div>
                 </div>
@@ -317,24 +314,22 @@ export function SetupWizard() {
             </div>
           )}
 
-          {/* =================================================================
-              STEP 2: BRAND IDENTITY & PALETTES
-              ================================================================= */}
+          {/* STEP 2: BRAND IDENTITY & PALETTES */}
           {currentStep === 2 && (
             <div className="space-y-4 animate-fade-in">
-              <div className="border-b border-zinc-800 pb-3 mb-4">
-                <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Palette className="h-4 w-4 text-blue-400" />
+              <div className="border-b border-nordic-border pb-3 mb-4">
+                <h2 className="text-sm font-serif text-nordic-ink flex items-center gap-2">
+                  <Palette className="h-4 w-4 text-nordic-clay" />
                   <span>Step 2: Brand Identity & Palette Variables</span>
                 </h2>
-                <p className="text-xs text-zinc-500 mt-0.5">
+                <p className="text-xs text-nordic-subtle mt-0.5">
                   Configure the primary naming and dynamic theme colors injected across all layouts.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-1.5">
                     Studio Entity Title
                   </label>
                   <input
@@ -343,12 +338,12 @@ export function SetupWizard() {
                     value={formData.siteTitle}
                     onChange={(e) => updateField("siteTitle", e.target.value)}
                     placeholder="e.g. Graywood"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 px-4 py-2.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-1.5">
                     Global Tagline
                   </label>
                   <input
@@ -356,7 +351,7 @@ export function SetupWizard() {
                     value={formData.tagline}
                     onChange={(e) => updateField("tagline", e.target.value)}
                     placeholder="e.g. Nordic Creative Studio"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 px-4 py-2.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
                   />
                 </div>
               </div>
@@ -364,7 +359,7 @@ export function SetupWizard() {
               {/* Accent Color Section */}
               <div className="pt-2">
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-nordic-subtle">
                     Accent Color
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -374,7 +369,7 @@ export function SetupWizard() {
                         type="button"
                         onClick={() => updateField("accentColor", p.hex)}
                         title={p.name}
-                        className="h-5 w-5 rounded-full border border-white/20 transition hover:scale-110"
+                        className="h-5 w-5 rounded-full border border-nordic-border transition hover:scale-110 shadow-sm"
                         style={{ backgroundColor: p.hex }}
                       />
                     ))}
@@ -385,13 +380,13 @@ export function SetupWizard() {
                     type="color"
                     value={formData.accentColor}
                     onChange={(e) => updateField("accentColor", e.target.value)}
-                    className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
+                    className="h-10 w-12 rounded-lg border border-nordic-border bg-nordic-muted cursor-pointer p-0.5"
                   />
                   <input
                     type="text"
                     value={formData.accentColor}
                     onChange={(e) => updateField("accentColor", e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-mono text-white focus:border-blue-500 focus:outline-none uppercase"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm font-mono text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none uppercase"
                   />
                 </div>
               </div>
@@ -399,7 +394,7 @@ export function SetupWizard() {
               {/* Background Color Section */}
               <div className="pt-2">
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-nordic-subtle">
                     Background Canvas Color
                   </label>
                   <div className="flex items-center gap-1.5">
@@ -409,7 +404,7 @@ export function SetupWizard() {
                         type="button"
                         onClick={() => updateField("backgroundColor", p.hex)}
                         title={p.name}
-                        className="h-5 w-5 rounded-full border border-white/20 transition hover:scale-110"
+                        className="h-5 w-5 rounded-full border border-nordic-border transition hover:scale-110 shadow-sm"
                         style={{ backgroundColor: p.hex }}
                       />
                     ))}
@@ -420,32 +415,32 @@ export function SetupWizard() {
                     type="color"
                     value={formData.backgroundColor}
                     onChange={(e) => updateField("backgroundColor", e.target.value)}
-                    className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
+                    className="h-10 w-12 rounded-lg border border-nordic-border bg-nordic-muted cursor-pointer p-0.5"
                   />
                   <input
                     type="text"
                     value={formData.backgroundColor}
                     onChange={(e) => updateField("backgroundColor", e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-mono text-white focus:border-blue-500 focus:outline-none uppercase"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm font-mono text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none uppercase"
                   />
                 </div>
               </div>
 
               {/* Live Card Preview */}
               <div
-                className="rounded-2xl border border-zinc-800 p-4 mt-4 transition-all"
+                className="rounded-2xl border border-nordic-border p-4 mt-4 transition-all shadow-sm"
                 style={{ backgroundColor: formData.backgroundColor }}
               >
-                <span className="text-[10px] font-mono text-zinc-500 block uppercase">
+                <span className="text-[10px] font-mono text-nordic-faint block uppercase">
                   Live Theme Visualizer
                 </span>
                 <div className="flex items-center justify-between mt-2">
                   <div>
-                    <h3 className="text-sm font-bold text-white">{formData.siteTitle}</h3>
-                    <p className="text-xs text-zinc-400">{formData.tagline}</p>
+                    <h3 className="text-sm font-serif text-nordic-ink">{formData.siteTitle}</h3>
+                    <p className="text-xs text-nordic-subtle">{formData.tagline}</p>
                   </div>
                   <span
-                    className="rounded-lg px-3 py-1 text-xs font-semibold text-white shadow"
+                    className="rounded-lg px-3 py-1 text-xs font-medium text-white shadow-sm"
                     style={{ backgroundColor: formData.accentColor }}
                   >
                     Action Accent
@@ -455,31 +450,29 @@ export function SetupWizard() {
             </div>
           )}
 
-          {/* =================================================================
-              STEP 3: MODULAR SUITES & CONFIRMATION
-              ================================================================= */}
+          {/* STEP 3: MODULAR SUITES & CONFIRMATION */}
           {currentStep === 3 && (
             <div className="space-y-4 animate-fade-in">
-              <div className="border-b border-zinc-800 pb-3 mb-4">
-                <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Sliders className="h-4 w-4 text-blue-400" />
+              <div className="border-b border-nordic-border pb-3 mb-4">
+                <h2 className="text-sm font-serif text-nordic-ink flex items-center gap-2">
+                  <Sliders className="h-4 w-4 text-nordic-pine" />
                   <span>Step 3: Ecosystem Modules & Activation</span>
                 </h2>
-                <p className="text-xs text-zinc-500 mt-0.5">
+                <p className="text-xs text-nordic-subtle mt-0.5">
                   Select which modular capabilities should be active out of the box. You can modify these anytime in the customizer.
                 </p>
               </div>
 
               <div className="space-y-3">
                 {/* Module 1 */}
-                <label className="flex items-center justify-between p-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 cursor-pointer hover:border-zinc-700 transition">
+                <label className="flex items-center justify-between p-4 rounded-2xl border border-nordic-border bg-nordic-canvas/60 cursor-pointer hover:border-nordic-divider transition">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-amber-500/10 p-2.5 border border-amber-500/20 text-amber-400">
+                    <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border text-nordic-clay">
                       <Sparkles className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white">Client Proofing Vault</div>
-                      <div className="text-[11px] text-zinc-400">
+                      <div className="text-xs font-medium text-nordic-ink">Client Proofing Vault</div>
+                      <div className="text-[11px] text-nordic-subtle">
                         Private encrypted galleries with bespoke PIN verification & streaming ZIP downloads.
                       </div>
                     </div>
@@ -488,19 +481,19 @@ export function SetupWizard() {
                     type="checkbox"
                     checked={formData.enableClientPortal}
                     onChange={(e) => updateField("enableClientPortal", e.target.checked)}
-                    className="h-4 w-4 rounded border-zinc-700 text-blue-600 focus:ring-blue-500 bg-zinc-800"
+                    className="h-4 w-4 rounded border-nordic-border text-nordic-pine focus:ring-nordic-pine"
                   />
                 </label>
 
                 {/* Module 2 */}
-                <label className="flex items-center justify-between p-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 cursor-pointer hover:border-zinc-700 transition">
+                <label className="flex items-center justify-between p-4 rounded-2xl border border-nordic-border bg-nordic-canvas/60 cursor-pointer hover:border-nordic-divider transition">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-blue-500/10 p-2.5 border border-blue-500/20 text-blue-400">
+                    <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border text-nordic-pine">
                       <Briefcase className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white">Co-Owner Gear Desk</div>
-                      <div className="text-[11px] text-zinc-400">
+                      <div className="text-xs font-medium text-nordic-ink">Co-Owner Gear Desk</div>
+                      <div className="text-[11px] text-nordic-subtle">
                         Equipment check-in/out tracking with condition reports and immutable audit logging.
                       </div>
                     </div>
@@ -509,19 +502,19 @@ export function SetupWizard() {
                     type="checkbox"
                     checked={formData.enableGearDesk}
                     onChange={(e) => updateField("enableGearDesk", e.target.checked)}
-                    className="h-4 w-4 rounded border-zinc-700 text-blue-600 focus:ring-blue-500 bg-zinc-800"
+                    className="h-4 w-4 rounded border-nordic-border text-nordic-pine focus:ring-nordic-pine"
                   />
                 </label>
 
                 {/* Module 3 */}
-                <label className="flex items-center justify-between p-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 cursor-pointer hover:border-zinc-700 transition">
+                <label className="flex items-center justify-between p-4 rounded-2xl border border-nordic-border bg-nordic-canvas/60 cursor-pointer hover:border-nordic-divider transition">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-purple-500/10 p-2.5 border border-purple-500/20 text-purple-400">
+                    <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border text-nordic-pine">
                       <BookOpen className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white">Manga Reader Dock</div>
-                      <div className="text-[11px] text-zinc-400">
+                      <div className="text-xs font-medium text-nordic-ink">Manga Reader Dock</div>
+                      <div className="text-[11px] text-nordic-subtle">
                         Sandboxed iframe suite with Content-Security-Policy frame-src protection.
                       </div>
                     </div>
@@ -530,19 +523,19 @@ export function SetupWizard() {
                     type="checkbox"
                     checked={formData.enableMangaReader}
                     onChange={(e) => updateField("enableMangaReader", e.target.checked)}
-                    className="h-4 w-4 rounded border-zinc-700 text-blue-600 focus:ring-blue-500 bg-zinc-800"
+                    className="h-4 w-4 rounded border-nordic-border text-nordic-pine focus:ring-nordic-pine"
                   />
                 </label>
 
                 {/* Module 4 */}
-                <label className="flex items-center justify-between p-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 cursor-pointer hover:border-zinc-700 transition">
+                <label className="flex items-center justify-between p-4 rounded-2xl border border-nordic-border bg-nordic-canvas/60 cursor-pointer hover:border-nordic-divider transition">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-xl bg-emerald-500/10 p-2.5 border border-emerald-500/20 text-emerald-400">
+                    <div className="rounded-xl bg-nordic-muted p-2.5 border border-nordic-border text-nordic-pine">
                       <Server className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white">Dedicated Game Server Monitors</div>
-                      <div className="text-[11px] text-zinc-400">
+                      <div className="text-xs font-medium text-nordic-ink">Dedicated Game Server Monitors</div>
+                      <div className="text-[11px] text-nordic-subtle">
                         Operations dashboard cards tracking private studio gaming cluster nodes.
                       </div>
                     </div>
@@ -551,14 +544,14 @@ export function SetupWizard() {
                     type="checkbox"
                     checked={formData.enableGameServers}
                     onChange={(e) => updateField("enableGameServers", e.target.checked)}
-                    className="h-4 w-4 rounded border-zinc-700 text-blue-600 focus:ring-blue-500 bg-zinc-800"
+                    className="h-4 w-4 rounded border-nordic-border text-nordic-pine focus:ring-nordic-pine"
                   />
                 </label>
               </div>
 
               {/* Ready Summary */}
-              <div className="rounded-2xl border border-blue-800/60 bg-blue-950/20 p-4 text-xs text-blue-300 flex items-center gap-3 mt-4">
-                <ShieldCheck className="h-5 w-5 shrink-0 text-blue-400" />
+              <div className="rounded-2xl border border-nordic-pine/20 bg-nordic-pine/5 p-4 text-xs text-nordic-pine flex items-center gap-3 mt-4">
+                <ShieldCheck className="h-5 w-5 shrink-0 text-nordic-pine" />
                 <span>
                   Ready to bootstrap: Clicking Activate will finalize the configuration, commit the database transaction, and lock the setup wizard.
                 </span>
@@ -567,12 +560,12 @@ export function SetupWizard() {
           )}
 
           {/* Navigation Controls */}
-          <div className="pt-4 border-t border-zinc-800 flex items-center justify-between gap-4">
+          <div className="pt-4 border-t border-nordic-border flex items-center justify-between gap-4">
             {currentStep > 1 ? (
               <button
                 type="button"
                 onClick={() => setCurrentStep((prev) => (prev - 1) as 1 | 2)}
-                className="inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-zinc-300 hover:text-white transition cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-xs font-medium text-nordic-subtle hover:text-nordic-ink transition cursor-pointer"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back</span>
@@ -585,7 +578,7 @@ export function SetupWizard() {
               <button
                 type="button"
                 onClick={handleNextStep}
-                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl bg-nordic-pine px-6 py-2.5 text-xs font-medium text-white shadow-sm hover:bg-nordic-pine/90 transition cursor-pointer"
               >
                 <span>Continue</span>
                 <ArrowRight className="h-4 w-4" />
@@ -594,7 +587,7 @@ export function SetupWizard() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-7 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500 transition disabled:opacity-50 cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl bg-nordic-pine px-7 py-3 text-xs font-medium text-white shadow-sm hover:bg-nordic-pine/90 transition disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>

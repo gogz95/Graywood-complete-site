@@ -51,37 +51,37 @@ export default async function PhotographyPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Editorial Hero */}
-      <section className="relative w-full py-28 sm:py-36 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center border-b border-border overflow-hidden">
-        {/* Ambient atmospheric glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-accent/10 blur-[120px] pointer-events-none" />
+      <section className="relative w-full py-28 sm:py-36 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center border-b border-nordic-border overflow-hidden">
+        {/* Subtle ambient atmospheric tone */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-nordic-pine/5 blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs text-muted">
-            <Camera className="h-3.5 w-3.5 text-accent" />
-            <span className="font-mono uppercase tracking-widest text-zinc-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-nordic-border bg-nordic-surface px-4 py-1.5 text-xs text-nordic-subtle">
+            <Camera className="h-3.5 w-3.5 text-nordic-pine" />
+            <span className="font-mono uppercase tracking-widest text-nordic-subtle">
               Graywood Photography Studio
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="text-4xl sm:text-6xl font-serif tracking-tight text-nordic-ink leading-[1.1]">
             Visual narratives across the Nordic landscape.
           </h1>
 
-          <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-nordic-subtle max-w-2xl mx-auto leading-relaxed">
             Specialized in commercial campaigns, architectural documentation, and editorial storytelling. Captured with medium-format precision and authentic atmospheric light.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <a
               href="#gallery"
-              className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:bg-accent-hover shadow-lg shadow-accent/20"
+              className="inline-flex items-center gap-2 rounded-xl bg-nordic-pine px-6 py-3 text-sm font-medium text-white transition hover:bg-nordic-pine/90 shadow-sm"
             >
               Explore Archive
               <ArrowDown className="h-4 w-4" />
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-6 py-3 text-sm font-semibold text-foreground transition hover:bg-surface-2"
+              className="inline-flex items-center gap-2 rounded-xl border border-nordic-border bg-nordic-surface px-6 py-3 text-sm font-medium text-nordic-ink transition hover:bg-nordic-muted"
             >
               Initiate Commission
             </a>
@@ -89,34 +89,34 @@ export default async function PhotographyPage() {
         </div>
 
         {/* Feature Highlights Banner */}
-        <div className="relative z-10 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full border-t border-border/60 pt-8 text-left">
+        <div className="relative z-10 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full border-t border-nordic-border pt-8 text-left">
           <div className="flex items-start gap-3">
-            <div className="rounded-lg bg-surface-2 p-2 border border-border">
-              <Camera className="h-4 w-4 text-accent" />
+            <div className="rounded-xl bg-nordic-muted p-2 border border-nordic-border">
+              <Camera className="h-4 w-4 text-nordic-pine" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-foreground">Medium Format Rig</p>
-              <p className="text-xs text-muted">Ultra high-fidelity sensor captures up to 100 megapixels.</p>
+              <p className="text-xs font-semibold text-nordic-ink">Medium Format Rig</p>
+              <p className="text-xs text-nordic-subtle">Ultra high-fidelity sensor captures up to 100 megapixels.</p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="rounded-lg bg-surface-2 p-2 border border-border">
-              <Compass className="h-4 w-4 text-accent" />
+            <div className="rounded-xl bg-nordic-muted p-2 border border-nordic-border">
+              <Compass className="h-4 w-4 text-nordic-pine" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-foreground">Extreme Locations</p>
-              <p className="text-xs text-muted">Fjord, sub-zero Arctic, and architectural remote access.</p>
+              <p className="text-xs font-semibold text-nordic-ink">Extreme Locations</p>
+              <p className="text-xs text-nordic-subtle">Fjord, sub-zero Arctic, and architectural remote access.</p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="rounded-lg bg-surface-2 p-2 border border-border">
-              <Award className="h-4 w-4 text-accent" />
+            <div className="rounded-xl bg-nordic-muted p-2 border border-nordic-border">
+              <Award className="h-4 w-4 text-nordic-pine" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-foreground">Color Grading Mastery</p>
-              <p className="text-xs text-muted">Bespoke LUTs tailored for editorial print and high-res web.</p>
+              <p className="text-xs font-semibold text-nordic-ink">Color Grading Mastery</p>
+              <p className="text-xs text-nordic-subtle">Bespoke LUTs tailored for editorial print and high-res web.</p>
             </div>
           </div>
         </div>

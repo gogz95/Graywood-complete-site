@@ -110,15 +110,15 @@ export function CustomizerView({
   return (
     <div className="p-6 sm:p-8 lg:p-10 max-w-7xl mx-auto w-full space-y-10">
       {/* Top Header */}
-      <div className="pb-6 border-b border-zinc-800">
-        <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-blue-400 mb-1">
+      <div className="pb-6 border-b border-nordic-border">
+        <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-nordic-pine mb-1">
           <Sliders className="h-3.5 w-3.5" />
           <span>Platform Customization Engine</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-serif text-nordic-ink tracking-tight">
           System & Brand Customizer
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
+        <p className="text-xs sm:text-sm text-nordic-subtle mt-1 max-w-xl">
           Toggle operational modules and adjust dynamic palette variables across all three Norwegian domain entities.
         </p>
       </div>
@@ -128,32 +128,32 @@ export function CustomizerView({
           role="alert"
           className={`flex items-start gap-3 rounded-2xl p-4 text-xs border ${
             feedback.type === "success"
-              ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
-              : "bg-red-950/40 text-red-300 border-red-800/60"
+              ? "bg-nordic-pine/10 text-nordic-pine border-nordic-pine/20"
+              : "bg-red-50 text-red-700 border-red-200"
           }`}
         >
           {feedback.type === "success" ? (
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-nordic-pine mt-0.5" />
           ) : (
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
           )}
           <span>{feedback.text}</span>
         </div>
       )}
 
       {/* SECTION 1: SYSTEM MODULE FLAGS */}
-      <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 shadow-xl">
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-zinc-800">
+      <div className="rounded-3xl border border-nordic-border bg-nordic-surface p-6 sm:p-8 shadow-[0_8px_30px_rgba(28,27,25,0.04)]">
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-nordic-border">
           <div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Layers className="h-4 w-4 text-blue-400" />
+            <h2 className="text-lg font-serif text-nordic-ink flex items-center gap-2">
+              <Layers className="h-4 w-4 text-nordic-pine" />
               <span>Operational Module Flags</span>
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-nordic-subtle mt-0.5">
               Live switches enabling or disabling platform feature suites.
             </p>
           </div>
-          <span className="text-xs font-mono text-zinc-500">
+          <span className="text-xs font-mono text-nordic-faint">
             {modules.filter((m) => m.enabled).length} of {modules.length} ACTIVE
           </span>
         </div>
@@ -162,11 +162,11 @@ export function CustomizerView({
           {modules.map((mod) => (
             <div
               key={mod.id}
-              className="rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-5 flex items-center justify-between transition hover:border-zinc-700"
+              className="rounded-2xl border border-nordic-border bg-nordic-canvas/60 p-5 flex items-center justify-between transition hover:border-nordic-divider"
             >
               <div>
-                <div className="font-bold text-sm text-white">{mod.name}</div>
-                <div className="text-[11px] font-mono text-zinc-500">
+                <div className="font-medium text-sm text-nordic-ink">{mod.name}</div>
+                <div className="text-[11px] font-mono text-nordic-faint">
                   ID: {mod.id}
                 </div>
               </div>
@@ -178,11 +178,11 @@ export function CustomizerView({
                 aria-checked={mod.enabled}
                 onClick={() => handleToggleModule(mod.id, mod.enabled)}
                 className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  mod.enabled ? "bg-emerald-500" : "bg-zinc-800"
+                  mod.enabled ? "bg-nordic-pine" : "bg-nordic-border"
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
                     mod.enabled ? "translate-x-5" : "translate-x-0"
                   }`}
                 />
@@ -193,28 +193,28 @@ export function CustomizerView({
       </div>
 
       {/* SECTION 2: BRAND PALETTES & TITLES */}
-      <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 sm:p-8 shadow-xl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-800">
+      <div className="rounded-3xl border border-nordic-border bg-nordic-surface p-6 sm:p-8 shadow-[0_8px_30px_rgba(28,27,25,0.04)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-nordic-border">
           <div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Palette className="h-4 w-4 text-purple-400" />
+            <h2 className="text-lg font-serif text-nordic-ink flex items-center gap-2">
+              <Palette className="h-4 w-4 text-nordic-clay" />
               <span>Domain Portal Settings & Themes</span>
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-nordic-subtle mt-0.5">
               Customize portal site titles and brand accent colors per domain.
             </p>
           </div>
 
           {/* Portal Tabs */}
-          <div className="flex items-center rounded-xl bg-zinc-900 p-1 border border-zinc-800">
+          <div className="flex items-center rounded-xl bg-nordic-muted p-1 border border-nordic-border">
             {brands.map((b) => (
               <button
                 key={b.id}
                 onClick={() => setActiveBrandTab(b.id)}
-                className={`rounded-lg px-3.5 py-1.5 text-xs font-mono font-semibold transition ${
+                className={`rounded-lg px-3.5 py-1.5 text-xs font-mono font-medium transition ${
                   activeBrandTab === b.id
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-zinc-400 hover:text-white"
+                    ? "bg-nordic-pine text-white shadow-sm"
+                    : "text-nordic-subtle hover:text-nordic-ink"
                 }`}
               >
                 {b.id}
@@ -228,7 +228,7 @@ export function CustomizerView({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Site Title */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-2">
                   Portal Site Title
                 </label>
                 <input
@@ -236,13 +236,13 @@ export function CustomizerView({
                   required
                   value={activeBrand.siteTitle}
                   onChange={(e) => handleBrandChange("siteTitle", e.target.value)}
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none"
                 />
               </div>
 
               {/* Accent Color */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-2">
                   Accent Color
                 </label>
                 <div className="flex items-center gap-3">
@@ -250,20 +250,20 @@ export function CustomizerView({
                     type="color"
                     value={safeHex(activeBrand.accentColor, "#3b82f6")}
                     onChange={(e) => handleBrandChange("accentColor", e.target.value)}
-                    className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
+                    className="h-10 w-12 rounded-lg border border-nordic-border bg-nordic-muted cursor-pointer p-0.5"
                   />
                   <input
                     type="text"
                     value={activeBrand.accentColor}
                     onChange={(e) => handleBrandChange("accentColor", e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-mono text-white focus:border-blue-500 focus:outline-none uppercase"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm font-mono text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none uppercase"
                   />
                 </div>
               </div>
 
               {/* Primary Color */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-2">
                   Primary Surface Color
                 </label>
                 <div className="flex items-center gap-3">
@@ -271,20 +271,20 @@ export function CustomizerView({
                     type="color"
                     value={safeHex(activeBrand.primaryColor, "#18181b")}
                     onChange={(e) => handleBrandChange("primaryColor", e.target.value)}
-                    className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
+                    className="h-10 w-12 rounded-lg border border-nordic-border bg-nordic-muted cursor-pointer p-0.5"
                   />
                   <input
                     type="text"
                     value={activeBrand.primaryColor}
                     onChange={(e) => handleBrandChange("primaryColor", e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-mono text-white focus:border-blue-500 focus:outline-none uppercase"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm font-mono text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none uppercase"
                   />
                 </div>
               </div>
 
               {/* Background Color */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-nordic-subtle mb-2">
                   Canvas Background Color
                 </label>
                 <div className="flex items-center gap-3">
@@ -292,32 +292,32 @@ export function CustomizerView({
                     type="color"
                     value={safeHex(activeBrand.backgroundColor, "#09090b")}
                     onChange={(e) => handleBrandChange("backgroundColor", e.target.value)}
-                    className="h-10 w-12 rounded-lg border border-zinc-800 bg-zinc-900 cursor-pointer p-0.5"
+                    className="h-10 w-12 rounded-lg border border-nordic-border bg-nordic-muted cursor-pointer p-0.5"
                   />
                   <input
                     type="text"
                     value={activeBrand.backgroundColor}
                     onChange={(e) => handleBrandChange("backgroundColor", e.target.value)}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-sm font-mono text-white focus:border-blue-500 focus:outline-none uppercase"
+                    className="w-full rounded-xl border border-nordic-border bg-nordic-muted px-4 py-2.5 text-sm font-mono text-nordic-ink focus:border-nordic-pine focus:bg-nordic-surface focus:outline-none uppercase"
                   />
                 </div>
               </div>
             </div>
 
             {/* Live Palette Visualizer */}
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 flex items-center justify-between">
+            <div className="rounded-2xl border border-nordic-border bg-nordic-canvas/60 p-5 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div
-                  className="h-10 w-10 rounded-xl shadow-inner border border-white/20 flex items-center justify-center text-white text-xs font-bold"
+                  className="h-10 w-10 rounded-xl shadow-inner border border-nordic-border flex items-center justify-center text-white text-xs font-bold"
                   style={{ backgroundColor: activeBrand.accentColor }}
                 >
                   Aa
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-white">
+                  <div className="text-xs font-semibold text-nordic-ink">
                     Theme Preview: {activeBrand.siteTitle}
                   </div>
-                  <div className="text-[11px] font-mono text-zinc-400">
+                  <div className="text-[11px] font-mono text-nordic-subtle">
                     Accent: {activeBrand.accentColor} · Surface: {activeBrand.primaryColor}
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export function CustomizerView({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-xs font-semibold text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20 disabled:opacity-50 cursor-pointer transition"
+                className="inline-flex items-center gap-2 rounded-xl bg-nordic-pine px-6 py-2.5 text-xs font-medium text-white hover:bg-nordic-pine/90 shadow-sm disabled:opacity-50 cursor-pointer transition"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

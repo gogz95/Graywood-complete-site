@@ -72,7 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       data-domain={domain}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-dvh flex flex-col bg-background text-foreground">
+      <body className="min-h-dvh flex flex-col bg-nordic-canvas text-nordic-ink font-sans">
         <ThemeProvider domain={domain} />
         {isSetupRoute ? (
           <main className="flex-1 flex flex-col">{children}</main>
