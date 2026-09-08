@@ -13,6 +13,8 @@ import {
 
 interface PhotographyGalleryProps {
   assets: GalleryAsset[];
+  title?: string;
+  description?: string;
 }
 
 type CategoryKey = "all" | "landscapes" | "architecture" | "portraits" | "editorial";
@@ -39,17 +41,15 @@ function getAssetCategory(asset: GalleryAsset, index: number): CategoryKey {
       return cat.key;
     }
   }
-  // Fallback round-robin distribution for seeded/mock assets
   const fallbackKeys: CategoryKey[] = ["landscapes", "architecture", "portraits", "editorial"];
   return fallbackKeys[index % fallbackKeys.length];
 }
 
-export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
+export function PhotographyGallery({ assets, title, description }: PhotographyGalleryProps) {
   const [activeLightboxIndex, setActiveLightboxIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Categorize and attach tags to assets
   const enrichedAssets = useMemo(() => {
     return assets.map((asset, idx) => ({
       ...asset,
@@ -58,7 +58,6 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
     }));
   }, [assets]);
 
-  // Compute counts per category
   const categoryCounts = useMemo(() => {
     const counts: Record<CategoryKey, number> = {
       all: assets.length,
@@ -73,7 +72,6 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
     return counts;
   }, [assets.length, enrichedAssets]);
 
-  // Filter assets based on category and search query
   const filteredAssets = useMemo(() => {
     return enrichedAssets.filter((item) => {
       const matchesCategory =
@@ -99,10 +97,10 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
             <span>Curated Exhibition</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-nordic-ink">
-            Visual Archive
+            {title || "Visual Archive"}
           </h2>
           <p className="text-sm text-nordic-subtle mt-1 max-w-xl leading-relaxed">
-            Selected editorial collections captured across Svalbard, Lofoten, Oslofjord, and bespoke studio environments.
+            {description || "Selected editorial collections captured across Svalbard, Lofoten, Oslofjord, and bespoke studio environments."}
           </p>
         </div>
         <div className="mt-4 md:mt-0 flex items-center gap-3">
@@ -113,8 +111,8 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
         </div>
       </div>
 
-      {/* Filter and Search Controls */}
-      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-10">
+      {/* Filter and Search Controls: Side-by-side with border-b pb-4 */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-nordic-border pb-4 mb-10">
         {/* Category Pills */}
         <div className="flex flex-wrap items-center gap-2">
           {CATEGORIES.map((cat) => {
@@ -145,20 +143,21 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
           })}
         </div>
 
-        {/* Search / Filter Input */}
-        <div className="relative min-w-[240px] max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-nordic-faint pointer-events-none" />
+        {/* Search / Filter Input: explicit width w-full md:w-72 */}
+        <div className="relative w-full md:w-72">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-nordic-ink/20 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search camera, lens, tag..."
-            className="w-full rounded-full border border-nordic-border bg-nordic-surface pl-9 pr-8 py-2 text-xs text-nordic-ink placeholder:text-nordic-faint focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition"
+            style={{ paddingLeft: "2.5rem" }}
+            className="w-full rounded-full border border-nordic-border bg-nordic-surface pr-8 py-2 text-xs text-nordic-ink placeholder:text-nordic-ink/25 focus:border-nordic-pine focus:outline-none focus:ring-1 focus:ring-nordic-pine transition"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-nordic-faint hover:text-nordic-ink"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-nordic-ink/30 hover:text-nordic-ink"
               aria-label="Clear search"
             >
               <X className="h-3 w-3" />
@@ -169,13 +168,13 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
 
       {/* Empty State */}
       {assets.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-nordic-border p-16 text-center bg-nordic-surface/60">
+        <div className="rounded-3xl border border-dashed border-nordic-border p-16 text-center bg-nordic-surface/60 max-w-xl mx-auto shadow-sm">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-nordic-muted border border-nordic-border mb-4 text-nordic-pine">
             <SlidersHorizontal className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-serif text-nordic-ink">No works in public archive</h3>
+          <h3 className="text-base font-serif text-nordic-ink">No works currently indexed in public archive</h3>
           <p className="text-xs text-nordic-subtle max-w-sm mx-auto mt-1.5 leading-relaxed">
-            No media assets indexed from NAS storage. Trigger indexing from the Virtual Library to display photography portfolio.
+            No media assets found. Access the Master Asset Library in the Command Suite and click &quot;Scan New Files&quot; to index your NAS photography portfolio.
           </p>
         </div>
       ) : filteredAssets.length === 0 ? (
@@ -198,13 +197,13 @@ export function PhotographyGallery({ assets }: PhotographyGalleryProps) {
           </button>
         </div>
       ) : (
-        /* Responsive Dynamic Masonry Grid */
+        /* Masonry Grid */
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
           {filteredAssets.map((asset) => {
             const aspect =
               asset.width && asset.height
                 ? (asset.height / asset.width) * 100
-                : 75;
+                : 66.6;
 
             const isLandscape = asset.width && asset.height && asset.width > asset.height;
             const aspectLabel = isLandscape ? "16:9" : "3:2";

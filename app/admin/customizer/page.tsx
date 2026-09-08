@@ -7,12 +7,18 @@ export const dynamic = "force-dynamic";
 export default async function AdminCustomizerPage() {
   await requireAdminSession(["ADMIN"]);
 
-  const [modules, brands] = await Promise.all([
+  const [modules, brands, contentEntries, features] = await Promise.all([
     prisma.systemModule.findMany({
       orderBy: { name: "asc" },
     }),
     prisma.brandSettings.findMany({
       orderBy: { id: "asc" },
+    }),
+    prisma.siteContent.findMany({
+      orderBy: [{ scope: "asc" }, { section: "asc" }, { key: "asc" }],
+    }),
+    prisma.studioFeature.findMany({
+      orderBy: [{ scope: "asc" }, { order: "asc" }],
     }),
   ]);
 
@@ -20,6 +26,8 @@ export default async function AdminCustomizerPage() {
     <CustomizerView
       initialModules={modules}
       initialBrands={brands}
+      initialContent={contentEntries}
+      initialFeatures={features}
     />
   );
 }

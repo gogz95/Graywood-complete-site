@@ -131,3 +131,28 @@ model GameServer {
   gameType  String
   sortOrder Int    @default(0)
 }
+
+// Centralized copy store for all domains and sections
+model SiteContent {
+  id        String   @id @default(cuid())
+  scope     String   // "GLOBAL", "PHOTOGRAPHY", "MEDIA", "PORTAL"
+  section   String   // "HERO", "ARCHIVE", "COMMISSION", "FOOTER", "ABOUT"
+  key       String   // e.g., "badge", "title", "description", "button_primary"
+  value     String   // Plain text or markdown content
+  updatedAt DateTime @updatedAt
+
+  @@unique([scope, section, key])
+}
+
+// Configurable highlight callouts (replaces hardcoded feature boxes)
+model StudioFeature {
+  id          String   @id @default(cuid())
+  scope       String   // "PHOTOGRAPHY" or "MEDIA"
+  icon        String   // Lucide icon identifier: "Camera", "Compass", "Award", "Aperture"
+  title       String
+  description String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+

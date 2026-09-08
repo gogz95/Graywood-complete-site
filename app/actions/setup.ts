@@ -192,6 +192,88 @@ export async function bootstrapSystem(
       }),
     ]);
 
+    // Ensure baseline copy and highlights exist
+    const existingContentCount = await prisma.siteContent.count();
+    if (existingContentCount === 0) {
+      await prisma.siteContent.createMany({
+        data: [
+          {
+            scope: "PHOTOGRAPHY",
+            section: "HERO",
+            key: "badge",
+            value: `${siteTitle.toUpperCase()} PHOTOGRAPHY STUDIO`,
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            section: "HERO",
+            key: "title",
+            value: "Visual narratives across the Nordic landscape.",
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            section: "HERO",
+            key: "description",
+            value:
+              "Specialized in commercial campaigns, architectural documentation, and editorial storytelling. Captured with medium-format precision and authentic atmospheric light.",
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            section: "ARCHIVE",
+            key: "title",
+            value: "Visual Archive",
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            section: "ARCHIVE",
+            key: "description",
+            value: "Curated master files and commissions.",
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            section: "COMMISSION",
+            key: "title",
+            value: "Initiate a Commission",
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            section: "COMMISSION",
+            key: "description",
+            value:
+              "Available for editorial campaigns, architectural documentation, and select commercial projects throughout the Nordic region.",
+          },
+        ],
+      });
+    }
+
+    const existingFeaturesCount = await prisma.studioFeature.count();
+    if (existingFeaturesCount === 0) {
+      await prisma.studioFeature.createMany({
+        data: [
+          {
+            scope: "PHOTOGRAPHY",
+            icon: "Camera",
+            title: "Medium Format Rig",
+            description: "Ultra high-fidelity sensor captures up to 100 megapixels.",
+            order: 1,
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            icon: "Compass",
+            title: "Extreme Locations",
+            description: "Fjord, sub-zero Arctic, and architectural remote access.",
+            order: 2,
+          },
+          {
+            scope: "PHOTOGRAPHY",
+            icon: "Award",
+            title: "Color Grading Mastery",
+            description: "Bespoke LUTs tailored for editorial print and high-res web.",
+            order: 3,
+          },
+        ],
+      });
+    }
+
     // 5. Automatically issue admin iron-session cookie
     const session = await getAdminSession();
     session.user = {

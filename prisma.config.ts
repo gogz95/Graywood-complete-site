@@ -1,12 +1,11 @@
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
-/**
- * Prisma v7 configuration file.
- *
- * The datasource URL is now declared here instead of in schema.prisma.
- * See: https://www.prisma.io/docs/orm/v7/reference/prisma-config-reference
- */
+const rawUrl = env("DATABASE_URL");
+const dbUrl = rawUrl && rawUrl.startsWith("file:.") && !rawUrl.includes("prisma")
+  ? rawUrl.replace("file:.", "file:./prisma")
+  : rawUrl;
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
@@ -14,6 +13,6 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    url: dbUrl,
   },
 });

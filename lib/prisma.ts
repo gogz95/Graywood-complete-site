@@ -12,10 +12,14 @@ function resolveDatabaseUrl(raw: string): string {
     const filePath = raw.replace(/^file:\/*/, "");
     // If it's already an absolute Windows path like E:/...
     if (/^[a-zA-Z]:/.test(filePath)) {
-      return "file:///" + filePath.replace(/\\/g, "/");
+      return "file:" + filePath.replace(/\\/g, "/");
     }
-    const abs = path.resolve(/*turbopackIgnore: true*/ process.cwd(), filePath);
-    return "file:///" + abs.replace(/\\/g, "/");
+    const cleanPath = filePath.startsWith("./") ? filePath.slice(2) : filePath;
+    const target = cleanPath.startsWith("prisma/") || cleanPath.startsWith("prisma\\")
+      ? cleanPath
+      : path.join("prisma", cleanPath);
+    const abs = path.resolve(/*turbopackIgnore: true*/ process.cwd(), target);
+    return "file:" + abs.replace(/\\/g, "/");
   }
   return raw;
 }

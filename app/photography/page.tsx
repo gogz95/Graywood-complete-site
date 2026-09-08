@@ -1,39 +1,39 @@
 import { prisma } from "@/lib/prisma";
+import { getSiteContent, getStudioFeatures } from "@/lib/content";
 import { PhotographyGallery } from "@/components/photography/PhotographyGallery";
 import { ContactForm } from "@/components/photography/ContactForm";
-import { Camera, Compass, Award, ArrowDown } from "lucide-react";
+import { Camera, Compass, Award, Aperture, ArrowDown, Sparkles } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
+const FEATURE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  Camera,
+  Compass,
+  Award,
+  Aperture,
+  Sparkles,
+};
+
 export default async function PhotographyPage() {
-  const rawAssets = await prisma.mediaAsset.findMany({
-    where: {
-      albums: {
-        none: {
-          album: {
-            type: "CLIENT_PROOFING",
+  const [content, features, rawAssets] = await Promise.all([
+    getSiteContent("PHOTOGRAPHY"),
+    getStudioFeatures("PHOTOGRAPHY"),
+    prisma.mediaAsset.findMany({
+      where: {
+        albums: {
+          none: {
+            album: {
+              type: "CLIENT_PROOFING",
+            },
           },
         },
       },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 30,
-  });
+      orderBy: { createdAt: "desc" },
+      take: 30,
+    }),
+  ]);
 
-  const assets = rawAssets.map((a: {
-    id: string;
-    filePath: string;
-    fileName: string;
-    width: number | null;
-    height: number | null;
-    cameraModel: string | null;
-    lensModel: string | null;
-    focalLength: string | null;
-    aperture: string | null;
-    shutterSpeed: string | null;
-    iso: number | null;
-    capturedAt: Date | null;
-  }) => ({
+  const assets = rawAssets.map((a) => ({
     id: a.id,
     filePath: a.filePath,
     fileName: a.fileName,
@@ -48,6 +48,16 @@ export default async function PhotographyPage() {
     capturedAt: a.capturedAt ? a.capturedAt.toISOString() : null,
   }));
 
+  const heroBadge = content["HERO.badge"] || "";
+  const heroTitle = content["HERO.title"] || "";
+  const heroDescription = content["HERO.description"] || "";
+
+  const archiveTitle = content["ARCHIVE.title"] || "";
+  const archiveDescription = content["ARCHIVE.description"] || "";
+
+  const commissionTitle = content["COMMISSION.title"] || "";
+  const commissionDescription = content["COMMISSION.description"] || "";
+
   return (
     <main className="w-full min-h-screen bg-nordic-canvas text-nordic-ink">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col space-y-16">
@@ -57,20 +67,26 @@ export default async function PhotographyPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-[640px] rounded-full bg-nordic-pine/5 blur-[120px] pointer-events-none" />
 
           <div className="relative z-10 max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-nordic-border bg-nordic-surface px-4 py-1.5 text-xs text-nordic-subtle">
-              <Camera className="h-3.5 w-3.5 text-nordic-pine" />
-              <span className="font-mono uppercase tracking-widest text-nordic-subtle">
-                Graywood Photography Studio
-              </span>
-            </div>
+            {heroBadge && (
+              <div className="inline-flex items-center gap-2 rounded-full border border-nordic-border bg-nordic-surface px-4 py-1.5 text-xs text-nordic-subtle">
+                <Camera className="h-3.5 w-3.5 text-nordic-pine" />
+                <span className="font-mono uppercase tracking-widest text-nordic-subtle">
+                  {heroBadge}
+                </span>
+              </div>
+            )}
 
-            <h1 className="text-4xl sm:text-6xl font-serif tracking-tight text-nordic-ink leading-[1.1]">
-              Visual narratives across the Nordic landscape.
-            </h1>
+            {heroTitle && (
+              <h1 className="text-4xl sm:text-6xl font-serif tracking-tight text-nordic-ink leading-[1.1]">
+                {heroTitle}
+              </h1>
+            )}
 
-            <p className="text-base sm:text-lg text-nordic-subtle max-w-2xl mx-auto leading-relaxed">
-              Specialized in commercial campaigns, architectural documentation, and editorial storytelling. Captured with medium-format precision and authentic atmospheric light.
-            </p>
+            {heroDescription && (
+              <p className="text-base sm:text-lg text-nordic-subtle max-w-2xl mx-auto leading-relaxed">
+                {heroDescription}
+              </p>
+            )}
 
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
               <a
@@ -89,47 +105,43 @@ export default async function PhotographyPage() {
             </div>
           </div>
 
-          {/* Feature Highlights Banner */}
-          <div className="relative z-10 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full border-t border-nordic-border pt-8 text-left">
-            <div className="flex items-start gap-3">
-              <div className="rounded-xl bg-nordic-muted p-2 border border-nordic-border">
-                <Camera className="h-4 w-4 text-nordic-pine" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-nordic-ink">Medium Format Rig</p>
-                <p className="text-xs text-nordic-subtle">Ultra high-fidelity sensor captures up to 100 megapixels.</p>
-              </div>
+          {/* Dynamic Feature Highlights Banner (If features.length === 0, render nothing) */}
+          {features.length > 0 && (
+            <div className="relative z-10 mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl w-full border-t border-nordic-border pt-8 text-left">
+              {features.map((feature) => {
+                const IconComp = FEATURE_ICONS[feature.icon] || Camera;
+                return (
+                  <div key={feature.id} className="flex items-start gap-3">
+                    <div className="rounded-xl bg-nordic-muted p-2 border border-nordic-border text-nordic-pine shrink-0">
+                      <IconComp className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-nordic-ink">{feature.title}</p>
+                      <p className="text-xs text-nordic-subtle leading-relaxed mt-0.5">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-
-            <div className="flex items-start gap-3">
-              <div className="rounded-xl bg-nordic-muted p-2 border border-nordic-border">
-                <Compass className="h-4 w-4 text-nordic-pine" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-nordic-ink">Extreme Locations</p>
-                <p className="text-xs text-nordic-subtle">Fjord, sub-zero Arctic, and architectural remote access.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="rounded-xl bg-nordic-muted p-2 border border-nordic-border">
-                <Award className="h-4 w-4 text-nordic-pine" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-nordic-ink">Color Grading Mastery</p>
-                <p className="text-xs text-nordic-subtle">Bespoke LUTs tailored for editorial print and high-res web.</p>
-              </div>
-            </div>
-          </div>
+          )}
         </section>
 
         {/* Gallery Section with Masonry & Lightbox */}
         <div id="gallery">
-          <PhotographyGallery assets={assets} />
+          <PhotographyGallery
+            assets={assets}
+            title={archiveTitle}
+            description={archiveDescription}
+          />
         </div>
 
         {/* Contact Section */}
-        <ContactForm />
+        <ContactForm
+          title={commissionTitle}
+          description={commissionDescription}
+        />
       </div>
     </main>
   );

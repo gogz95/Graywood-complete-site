@@ -30,7 +30,12 @@ const BUDGET_RANGES = [
   "Enterprise / Retainer",
 ];
 
-export function ContactForm() {
+interface ContactFormProps {
+  title?: string;
+  description?: string;
+}
+
+export function ContactForm({ title, description }: ContactFormProps = {}) {
   const domain = useDomain();
   const [selectedProjectType, setSelectedProjectType] = useState<string>("Editorial Campaign");
   const [selectedBudget, setSelectedBudget] = useState<string>("25,000 – 60,000 NOK");
@@ -139,10 +144,11 @@ export function ContactForm() {
               <span>Commission Inquiries</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-nordic-ink">
-              Initiate a Commission
+              {title || "Initiate a Commission"}
             </h2>
             <p className="text-sm text-nordic-subtle mt-2 max-w-xl leading-relaxed">
-              Available for editorial campaigns, architectural documentation, and select commercial projects throughout the Nordic region and internationally.
+              {description ||
+                "Available for editorial campaigns, architectural documentation, and select commercial projects throughout the Nordic region and internationally."}
             </p>
           </div>
 
