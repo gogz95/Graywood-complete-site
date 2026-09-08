@@ -41,46 +41,52 @@ export async function checkoutGearItem(rawInput: CheckoutInput) {
   const { gearId, userId, expectedReturn, notes } = parsed.data;
 
   try {
-    const gear = await prisma.gearItem.findUnique({
-      where: { id: gearId },
-    });
-
-    if (!gear) {
-      return { success: false, message: "Gear item not found." };
-    }
-
-    if (gear.status === "CHECKED_OUT") {
-      return { success: false, message: "This item is already checked out." };
-    }
-
     const returnDate = new Date(expectedReturn);
 
-    // Run transaction: create checkout log and update gear status
-    await prisma.$transaction([
-      prisma.gearCheckoutLog.create({
+    // Atomically conditionalize checkout within transaction to eliminate check-then-write races
+    const checkoutResult = await prisma.$transaction(async (tx) => {
+      const updateRes = await tx.gearItem.updateMany({
+        where: {
+          id: gearId,
+          status: "AVAILABLE",
+        },
+        data: {
+          status: "CHECKED_OUT",
+          custodian: userId,
+          checkedOutAt: new Date(),
+          expectedReturn: returnDate,
+          notes: notes?.trim() || null,
+        },
+      });
+
+      if (updateRes.count === 0) {
+        const current = await tx.gearItem.findUnique({ where: { id: gearId } });
+        if (!current) {
+          return { success: false, message: "Gear item not found." };
+        }
+        return {
+          success: false,
+          message: "This item is already checked out or undergoing maintenance.",
+        };
+      }
+
+      await tx.gearCheckoutLog.create({
         data: {
           gearItemId: gearId,
           custodian: userId,
           action: "CHECKOUT",
           notes: notes?.trim() || null,
         },
-      }),
-      prisma.gearItem.update({
-        where: { id: gearId },
-        data: {
-          status: "CHECKED_OUT",
-          custodian: userId,
-          checkedOutAt: new Date(),
-          expectedReturn: returnDate,
-          notes: notes?.trim() || gear.notes,
-        },
-      }),
-    ]);
+      });
 
-    return {
-      success: true,
-      message: `Successfully checked out ${gear.name}.`,
-    };
+      const gear = await tx.gearItem.findUnique({ where: { id: gearId } });
+      return {
+        success: true,
+        message: `Successfully checked out ${gear?.name || "gear item"}.`,
+      };
+    });
+
+    return checkoutResult;
   } catch (error: unknown) {
     console.error("checkoutGearItem error:", error);
     return { success: false, message: "Failed to process checkout transaction." };
@@ -98,48 +104,77 @@ export async function checkinGearItem(rawInput: CheckinInput) {
     };
   }
 
-  const { gearId, returnNotes, condition } = parsed.data;
+  const { gearId, logId, returnNotes, condition } = parsed.data;
 
   try {
-    const gear = await prisma.gearItem.findUnique({
-      where: { id: gearId },
-    });
-
-    if (!gear) {
-      return { success: false, message: "Gear item not found." };
-    }
-
     const nextStatus =
       condition.toLowerCase().includes("damaged") ||
       condition.toLowerCase().includes("maintenance")
         ? "MAINTENANCE"
         : "AVAILABLE";
 
-    await prisma.$transaction([
-      prisma.gearCheckoutLog.create({
-        data: {
-          gearItemId: gearId,
-          custodian: gear.custodian || "Unknown",
-          action: "CHECKIN",
-          notes: returnNotes?.trim() || null,
+    const checkinResult = await prisma.$transaction(async (tx) => {
+      // Validate logId belongs strictly to this gear item and is a CHECKOUT action
+      if (logId) {
+        const specificLog = await tx.gearCheckoutLog.findFirst({
+          where: {
+            id: logId,
+            gearItemId: gearId,
+            action: "CHECKOUT",
+          },
+        });
+        if (!specificLog) {
+          return {
+            success: false,
+            message: "Invalid or mismatched checkout log ID for this gear item.",
+          };
+        }
+      }
+
+      // Check current status
+      const current = await tx.gearItem.findUnique({ where: { id: gearId } });
+      if (!current) {
+        return { success: false, message: "Gear item not found." };
+      }
+      if (current.status !== "CHECKED_OUT") {
+        return { success: false, message: "This item is not currently checked out." };
+      }
+
+      // Conditional atomic status transition
+      const updateRes = await tx.gearItem.updateMany({
+        where: {
+          id: gearId,
+          status: "CHECKED_OUT",
         },
-      }),
-      prisma.gearItem.update({
-        where: { id: gearId },
         data: {
           status: nextStatus,
           custodian: null,
           checkedOutAt: null,
           expectedReturn: null,
-          notes: returnNotes?.trim() || gear.notes,
+          notes: returnNotes?.trim() || current.notes,
         },
-      }),
-    ]);
+      });
 
-    return {
-      success: true,
-      message: `Successfully checked in ${gear.name} (Status: ${nextStatus}).`,
-    };
+      if (updateRes.count === 0) {
+        return { success: false, message: "This item is not currently checked out." };
+      }
+
+      await tx.gearCheckoutLog.create({
+        data: {
+          gearItemId: gearId,
+          custodian: current.custodian || "Unknown",
+          action: "CHECKIN",
+          notes: returnNotes?.trim() || null,
+        },
+      });
+
+      return {
+        success: true,
+        message: `Successfully checked in ${current.name} (Status: ${nextStatus}).`,
+      };
+    });
+
+    return checkinResult;
   } catch (error: unknown) {
     console.error("checkinGearItem error:", error);
     return { success: false, message: "Failed to process check-in transaction." };

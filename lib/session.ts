@@ -9,15 +9,18 @@ export interface ProofingSessionData {
   authorizedAlbums?: string[];
 }
 
-const sessionSecret = process.env.SESSION_SECRET;
-if (!sessionSecret && process.env.NODE_ENV === "production") {
-  throw new Error("FATAL: SESSION_SECRET environment variable is required in production.");
+function getSessionSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error(
+      "FATAL: SESSION_SECRET environment variable is required and must be at least 32 characters long."
+    );
+  }
+  return secret;
 }
 
 export const proofingSessionOptions: SessionOptions = {
-  password:
-    sessionSecret ||
-    "complex_secret_password_at_least_32_characters_long_graywood_2026",
+  password: getSessionSecret(),
   cookieName: "gw_proofing_session",
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",

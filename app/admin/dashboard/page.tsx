@@ -11,7 +11,6 @@ import {
   Server,
   Activity,
   CheckCircle2,
-  HardDrive,
   ExternalLink,
   ArrowRight,
   Sparkles,

@@ -6,6 +6,9 @@ import sharp from "sharp";
 import { prisma } from "@/lib/prisma";
 import { resolveSafeNasPath, resolveSafeCachePath, getCacheBasePath } from "@/lib/storage";
 
+import { getAdminSession } from "@/lib/admin-session";
+import { getProofingSession, isAlbumAuthorized } from "@/lib/session";
+
 export const dynamic = "force-dynamic";
 
 const SIZES: Record<string, number> = {
@@ -17,10 +20,11 @@ const SIZES: Record<string, number> = {
  * GET /api/media/[assetId]?size=thumb|preview
  *
  * Transcodes media assets from NAS storage on-demand with Sharp:
- * - Checks local SSD cache first (cache hit -> streams directly from SSD)
+ * - Validates access authorization: private proofing assets require an active admin or proofing session.
+ * - Checks local SSD cache (cache hit -> streams directly from SSD)
  * - Cache miss -> reads from NAS, auto-rotates, resizes, converts to WebP,
  *   atomically writes to SSD cache, and streams to client.
- * - Adds immutable 1-year cache headers.
+ * - Adds immutable 1-year cache headers for public assets, or strict private headers for proofing photos.
  */
 export async function GET(
   request: NextRequest,
@@ -34,23 +38,88 @@ export async function GET(
     }
 
     const { searchParams } = new URL(request.url);
-    const sizeParam = searchParams.get("size")?.toLowerCase() ?? "preview";
+    const sizeParam = searchParams.get("size")?.toLowerCase();
+    const wParam = searchParams.get("w");
+    const qParam = searchParams.get("q");
 
-    if (!SIZES[sizeParam]) {
-      return new NextResponse("Invalid size parameter. Valid options: 'thumb', 'preview'.", {
-        status: 400,
-      });
+    let targetWidth: number;
+    let quality = 85;
+    let cacheFilename: string;
+
+    if (wParam) {
+      const parsedWidth = parseInt(wParam, 10);
+      if (isNaN(parsedWidth) || parsedWidth < 50 || parsedWidth > 4000) {
+        return new NextResponse("Invalid width parameter (50-4000px).", { status: 400 });
+      }
+      targetWidth = parsedWidth;
+      if (qParam) {
+        const parsedQ = parseInt(qParam, 10);
+        if (!isNaN(parsedQ) && parsedQ >= 20 && parsedQ <= 100) {
+          quality = parsedQ;
+        }
+      }
+      cacheFilename = `${assetId}-w${targetWidth}-q${quality}.webp`;
+    } else {
+      const effectiveSize = sizeParam ?? "preview";
+      if (!SIZES[effectiveSize]) {
+        return new NextResponse("Invalid size parameter. Valid options: 'thumb', 'preview', or custom 'w' and 'q'.", {
+          status: 400,
+        });
+      }
+      targetWidth = SIZES[effectiveSize];
+      quality = effectiveSize === "thumb" ? 80 : 85;
+      cacheFilename = `${assetId}-${effectiveSize}.webp`;
     }
 
-    const targetWidth = SIZES[sizeParam];
-
-    // Look up media asset in SQLite
+    // Look up media asset in SQLite including associated albums
     const asset = await prisma.mediaAsset.findUnique({
       where: { id: assetId },
+      include: {
+        albumItems: {
+          include: {
+            album: {
+              select: {
+                id: true,
+                slug: true,
+                type: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!asset) {
       return new NextResponse("Media asset not found in library.", { status: 404 });
+    }
+
+    // Check if asset belongs to any private CLIENT_PROOFING albums
+    const proofingAlbums = asset.albumItems
+      .map((item) => item.album)
+      .filter((album) => album.type === "CLIENT_PROOFING");
+
+    const isPrivate = proofingAlbums.length > 0;
+
+    if (isPrivate) {
+      // 1. Check if user is authenticated admin/co-owner
+      const adminSession = await getAdminSession();
+      const isAdmin = !!adminSession?.user;
+
+      // 2. Check if client has unlocked any of the proofing albums this photo belongs to
+      let isProofingAuthorized = false;
+      if (!isAdmin) {
+        const proofingSession = await getProofingSession();
+        isProofingAuthorized = proofingAlbums.some((album) =>
+          isAlbumAuthorized(proofingSession, album.slug)
+        );
+      }
+
+      if (!isAdmin && !isProofingAuthorized) {
+        return new NextResponse(
+          "Access denied. Private client proofing assets require an authorized session.",
+          { status: 401 }
+        );
+      }
     }
 
     // Resolve safe NAS file path (guarded against traversal)
@@ -66,13 +135,18 @@ export async function GET(
       return new NextResponse("Underlying file not found on NAS storage.", { status: 404 });
     }
 
-    // Cache key: <assetId>-<size>.webp
-    const cacheFilename = `${assetId}-${sizeParam}.webp`;
+    // Cache key: <assetId>-<size>.webp or <assetId>-w<width>-q<quality>.webp
     const cacheFilePath = resolveSafeCachePath(cacheFilename);
 
     const headers = new Headers();
     headers.set("Content-Type", "image/webp");
-    headers.set("Cache-Control", "public, max-age=31536000, immutable");
+
+    if (isPrivate) {
+      headers.set("Cache-Control", "private, no-cache, no-store, must-revalidate");
+      headers.set("Pragma", "no-cache");
+    } else {
+      headers.set("Cache-Control", "public, max-age=31536000, immutable");
+    }
 
     // =========================================================================
     // 1. SSD Cache Hit
@@ -105,7 +179,7 @@ export async function GET(
         withoutEnlargement: true,
       })
       .webp({
-        quality: sizeParam === "thumb" ? 80 : 85,
+        quality,
         effort: 4,
       })
       .toBuffer();

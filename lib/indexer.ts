@@ -289,6 +289,14 @@ export async function runIncrementalScan(
 
       const meta = await extractMediaMetadata(buffer, stat.birthtime || stat.mtime);
 
+      const normalizedPath = relPath.replace(/\\/g, "/").toLowerCase();
+      const inferredCategory = normalizedPath.includes("arch")
+        ? "ARCHITECTURE"
+        : normalizedPath.includes("portrait")
+        ? "PORTRAIT"
+        : "LANDSCAPE";
+      const isPublic = !normalizedPath.includes("proofing") && !normalizedPath.includes("client");
+
       recordsToCreate.push({
         id: generateAssetId(),
         originalPath: relPath,
@@ -305,6 +313,8 @@ export async function runIncrementalScan(
         shutterSpeed: meta.shutterSpeed ?? null,
         iso: meta.iso ?? null,
         capturedAt: meta.capturedAt ?? new Date(),
+        isPublic,
+        category: inferredCategory,
       });
 
       totalIndexed++;

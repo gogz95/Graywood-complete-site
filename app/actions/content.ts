@@ -21,7 +21,9 @@ const FeatureSchema = z.object({
  */
 export async function updateSiteContent(
   scope: string,
-  entries: Record<string, string>
+  sectionOrEntries: string | Record<string, string>,
+  key?: string,
+  value?: string
 ) {
   await requireAdminSession(["ADMIN"]);
 
@@ -30,27 +32,50 @@ export async function updateSiteContent(
   }
 
   try {
-    for (const [compositeKey, value] of Object.entries(entries)) {
-      const parts = compositeKey.split(".");
-      if (parts.length !== 2) continue;
-      const [section, key] = parts;
+    if (typeof sectionOrEntries === "string") {
+      const section = sectionOrEntries;
+      const contentKey = key ?? "";
+      const contentValue = value ?? "";
 
       await prisma.siteContent.upsert({
         where: {
           scope_section_key: {
             scope,
             section,
-            key,
+            key: contentKey,
           },
         },
-        update: { value: value ?? "" },
+        update: { value: contentValue },
         create: {
           scope,
           section,
-          key,
-          value: value ?? "",
+          key: contentKey,
+          value: contentValue,
         },
       });
+    } else if (typeof sectionOrEntries === "object" && sectionOrEntries !== null) {
+      for (const [compositeKey, val] of Object.entries(sectionOrEntries)) {
+        const parts = compositeKey.split(".");
+        if (parts.length !== 2) continue;
+        const [section, k] = parts;
+
+        await prisma.siteContent.upsert({
+          where: {
+            scope_section_key: {
+              scope,
+              section,
+              key: k,
+            },
+          },
+          update: { value: val ?? "" },
+          create: {
+            scope,
+            section,
+            key: k,
+            value: val ?? "",
+          },
+        });
+      }
     }
 
     try {

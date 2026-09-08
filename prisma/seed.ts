@@ -513,6 +513,68 @@ async function main() {
   }
   console.log(`  ✅ Baseline StudioFeatures verified: ${studioFeatures.length} highlights across scopes`);
 
+  // -------------------------------------------------------------------------
+  // 5. Baseline GameServer Telemetry Nodes (Gamehosting-by-Graywood-2)
+  // -------------------------------------------------------------------------
+  const baselineGameServers = [
+    {
+      name: "Assetto Corsa Sim Cluster",
+      gameType: "Assetto Corsa",
+      protocolType: "assettocorsa",
+      endpoint: "play.graywood.no:9600",
+      enabled: true,
+    },
+    {
+      name: "Unreal 5.4 Dedicated Testbed",
+      gameType: "Unreal 5.4 Dedicated",
+      protocolType: "protocol-valve",
+      endpoint: "play.graywood.no:7777",
+      enabled: true,
+    },
+  ];
+
+  for (const srv of baselineGameServers) {
+    const existing = await prisma.gameServer.findFirst({
+      where: { endpoint: srv.endpoint },
+    });
+    if (!existing) {
+      await prisma.gameServer.create({ data: srv });
+    }
+  }
+  console.log(`  ✅ Baseline GameServers verified: ${baselineGameServers.length} nodes`);
+
+  // -------------------------------------------------------------------------
+  // 6. Ensure existing public media assets are marked isPublic: true
+  // -------------------------------------------------------------------------
+  const publicAssets = await prisma.mediaAsset.findMany({
+    where: {
+      albumItems: {
+        none: {
+          album: {
+            type: "CLIENT_PROOFING",
+          },
+        },
+      },
+    },
+  });
+
+  for (const asset of publicAssets) {
+    const inferredCategory = asset.originalPath.toLowerCase().includes("arch")
+      ? "ARCHITECTURE"
+      : asset.originalPath.toLowerCase().includes("portrait")
+      ? "PORTRAIT"
+      : "LANDSCAPE";
+
+    await prisma.mediaAsset.update({
+      where: { id: asset.id },
+      data: {
+        isPublic: true,
+        category: asset.category ?? inferredCategory,
+      },
+    });
+  }
+  console.log(`  ✅ Verified ${publicAssets.length} public media assets marked isPublic: true`);
+
   console.log("\n🚀 System configuration successfully seeded with Scandinavian editorial defaults!");
 }
 

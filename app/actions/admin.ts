@@ -1,9 +1,15 @@
 "use server";
 
+import { headers } from "next/headers";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/admin-session";
+import {
+  checkRateLimit,
+  recordFailedAttempt,
+  resetRateLimit,
+} from "@/lib/rate-limit";
 
 const AdminLoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -18,10 +24,14 @@ export interface AdminActionResult {
   role?: "ADMIN" | "CO_OWNER";
 }
 
+const LOGIN_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_LOGIN_ATTEMPTS = 5;
+
 /**
  * Server Action: adminLogin
  *
  * Verifies credentials against the User model and issues an encrypted admin session.
+ * Enforces per-IP and per-account rate limiting against credential stuffing.
  */
 export async function adminLogin(
   rawInput: AdminLoginInput
@@ -35,13 +45,36 @@ export async function adminLogin(
   }
 
   const { email, password } = validation.data;
+  const normalizedEmail = email.toLowerCase().trim();
+
+  // Extract client IP for brute-force tracking (safe against test env outside request scope)
+  let ip = "direct";
+  try {
+    const headerList = await headers();
+    ip =
+      headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      headerList.get("x-real-ip") ||
+      "direct";
+  } catch {
+    ip = "test-env";
+  }
+
+  const rateLimitKey = `login:${ip}:${normalizedEmail}`;
+  const limitCheck = checkRateLimit(rateLimitKey, MAX_LOGIN_ATTEMPTS, LOGIN_WINDOW_MS);
+  if (!limitCheck.allowed) {
+    return {
+      success: false,
+      message: `Too many failed login attempts. Locked out for ${limitCheck.retryAfterSeconds} seconds.`,
+    };
+  }
 
   try {
     const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase().trim() },
+      where: { email: normalizedEmail },
     });
 
     if (!user) {
+      recordFailedAttempt(rateLimitKey, LOGIN_WINDOW_MS);
       return {
         success: false,
         message: "Invalid credentials or unauthorized account.",
@@ -50,11 +83,15 @@ export async function adminLogin(
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) {
+      recordFailedAttempt(rateLimitKey, LOGIN_WINDOW_MS);
       return {
         success: false,
         message: "Invalid credentials or unauthorized account.",
       };
     }
+
+    // Success — clear rate limit
+    resetRateLimit(rateLimitKey);
 
     const session = await getAdminSession();
     session.user = {

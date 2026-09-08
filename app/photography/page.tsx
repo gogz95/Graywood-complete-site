@@ -20,6 +20,7 @@ export default async function PhotographyPage() {
     getStudioFeatures("PHOTOGRAPHY"),
     prisma.mediaAsset.findMany({
       where: {
+        isPublic: true,
         albumItems: {
           none: {
             album: {
@@ -29,7 +30,6 @@ export default async function PhotographyPage() {
         },
       },
       orderBy: { indexedAt: "desc" },
-      take: 30,
     }),
   ]);
 

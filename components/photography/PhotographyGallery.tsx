@@ -5,10 +5,8 @@ import { Lightbox, type GalleryAsset } from "./Lightbox";
 import {
   Maximize2,
   SlidersHorizontal,
-  Search,
   Sparkles,
   Layers,
-  X,
   Camera,
 } from "lucide-react";
 
@@ -156,20 +154,22 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
 
       {/* Empty State */}
       {assets.length === 0 ? (
-        <div className="border border-nordic-border bg-nordic-surface rounded-2xl p-12 text-center max-w-xl mx-auto">
-          <Camera className="h-8 w-8 text-nordic-pine mx-auto mb-3 opacity-60" />
-          <h3 className="text-base font-serif text-nordic-ink">No works currently indexed in public archive</h3>
-          <p className="text-xs text-nordic-subtle max-w-sm mx-auto mt-1.5 leading-relaxed">
-            No media assets found. Access the Master Asset Library in the Command Suite and click &quot;Scan NAS&quot; to index your NAS photography portfolio.
+        <div className="w-full rounded-2xl border border-[#E8E5DF] bg-[#FFFFFF] p-16 text-center shadow-sm">
+          <div className="w-12 h-12 rounded-xl bg-[#F9F8F6] border border-[#E8E5DF] flex items-center justify-center mx-auto mb-3 text-[#68655E]">
+            <Camera className="w-6 h-6 stroke-[1.5]" />
+          </div>
+          <h3 className="font-serif text-lg text-[#1C1B19] font-normal">No records found</h3>
+          <p className="text-xs text-[#68655E] mt-1 max-w-sm mx-auto leading-relaxed">
+            No media assets found in public archive. Access the Master Asset Library in the Command Suite and click &quot;Scan NAS&quot; to index your photography portfolio.
           </p>
         </div>
       ) : filteredAssets.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-nordic-border p-16 text-center bg-nordic-surface/60">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-nordic-muted border border-nordic-border mb-4 text-nordic-pine">
-            <SlidersHorizontal className="h-6 w-6" />
+        <div className="w-full rounded-2xl border border-[#E8E5DF] bg-[#FFFFFF] p-16 text-center shadow-sm">
+          <div className="w-12 h-12 rounded-xl bg-[#F9F8F6] border border-[#E8E5DF] flex items-center justify-center mx-auto mb-3 text-[#68655E]">
+            <SlidersHorizontal className="w-6 h-6 stroke-[1.5]" />
           </div>
-          <h3 className="text-base font-serif text-nordic-ink">No matching works discovered</h3>
-          <p className="text-xs text-nordic-subtle max-w-sm mx-auto mt-1.5 leading-relaxed">
+          <h3 className="font-serif text-lg text-[#1C1B19] font-normal">No records found</h3>
+          <p className="text-xs text-[#68655E] mt-1 max-w-sm mx-auto leading-relaxed">
             No assets in the archive match the active category and filter criteria.
           </p>
           <button
@@ -177,7 +177,7 @@ export function PhotographyGallery({ assets, title, description }: PhotographyGa
               setActiveCategory("all");
               setSearchQuery("");
             }}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-nordic-border bg-nordic-surface px-4 py-2.5 text-xs font-medium text-nordic-ink hover:bg-nordic-muted hover:border-nordic-pine/40 transition cursor-pointer"
+            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[#E8E5DF] bg-[#F9F8F6] px-4 py-2 text-xs font-medium text-[#1C1B19] hover:bg-[#FFFFFF] hover:border-[#2D3B36] transition cursor-pointer"
           >
             Reset All Filters
           </button>

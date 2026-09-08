@@ -10,18 +10,12 @@ import { resolveDomainKey, DOMAIN_HEADER } from "@/lib/domain";
  * Server Components / layouts can read it without touching the network.
  */
 export function proxy(request: NextRequest) {
-  const explicitDomain = request.headers.get(DOMAIN_HEADER);
+  // Disregard any client-supplied x-gw-domain header to prevent cross-domain spoofing
   const host =
     request.headers.get("x-forwarded-host") ??
     request.headers.get("host") ??
     "";
-  const domainKey =
-    explicitDomain &&
-    (explicitDomain === "PHOTOGRAPHY" ||
-      explicitDomain === "MEDIA" ||
-      explicitDomain === "MAIN")
-      ? (explicitDomain as "PHOTOGRAPHY" | "MEDIA" | "MAIN")
-      : resolveDomainKey(host);
+  const domainKey = resolveDomainKey(host);
 
   // Clone headers and inject our domain key & pathname
   const requestHeaders = new Headers(request.headers);

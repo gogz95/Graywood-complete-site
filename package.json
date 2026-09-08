@@ -13,6 +13,7 @@
     "db:generate": "prisma generate",
     "generate:media": "tsx scripts/generate-mock-media.ts",
     "nas:index": "tsx scripts/index-nas.ts",
+    "postinstall": "prisma generate",
     "test:all": "tsx tests/storage-security.test.ts && tsx tests/indexer.test.ts && tsx tests/transcoder.test.ts && tsx tests/phase3-e2e.test.ts && tsx tests/phase4-e2e.test.ts && tsx tests/code-review-audit.test.ts && tsx tests/setup-wizard.test.ts"
   },
   "prisma": {
@@ -51,5 +52,9 @@
     "tailwindcss": "^3.4.19",
     "tsx": "^4.23.13",
     "typescript": "^5"
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.2",
+    "mysql2": "^3.24.4"
   }
 }

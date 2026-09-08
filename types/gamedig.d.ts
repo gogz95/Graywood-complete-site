@@ -6,17 +6,17 @@ declare module "gamedig" {
       port?: number;
       socketTimeout?: number;
       maxAttempts?: number;
-      [key: string]: any;
+      [key: string]: unknown;
     }): Promise<{
       name?: string;
       map?: string;
       ping?: number;
-      players?: Array<{ name?: string; ping?: number; [key: string]: any }>;
+      players?: Array<{ name?: string; ping?: number; [key: string]: unknown }>;
       maxplayers?: number;
       connect?: string;
-      raw?: any;
+      raw?: unknown;
     }>;
 
-    query(options: any): Promise<any>;
+    query(options: unknown): Promise<unknown>;
   }
 }

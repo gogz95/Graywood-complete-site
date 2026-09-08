@@ -26,12 +26,20 @@ export async function submitContactInquiry(
 
     const data = parseResult.data;
 
+    const match = data.message.match(/\[Scope: (.*?) \| Budget: (.*?)\]\n\n([\s\S]*)/);
+    const inferredDiscipline = match ? match[1] : (data.discipline || "Editorial Campaign");
+    const inferredBudget = match ? match[2] : (data.budgetTier || null);
+    const inferredDetails = match ? match[3] : (data.details || data.message);
+
     await prisma.contactInquiry.create({
       data: {
         domainSource: data.domainSource,
         name: data.name,
         email: data.email,
         phone: data.phone || null,
+        discipline: inferredDiscipline,
+        budgetTier: inferredBudget,
+        details: inferredDetails,
         message: data.message,
         status: "NEW",
       },

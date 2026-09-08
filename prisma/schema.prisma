@@ -68,6 +68,8 @@ model MediaAsset {
   aperture     String?
   shutterSpeed String?
   capturedAt   DateTime?
+  isPublic     Boolean     @default(false)
+  category     String?     // "LANDSCAPE", "ARCHITECTURE", "PORTRAIT"
   indexedAt    DateTime    @default(now())
   albumItems   AlbumItem[]
 }
@@ -149,11 +151,14 @@ model BrandSettings {
 // Client Inquiries Ledger
 model ContactInquiry {
   id           String   @id @default(cuid())
-  domainSource String   @default("PHOTOGRAPHY")
   name         String
   email        String
   phone        String?
-  message      String
-  status       String   @default("NEW") // "NEW", "REPLIED", "BOOKED"
+  discipline   String   @default("Editorial Campaign")
+  budgetTier   String?
+  details      String   @default("")
+  message      String   @default("")
+  domainSource String   @default("PHOTOGRAPHY")
+  status       String   @default("NEW") // "NEW" | "REVIEWED" | "ARCHIVED"
   createdAt    DateTime @default(now())
 }

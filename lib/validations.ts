@@ -8,6 +8,9 @@ export const ContactInquirySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(120),
   email: z.string().email("Invalid email address"),
   phone: z.string().max(30).optional(),
+  discipline: z.string().optional(),
+  budgetTier: z.string().optional(),
+  details: z.string().optional(),
   message: z
     .string()
     .min(10, "Message must be at least 10 characters")

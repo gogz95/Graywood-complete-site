@@ -4,7 +4,6 @@ import { ShowreelPlayer } from "@/components/media/ShowreelPlayer";
 import {
   Video,
   Film,
-  Sparkles,
   Clapperboard,
   ArrowRight,
   MonitorPlay,

@@ -7,7 +7,17 @@ import { resolveSafeCachePath } from "../lib/storage";
 async function test() {
   console.log("Testing image transcoding and SSD caching...");
 
-  const asset = await prisma.mediaAsset.findFirst();
+  const asset = await prisma.mediaAsset.findFirst({
+    where: {
+      albumItems: {
+        none: {
+          album: {
+            type: "CLIENT_PROOFING",
+          },
+        },
+      },
+    },
+  });
   if (!asset) {
     throw new Error("No media asset found in database. Run indexer first!");
   }
@@ -73,6 +83,15 @@ async function test() {
   console.log("Response 3 (preview) X-Cache-Status:", res3.headers.get("X-Cache-Status"));
   if (res3.headers.get("X-Cache-Status") !== "MISS") throw new Error("Expected preview MISS on first call");
   if (!fs.existsSync(previewCache)) throw new Error("Preview cache file was not written!");
+
+  // 4. Dynamic width & quality parameters: ?w=1200&q=85
+  const req4 = new NextRequest(`http://localhost:3000/api/media/${asset.id}?w=1200&q=85`);
+  const res4 = await GET(req4, { params: Promise.resolve({ assetId: asset.id }) });
+  if (res4.status !== 200) throw new Error(`Expected 200 for ?w=1200&q=85, got ${res4.status}`);
+  if (res4.headers.get("Content-Type") !== "image/webp") throw new Error("Expected image/webp for ?w=1200&q=85");
+  const customCache = resolveSafeCachePath(`${asset.id}-w1200-q85.webp`);
+  if (!fs.existsSync(customCache)) throw new Error("Custom w/q cache file was not written!");
+  console.log("  [PASS] Dynamic ?w=1200&q=85 transcode & caching verified.");
 
   console.log("Transcoding & SSD caching verified successfully!");
 }
