@@ -1,42 +1,74 @@
+# =============================================================================
+# Graywood WordPress Block Theme — Docker Compose
+# MariaDB 10.11 + WordPress (latest) + WP-CLI auto-provisioner
+# =============================================================================
+
 services:
-  graywood-platform:
-    build: .
-    container_name: graywood-digital-platform
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=file:/app/data/prod.db
-      - NAS_STORAGE_PATH=/mnt/storage
-      - LOCAL_CACHE_PATH=/app/cache/previews
-      - SESSION_SECRET=production_secret_key_minimum_32_characters_long_graywood_2026
-    volumes:
-      - ./data:/app/data:rw
-      - ./cache:/app/cache:rw
-      - /mnt/nas/photography:/mnt/storage:ro   # Host NAS mount — read-only in container
 
   # ---------------------------------------------------------------------------
-  # NAS Indexer Cron Sidecar
-  # Runs the incremental SHA-256 scanner on a configurable schedule.
-  # Shares data + NAS volumes with the main app, writes only to SQLite.
-  # Set SCAN_INTERVAL_MINUTES to control how often it polls (default: 30).
+  # Database: MariaDB 10.11 with persistent storage
   # ---------------------------------------------------------------------------
-  graywood-cron:
-    build: .
-    container_name: graywood-nas-cron
+  db:
+    image: mariadb:10.11
+    container_name: graywood-db
     restart: unless-stopped
-    # Override the CMD to run the indexer daemon instead of the web server
-    entrypoint: ["node", "--import", "tsx/esm", "scripts/cron-nas-index.ts"]
-    depends_on:
-      - graywood-platform
     environment:
-      - NODE_ENV=production
-      - DATABASE_URL=file:/app/data/prod.db
-      - NAS_STORAGE_PATH=/mnt/storage
-      - LOCAL_CACHE_PATH=/app/cache/previews
-      - SCAN_INTERVAL_MINUTES=30
+      MYSQL_ROOT_PASSWORD: GraywoodRoot2026!
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: WpGraywood2026!
     volumes:
-      - ./data:/app/data:rw             # Shared SQLite database
-      - ./cache:/app/cache:rw           # Shared WebP preview cache
-      - /mnt/nas/photography:/mnt/storage:ro  # Same NAS mount, read-only
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ---------------------------------------------------------------------------
+  # WordPress: Latest with Apache, exposed on port 8080
+  # ---------------------------------------------------------------------------
+  wordpress:
+    image: wordpress:latest
+    container_name: graywood-wordpress
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: WpGraywood2026!
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-theme/graywood-theme:/var/www/html/wp-content/themes/graywood-theme
+
+  # ---------------------------------------------------------------------------
+  # WP-CLI Auto-Installer: One-shot provisioning container
+  # ---------------------------------------------------------------------------
+  wp-auto-install:
+    image: wordpress:cli
+    container_name: graywood-wp-cli
+    depends_on:
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: WpGraywood2026!
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wp_data:/var/www/html
+      - ./setup-wp.sh:/usr/local/bin/setup-wp.sh
+    entrypoint: ["/bin/sh", "/usr/local/bin/setup-wp.sh"]
+
+volumes:
+  db_data:
+  wp_data:

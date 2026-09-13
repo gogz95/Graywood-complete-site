@@ -1,0 +1,904 @@
+/* ======================================================================
+   Graywood Custom Styles — Beyond theme.json
+   Scandinavian Editorial Design System
+   ====================================================================== */
+
+/* ------------------------------------------------------------------
+   CSS Custom Properties (mirroring theme.json for JS/CSS interop)
+   ------------------------------------------------------------------ */
+:root {
+  --gw-radius-sm: 8px;
+  --gw-radius-md: 12px;
+  --gw-radius-lg: 16px;
+  --gw-radius-xl: 24px;
+  --gw-shadow-xs: 0 1px 2px rgba(28,27,25,0.04);
+  --gw-shadow-sm: 0 4px 12px rgba(28,27,25,0.04);
+  --gw-shadow-md: 0 8px 30px rgba(28,27,25,0.04);
+  --gw-shadow-lg: 0 16px 50px rgba(28,27,25,0.06);
+  --gw-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ------------------------------------------------------------------
+   Header / Navigation
+   ------------------------------------------------------------------ */
+.gw-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  width: 100%;
+  background: rgba(255,255,255,0.90);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--wp--preset--color--nordic-border);
+  transition: var(--gw-transition);
+}
+
+.gw-header-inner {
+  max-width: var(--wp--preset--spacing--80, 1280px);
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gw-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--wp--preset--color--nordic-ink);
+}
+
+.gw-brand-icon {
+  display: flex;
+  height: 36px;
+  width: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--gw-radius-md);
+  background: var(--wp--preset--color--nordic-surface);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  box-shadow: var(--gw-shadow-xs);
+  color: var(--wp--preset--color--nordic-pine);
+}
+
+.gw-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.gw-brand-name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--wp--preset--color--nordic-ink);
+}
+
+.gw-brand-badge {
+  font-size: 10px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--wp--preset--color--nordic-subtle);
+}
+
+/* ------------------------------------------------------------------
+   Hero Sections
+   ------------------------------------------------------------------ */
+.gw-hero {
+  position: relative;
+  width: 100%;
+  padding: 80px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: var(--gw-radius-xl);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: rgba(255,255,255,0.6);
+  overflow: hidden;
+}
+
+.gw-hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 420px;
+  width: 640px;
+  border-radius: 50%;
+  background: rgba(45,59,54,0.05);
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.gw-hero-clay::before {
+  background: rgba(200,109,81,0.05);
+}
+
+.gw-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9999px;
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-surface);
+  padding: 6px 16px;
+  font-size: 11px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--wp--preset--color--nordic-subtle);
+  margin-bottom: 24px;
+}
+
+.gw-hero-badge svg {
+  width: 14px;
+  height: 14px;
+  color: var(--wp--preset--color--nordic-pine);
+}
+
+.gw-hero-badge-clay svg {
+  color: var(--wp--preset--color--nordic-clay);
+}
+
+.gw-hero h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto 24px;
+}
+
+.gw-hero p {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--wp--preset--color--nordic-subtle);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ------------------------------------------------------------------
+   Buttons — Primary & Secondary
+   ------------------------------------------------------------------ */
+.gw-btn-primary,
+.wp-block-button.is-style-gw-primary .wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--gw-radius-md);
+  background: var(--wp--preset--color--nordic-pine);
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--gw-shadow-xs);
+  transition: var(--gw-transition);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.gw-btn-primary:hover,
+.wp-block-button.is-style-gw-primary .wp-block-button__link:hover {
+  background: #1e2824;
+  color: #fff;
+}
+
+.gw-btn-clay,
+.wp-block-button.is-style-gw-clay .wp-block-button__link {
+  background: var(--wp--preset--color--nordic-clay);
+}
+
+.gw-btn-clay:hover,
+.wp-block-button.is-style-gw-clay .wp-block-button__link:hover {
+  background: #b5604a;
+}
+
+.gw-btn-secondary,
+.wp-block-button.is-style-gw-secondary .wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--gw-radius-md);
+  background: var(--wp--preset--color--nordic-surface);
+  color: var(--wp--preset--color--nordic-ink);
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  transition: var(--gw-transition);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.gw-btn-secondary:hover,
+.wp-block-button.is-style-gw-secondary .wp-block-button__link:hover {
+  background: var(--wp--preset--color--nordic-muted);
+  color: var(--wp--preset--color--nordic-ink);
+}
+
+/* ------------------------------------------------------------------
+   Cards / Pillar Blocks
+   ------------------------------------------------------------------ */
+.gw-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  border-radius: var(--gw-radius-xl);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-surface);
+  box-shadow: var(--gw-shadow-sm);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  .gw-card { padding: 48px; }
+}
+
+.gw-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--gw-shadow-lg);
+  border-color: var(--wp--preset--color--nordic-divider);
+}
+
+.gw-card-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--wp--preset--color--nordic-pine);
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(232,229,223,0.6);
+}
+
+.gw-card-tag svg {
+  width: 16px;
+  height: 16px;
+  color: var(--wp--preset--color--nordic-clay);
+}
+
+.gw-card-domain {
+  border-radius: 9999px;
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-muted);
+  padding: 4px 12px;
+  font-size: 11px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  color: var(--wp--preset--color--nordic-subtle);
+  margin-left: auto;
+}
+
+/* Feature Chips */
+.gw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.gw-chip {
+  border-radius: 9999px;
+  background: var(--wp--preset--color--nordic-muted);
+  padding: 6px 14px;
+  border: 1px solid rgba(232,229,223,0.7);
+  font-size: 12px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  color: var(--wp--preset--color--nordic-subtle);
+}
+
+/* ------------------------------------------------------------------
+   Service Cards (3-column grid)
+   ------------------------------------------------------------------ */
+.gw-service-card {
+  border-radius: var(--gw-radius-xl);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-surface);
+  padding: 32px;
+  box-shadow: var(--gw-shadow-md);
+  transition: var(--gw-transition);
+}
+
+.gw-service-card:hover {
+  border-color: rgba(200,109,81,0.5);
+}
+
+.gw-service-icon {
+  display: flex;
+  height: 48px;
+  width: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--gw-radius-lg);
+  background: var(--wp--preset--color--nordic-muted);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  color: var(--wp--preset--color--nordic-clay);
+  margin-bottom: 24px;
+}
+
+.gw-service-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.gw-check-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(232,229,223,0.6);
+  padding-top: 16px;
+}
+
+.gw-check-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--wp--preset--color--nordic-subtle);
+  margin-bottom: 8px;
+}
+
+.gw-check-list li svg {
+  width: 14px;
+  height: 14px;
+  color: var(--wp--preset--color--nordic-clay);
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------
+   Tech Spec Banner
+   ------------------------------------------------------------------ */
+.gw-spec-table {
+  border-radius: var(--gw-radius-lg);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: rgba(241,239,234,0.4);
+  padding: 24px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  font-size: 12px;
+}
+
+.gw-spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(232,229,223,0.6);
+  margin-bottom: 8px;
+}
+
+.gw-spec-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.gw-spec-label {
+  color: var(--wp--preset--color--nordic-subtle);
+}
+
+.gw-spec-value {
+  color: var(--wp--preset--color--nordic-ink);
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------------
+   Metrics Grid (4 columns)
+   ------------------------------------------------------------------ */
+.gw-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  border-top: 1px solid var(--wp--preset--color--nordic-border);
+  padding-top: 32px;
+  margin-top: 64px;
+  max-width: 960px;
+  width: 100%;
+  text-align: left;
+}
+
+@media (min-width: 640px) {
+  .gw-metrics { grid-template-columns: repeat(4, 1fr); }
+}
+
+.gw-metric-value {
+  font-family: var(--wp--preset--font-family--playfair);
+  font-size: 30px;
+  color: var(--wp--preset--color--nordic-ink);
+  margin: 0 0 4px;
+}
+
+.gw-metric-label {
+  font-size: 12px;
+  color: var(--wp--preset--color--nordic-subtle);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------
+   Contact CTA Section
+   ------------------------------------------------------------------ */
+.gw-cta {
+  border-radius: var(--gw-radius-xl);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-surface);
+  padding: 40px;
+  text-align: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .gw-cta { padding: 64px; }
+}
+
+.gw-cta-meta {
+  font-size: 12px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  color: var(--wp--preset--color--nordic-faint);
+  margin-top: 16px;
+}
+
+/* ------------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------------ */
+.gw-footer {
+  width: 100%;
+  border-top: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-surface);
+  color: var(--wp--preset--color--nordic-subtle);
+  font-size: 12px;
+}
+
+.gw-footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 64px 24px;
+}
+
+.gw-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--wp--preset--color--nordic-border);
+}
+
+@media (min-width: 768px) {
+  .gw-footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; }
+}
+
+.gw-footer-brand {
+  font-family: var(--wp--preset--font-family--playfair);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--wp--preset--color--nordic-ink);
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+}
+
+.gw-footer-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  color: var(--wp--preset--color--nordic-pine);
+  margin-top: 8px;
+}
+
+.gw-footer-status::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--wp--preset--color--nordic-pine);
+  animation: gw-pulse 2s infinite;
+}
+
+@keyframes gw-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.gw-footer-heading {
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--wp--preset--color--nordic-ink);
+  margin: 0 0 12px;
+}
+
+.gw-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gw-footer-links li {
+  margin-bottom: 8px;
+}
+
+.gw-footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--wp--preset--color--nordic-subtle);
+  text-decoration: none;
+  transition: var(--gw-transition);
+}
+
+.gw-footer-links a:hover {
+  color: var(--wp--preset--color--nordic-pine);
+}
+
+.gw-footer-links svg {
+  width: 14px;
+  height: 14px;
+}
+
+.gw-footer-arch {
+  border-radius: var(--gw-radius-md);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: rgba(241,239,234,0.6);
+  padding: 12px;
+}
+
+.gw-footer-arch-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  font-size: 11px;
+  color: var(--wp--preset--color--nordic-ink);
+  margin: 0 0 6px;
+}
+
+.gw-footer-arch-title svg {
+  width: 14px;
+  height: 14px;
+  color: var(--wp--preset--color--nordic-pine);
+}
+
+.gw-footer-arch-desc {
+  font-size: 10px;
+  color: var(--wp--preset--color--nordic-subtle);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.gw-footer-bottom {
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--wp--preset--color--nordic-faint);
+}
+
+@media (min-width: 640px) {
+  .gw-footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.gw-footer-bottom a {
+  color: var(--wp--preset--color--nordic-subtle);
+  text-decoration: none;
+  transition: var(--gw-transition);
+}
+
+.gw-footer-bottom a:hover {
+  color: var(--wp--preset--color--nordic-ink);
+}
+
+/* ------------------------------------------------------------------
+   Password Protection Gate (Client Delivery)
+   ------------------------------------------------------------------ */
+.gw-password-gate {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 75vh;
+  padding: 16px;
+}
+
+.gw-password-card {
+  width: 100%;
+  max-width: 440px;
+  border-radius: var(--gw-radius-xl);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-surface);
+  padding: 32px;
+  box-shadow: var(--gw-shadow-lg);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .gw-password-card { padding: 40px; }
+}
+
+.gw-password-card::before,
+.gw-password-card::after {
+  content: '';
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  border-radius: 50%;
+  filter: blur(48px);
+  pointer-events: none;
+}
+
+.gw-password-card::before {
+  top: -96px;
+  right: -96px;
+  background: rgba(45,59,54,0.05);
+}
+
+.gw-password-card::after {
+  bottom: -96px;
+  left: -96px;
+  background: rgba(200,109,81,0.05);
+}
+
+.gw-password-icon {
+  margin: 0 auto 20px;
+  display: flex;
+  height: 56px;
+  width: 56px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--gw-radius-lg);
+  background: var(--wp--preset--color--nordic-muted);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  color: var(--wp--preset--color--nordic-pine);
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--gw-shadow-xs);
+}
+
+.gw-password-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 9999px;
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-muted);
+  padding: 4px 12px;
+  font-size: 11px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--wp--preset--color--nordic-pine);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.gw-password-title {
+  font-family: var(--wp--preset--font-family--playfair);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  color: var(--wp--preset--color--nordic-ink);
+  margin: 0 0 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.gw-password-desc {
+  font-size: 12px;
+  color: var(--wp--preset--color--nordic-subtle);
+  max-width: 320px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.gw-password-form {
+  position: relative;
+  z-index: 1;
+}
+
+.gw-password-label {
+  display: block;
+  font-size: 11px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--wp--preset--color--nordic-subtle);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.gw-password-input-wrap {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.gw-password-key-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(28,27,25,0.2);
+  pointer-events: none;
+}
+
+.gw-password-input {
+  width: 100%;
+  border-radius: var(--gw-radius-md);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-canvas);
+  padding: 14px 16px 14px 48px;
+  text-align: center;
+  font-size: 18px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  letter-spacing: 0.25em;
+  color: var(--wp--preset--color--nordic-ink);
+  box-shadow: var(--gw-shadow-xs);
+  outline: none;
+  transition: var(--gw-transition);
+}
+
+.gw-password-input:focus {
+  border-color: var(--wp--preset--color--nordic-pine);
+  box-shadow: 0 0 0 1px var(--wp--preset--color--nordic-pine);
+}
+
+.gw-password-input::placeholder {
+  color: rgba(28,27,25,0.25);
+}
+
+.gw-password-submit {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--gw-radius-md);
+  background: var(--wp--preset--color--nordic-pine);
+  color: #fff;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--gw-shadow-xs);
+  transition: var(--gw-transition);
+}
+
+.gw-password-submit:hover {
+  background: #1e2824;
+}
+
+.gw-password-footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--wp--preset--color--nordic-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  color: var(--wp--preset--color--nordic-subtle);
+  position: relative;
+  z-index: 1;
+}
+
+.gw-password-footer svg {
+  color: var(--wp--preset--color--nordic-pine);
+}
+
+/* ------------------------------------------------------------------
+   Section Spacing Utility
+   ------------------------------------------------------------------ */
+.gw-section-spacing {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+  .gw-section-spacing {
+    padding-left: 48px;
+    padding-right: 48px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Gallery Enhancements
+   ------------------------------------------------------------------ */
+.wp-block-gallery {
+  gap: 8px !important;
+}
+
+.wp-block-gallery .wp-block-image {
+  border-radius: var(--gw-radius-md);
+  overflow: hidden;
+}
+
+.wp-block-gallery .wp-block-image img {
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.wp-block-gallery .wp-block-image:hover img {
+  transform: scale(1.03);
+}
+
+/* ------------------------------------------------------------------
+   Portfolio Strip
+   ------------------------------------------------------------------ */
+.gw-portfolio-strip {
+  border-radius: var(--gw-radius-xl);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: var(--wp--preset--color--nordic-surface);
+  padding: 24px;
+}
+
+@media (min-width: 640px) {
+  .gw-portfolio-strip { padding: 32px; }
+}
+
+.gw-portfolio-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: var(--gw-radius-md);
+  border: 1px solid var(--wp--preset--color--nordic-border);
+  background: rgba(241,239,234,0.4);
+  text-align: center;
+  transition: var(--gw-transition);
+}
+
+.gw-portfolio-item:hover {
+  border-color: rgba(200,109,81,0.5);
+  background: var(--wp--preset--color--nordic-surface);
+}
+
+/* ------------------------------------------------------------------
+   Mono Label Utility
+   ------------------------------------------------------------------ */
+.gw-mono-label {
+  font-family: var(--wp--preset--font-family--jetbrains-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ------------------------------------------------------------------
+   Responsive Navigation (WP Block Navigation overrides)
+   ------------------------------------------------------------------ */
+.wp-block-navigation .wp-block-navigation-item a {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--wp--preset--color--nordic-subtle);
+  transition: color 0.2s ease;
+}
+
+.wp-block-navigation .wp-block-navigation-item a:hover {
+  color: var(--wp--preset--color--nordic-ink);
+}

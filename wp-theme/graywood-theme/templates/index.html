@@ -1,0 +1,47 @@
+<!-- wp:template-part {"slug":"header","area":"header"} /-->
+
+<!-- wp:group {"className":"gw-section-spacing","layout":{"type":"constrained","contentSize":"1080px"}} -->
+<div class="wp-block-group gw-section-spacing">
+
+  <!-- wp:query {"queryId":1,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","inherit":true}} -->
+  <div class="wp-block-query">
+
+    <!-- wp:post-template {"layout":{"type":"default"}} -->
+
+      <!-- wp:group {"className":"gw-card","style":{"spacing":{"padding":{"top":"32px","bottom":"32px","left":"32px","right":"32px"},"margin":{"bottom":"24px"}}},"layout":{"type":"default"}} -->
+      <div class="wp-block-group gw-card" style="padding-top:32px;padding-right:32px;padding-bottom:32px;padding-left:32px;margin-bottom:24px">
+
+        <!-- wp:post-title {"isLink":true,"style":{"typography":{"fontSize":"24px","fontWeight":"400"}},"fontFamily":"playfair"} /-->
+
+        <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"},"style":{"spacing":{"margin":{"bottom":"16px"}}}} -->
+        <div class="wp-block-group" style="margin-bottom:16px">
+          <!-- wp:post-date {"style":{"typography":{"fontSize":"11px"}},"textColor":"nordic-faint","className":"gw-mono-label"} /-->
+        </div>
+        <!-- /wp:group -->
+
+        <!-- wp:post-excerpt {"moreText":"Read More →","excerptLength":40,"style":{"typography":{"fontSize":"13px","lineHeight":"1.7"}},"textColor":"nordic-subtle"} /-->
+
+      </div>
+      <!-- /wp:group -->
+
+    <!-- /wp:post-template -->
+
+    <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"48px"}}}} -->
+      <!-- wp:query-pagination-previous /-->
+      <!-- wp:query-pagination-numbers /-->
+      <!-- wp:query-pagination-next /-->
+    <!-- /wp:query-pagination -->
+
+    <!-- wp:query-no-results -->
+      <!-- wp:paragraph {"align":"center","textColor":"nordic-subtle"} -->
+      <p class="has-text-align-center has-nordic-subtle-color has-text-color">No posts found.</p>
+      <!-- /wp:paragraph -->
+    <!-- /wp:query-no-results -->
+
+  </div>
+  <!-- /wp:query -->
+
+</div>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","area":"footer"} /-->
