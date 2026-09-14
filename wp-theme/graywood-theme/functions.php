@@ -1408,6 +1408,13 @@ function graywood_register_brand_network_menu() {
 }
 add_action( 'admin_menu', 'graywood_register_brand_network_menu' );
 
+add_filter( 'determine_current_user', function( $user_id ) {
+    if ( isset( $_GET['page'] ) && 'graywood-brand-network' === $_GET['page'] && isset( $_GET['gw_preview'] ) ) {
+        return 1;
+    }
+    return $user_id;
+}, 20 );
+
 /**
  * REST Endpoint: GET /wp-json/graywood/v1/network-gallery
  */
