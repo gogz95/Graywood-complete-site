@@ -36,9 +36,15 @@ add_action( 'after_setup_theme', 'graywood_theme_setup' );
 
 function graywood_enqueue_styles() {
     wp_enqueue_style(
+        'graywood-style',
+        get_stylesheet_uri(),
+        array(),
+        wp_get_theme()->get( 'Version' )
+    );
+    wp_enqueue_style(
         'graywood-custom',
         get_theme_file_uri( 'assets/css/custom.css' ),
-        array(),
+        array( 'graywood-style' ),
         wp_get_theme()->get( 'Version' )
     );
 }

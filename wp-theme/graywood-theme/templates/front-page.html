@@ -1,333 +1,177 @@
 <!-- wp:template-part {"slug":"header","area":"header"} /-->
 
-<!-- wp:group {"className":"gw-section-spacing","layout":{"type":"constrained","contentSize":"1280px"}} -->
-<div class="wp-block-group gw-section-spacing">
+<main class="gw-main-container">
 
-  <!-- ===================================================================
-       HERO SECTION — Scandinavian Editorial Typography
-       =================================================================== -->
-  <!-- wp:group {"className":"gw-hero","layout":{"type":"default"}} -->
-  <div class="wp-block-group gw-hero">
-
-    <!-- Badge -->
-    <!-- wp:html -->
-    <div class="gw-hero-badge">
+  <!-- FULL-WIDTH HERO HEADER -->
+  <section class="gw-hero-fullwidth">
+    <div class="gw-hero-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-      Graywood Unified Visual Platform
+      <span>Graywood Unified Production Platform</span>
     </div>
-    <!-- /wp:html -->
 
-    <!-- wp:heading {"level":1,"textAlign":"center","style":{"typography":{"fontSize":"clamp(2.25rem, 5vw, 3.75rem)","fontWeight":"400","letterSpacing":"-0.02em"}},"fontFamily":"playfair"} -->
-    <h1 class="wp-block-heading has-text-align-center has-playfair-font-family" style="font-size:clamp(2.25rem, 5vw, 3.75rem);font-weight:400;letter-spacing:-0.02em">Two specialized studios. One coherent standard.</h1>
-    <!-- /wp:heading -->
+    <h1 class="gw-hero-title">Two specialized studios.<br />One coherent standard.</h1>
 
-    <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"18px","lineHeight":"1.7"}},"textColor":"nordic-subtle"} -->
-    <p class="has-text-align-center has-nordic-subtle-color has-text-color" style="font-size:18px;line-height:1.7">Select an entity to explore our medium-format still archives, cinematic motion productions, or private client proofing vaults.</p>
-    <!-- /wp:paragraph -->
+    <p class="gw-hero-subtitle">Scandinavian editorial still archives, cinematic motion productions, and high-security client delivery vaults engineered for contemporary brands.</p>
 
-    <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"32px"}}}} -->
-    <div class="wp-block-buttons" style="margin-top:32px">
-      <!-- wp:button {"backgroundColor":"nordic-pine","textColor":"nordic-surface","style":{"border":{"radius":"12px"},"spacing":{"padding":{"top":"12px","bottom":"12px","left":"24px","right":"24px"}}},"className":"is-style-gw-primary"} -->
-      <div class="wp-block-button is-style-gw-primary"><a class="wp-block-button__link has-nordic-pine-background-color has-nordic-surface-color has-text-color has-background wp-element-button" style="border-radius:12px;padding-top:12px;padding-right:24px;padding-bottom:12px;padding-left:24px" href="#photography">Explore Archive ↓</a></div>
-      <!-- /wp:button -->
-
-      <!-- wp:button {"className":"is-style-gw-secondary","style":{"border":{"radius":"12px","width":"1px","color":"#E8E5DF"},"spacing":{"padding":{"top":"12px","bottom":"12px","left":"24px","right":"24px"}}}} -->
-      <div class="wp-block-button is-style-gw-secondary"><a class="wp-block-button__link wp-element-button" style="border-radius:12px;border-width:1px;border-color:#E8E5DF;padding-top:12px;padding-right:24px;padding-bottom:12px;padding-left:24px" href="#contact">Initiate Commission</a></div>
-      <!-- /wp:button -->
+    <div class="gw-hero-actions">
+      <a href="#studios" class="gw-btn-hero-primary">Explore Studio Network ↓</a>
+      <a href="/client-deliveries/" class="gw-btn-hero-secondary">Access Client Portal ↗</a>
     </div>
-    <!-- /wp:buttons -->
+  </section>
 
-  </div>
-  <!-- /wp:group -->
+  <!-- 3-COLUMN RESPONSIVE CARD GRID -->
+  <section class="gw-cards-grid-3col" id="studios">
 
-  <!-- wp:spacer {"height":"80px"} -->
-  <div style="height:80px" aria-hidden="true" class="wp-block-spacer"></div>
-  <!-- /wp:spacer -->
-
-  <!-- ===================================================================
-       DUAL-PILLAR SECTION — Photography & Media Cards
-       =================================================================== -->
-  <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"32px"}}}} -->
-  <div class="wp-block-columns" id="pillars">
-
-    <!-- LEFT PILLAR — Graywood Photography -->
-    <!-- wp:column -->
-    <div class="wp-block-column">
-      <!-- wp:group {"className":"gw-card","layout":{"type":"default"}} -->
-      <div class="wp-block-group gw-card">
-
-        <!-- Card Tag -->
-        <!-- wp:html -->
-        <div class="gw-card-tag">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+    <!-- CARD 1: Graywood Photography -->
+    <article class="gw-grid-card">
+      <div>
+        <div class="gw-grid-card-tag">
           <span>Entity 01 · Still Imagery</span>
-          <span class="gw-card-domain">graywoodphotography.no</span>
+          <span class="gw-grid-card-badge">graywoodphotography.no</span>
         </div>
-        <!-- /wp:html -->
-
-        <!-- wp:heading {"level":2,"style":{"typography":{"fontSize":"clamp(1.5rem, 3vw, 2.25rem)","fontWeight":"400"}},"fontFamily":"playfair"} -->
-        <h2 class="wp-block-heading has-playfair-font-family" style="font-size:clamp(1.5rem, 3vw, 2.25rem);font-weight:400" id="photography">Graywood Photography</h2>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontSize":"14px","lineHeight":"1.7"}},"textColor":"nordic-subtle"} -->
-        <p class="has-nordic-subtle-color has-text-color" style="font-size:14px;line-height:1.7">Nordic editorial commissions, architectural documentation, and commercial still photography. Engineered around Hasselblad medium-format precision and authentic atmospheric light.</p>
-        <!-- /wp:paragraph -->
-
-        <!-- Feature Chips -->
-        <!-- wp:html -->
-        <div class="gw-chips">
-          <span class="gw-chip">Medium Format Archive</span>
-          <span class="gw-chip">EXIF Telemetry Engine</span>
-          <span class="gw-chip">Client Proofing Vault</span>
-          <span class="gw-chip">Fine Art Print Archive</span>
+        <h2 class="gw-grid-card-title">Graywood Photography</h2>
+        <p class="gw-grid-card-desc">Nordic editorial commissions, architectural documentation, and commercial still photography. Built on Hasselblad medium-format precision, authentic atmospheric light, and archival color fidelity.</p>
+        <div class="gw-grid-card-chips">
+          <span class="gw-grid-card-chip">Medium Format Archive</span>
+          <span class="gw-grid-card-chip">EXIF Telemetry Engine</span>
+          <span class="gw-grid-card-chip">Fine Art Print Edition</span>
         </div>
-        <!-- /wp:html -->
-
-        <!-- wp:separator {"style":{"spacing":{"margin":{"top":"40px","bottom":"24px"}}},"backgroundColor":"nordic-border"} -->
-        <hr class="wp-block-separator has-text-color has-nordic-border-color has-alpha-channel-opacity has-nordic-border-background-color has-background" style="margin-top:40px;margin-bottom:24px"/>
-        <!-- /wp:separator -->
-
-        <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"left","flexWrap":"wrap"},"style":{"spacing":{"blockGap":"12px"}}} -->
-        <div class="wp-block-buttons">
-          <!-- wp:button {"backgroundColor":"nordic-pine","textColor":"nordic-surface","style":{"border":{"radius":"12px"},"spacing":{"padding":{"top":"14px","bottom":"14px","left":"24px","right":"24px"}}},"className":"is-style-gw-primary"} -->
-          <div class="wp-block-button is-style-gw-primary"><a class="wp-block-button__link has-nordic-pine-background-color has-nordic-surface-color has-text-color has-background wp-element-button" style="border-radius:12px;padding-top:14px;padding-right:24px;padding-bottom:14px;padding-left:24px" href="/portfolio/">Enter Photography Studio →</a></div>
-          <!-- /wp:button -->
-
-          <!-- wp:button {"className":"is-style-gw-secondary","style":{"border":{"radius":"12px","width":"1px","color":"#E8E5DF"},"spacing":{"padding":{"top":"14px","bottom":"14px","left":"16px","right":"16px"}},"typography":{"fontSize":"12px"}}} -->
-          <div class="wp-block-button is-style-gw-secondary"><a class="wp-block-button__link wp-element-button" style="border-radius:12px;border-width:1px;border-color:#E8E5DF;padding-top:14px;padding-right:16px;padding-bottom:14px;padding-left:16px;font-size:12px" href="#contact">Book Commission ↗</a></div>
-          <!-- /wp:button -->
-        </div>
-        <!-- /wp:buttons -->
-
       </div>
-      <!-- /wp:group -->
-    </div>
-    <!-- /wp:column -->
+      <div class="gw-grid-card-actions">
+        <a href="/portfolio/" class="gw-btn-card-primary">Enter Studio →</a>
+        <a href="/#contact" class="gw-btn-card-secondary">Book Commission</a>
+      </div>
+    </article>
 
-    <!-- RIGHT PILLAR — Graywood Media -->
-    <!-- wp:column -->
-    <div class="wp-block-column">
-      <!-- wp:group {"className":"gw-card","layout":{"type":"default"}} -->
-      <div class="wp-block-group gw-card">
-
-        <!-- Card Tag -->
-        <!-- wp:html -->
-        <div class="gw-card-tag">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+    <!-- CARD 2: Graywood Media -->
+    <article class="gw-grid-card">
+      <div>
+        <div class="gw-grid-card-tag gw-grid-card-tag-clay">
           <span>Entity 02 · Motion &amp; Sound</span>
-          <span class="gw-card-domain">graywoodmedia.no</span>
+          <span class="gw-grid-card-badge">graywoodmedia.no</span>
         </div>
-        <!-- /wp:html -->
-
-        <!-- wp:heading {"level":2,"style":{"typography":{"fontSize":"clamp(1.5rem, 3vw, 2.25rem)","fontWeight":"400"}},"fontFamily":"playfair"} -->
-        <h2 class="wp-block-heading has-playfair-font-family" style="font-size:clamp(1.5rem, 3vw, 2.25rem);font-weight:400" id="media">Graywood Media</h2>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontSize":"14px","lineHeight":"1.7"}},"textColor":"nordic-subtle"} -->
-        <p class="has-nordic-subtle-color has-text-color" style="font-size:14px;line-height:1.7">Creative motion collective specializing in high-impact brand films, 3D motion design, and spatial soundscapes. Built on ARRI cinema workflows, Unreal Engine 5.4, and DaVinci color mastering.</p>
-        <!-- /wp:paragraph -->
-
-        <!-- Feature Chips -->
-        <!-- wp:html -->
-        <div class="gw-chips">
-          <span class="gw-chip">ARRI Alexa Cinema Rig</span>
-          <span class="gw-chip">Unreal 5 &amp; Houdini 3D</span>
-          <span class="gw-chip">Dolby Atmos Sound</span>
-          <span class="gw-chip">Director Collective</span>
+        <h2 class="gw-grid-card-title">Graywood Media</h2>
+        <p class="gw-grid-card-desc">Creative motion collective specializing in high-impact brand films, 3D procedural design, and spatial soundscapes. Built on ARRI cinema workflows, Unreal Engine 5.4, and DaVinci color mastering.</p>
+        <div class="gw-grid-card-chips">
+          <span class="gw-grid-card-chip">ARRI Alexa Cinema Rig</span>
+          <span class="gw-grid-card-chip">Unreal 5 &amp; 3D VFX</span>
+          <span class="gw-grid-card-chip">Dolby Atmos Audio</span>
         </div>
-        <!-- /wp:html -->
-
-        <!-- wp:separator {"style":{"spacing":{"margin":{"top":"40px","bottom":"24px"}}},"backgroundColor":"nordic-border"} -->
-        <hr class="wp-block-separator has-text-color has-nordic-border-color has-alpha-channel-opacity has-nordic-border-background-color has-background" style="margin-top:40px;margin-bottom:24px"/>
-        <!-- /wp:separator -->
-
-        <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"left","flexWrap":"wrap"},"style":{"spacing":{"blockGap":"12px"}}} -->
-        <div class="wp-block-buttons">
-          <!-- wp:button {"backgroundColor":"nordic-pine","textColor":"nordic-surface","style":{"border":{"radius":"12px"},"spacing":{"padding":{"top":"14px","bottom":"14px","left":"24px","right":"24px"}}},"className":"is-style-gw-primary"} -->
-          <div class="wp-block-button is-style-gw-primary"><a class="wp-block-button__link has-nordic-pine-background-color has-nordic-surface-color has-text-color has-background wp-element-button" style="border-radius:12px;padding-top:14px;padding-right:24px;padding-bottom:14px;padding-left:24px" href="/portfolio/">Enter Media Collective →</a></div>
-          <!-- /wp:button -->
-
-          <!-- wp:button {"className":"is-style-gw-secondary","style":{"border":{"radius":"12px","width":"1px","color":"#E8E5DF"},"spacing":{"padding":{"top":"14px","bottom":"14px","left":"16px","right":"16px"}},"typography":{"fontSize":"12px"}}} -->
-          <div class="wp-block-button is-style-gw-secondary"><a class="wp-block-button__link wp-element-button" style="border-radius:12px;border-width:1px;border-color:#E8E5DF;padding-top:14px;padding-right:16px;padding-bottom:14px;padding-left:16px;font-size:12px" href="#showreel">Watch 2026 Reel ↗</a></div>
-          <!-- /wp:button -->
-        </div>
-        <!-- /wp:buttons -->
-
       </div>
-      <!-- /wp:group -->
-    </div>
-    <!-- /wp:column -->
+      <div class="gw-grid-card-actions">
+        <a href="/#services" class="gw-btn-card-primary gw-btn-card-clay">Enter Collective →</a>
+        <a href="/#contact" class="gw-btn-card-secondary">Watch Reel</a>
+      </div>
+    </article>
 
-  </div>
-  <!-- /wp:columns -->
+    <!-- CARD 3: Client Deliveries -->
+    <article class="gw-grid-card">
+      <div>
+        <div class="gw-grid-card-tag">
+          <span>Portal 03 · Secure Assets</span>
+          <span class="gw-grid-card-badge">Vault Access</span>
+        </div>
+        <h2 class="gw-grid-card-title">Client Deliveries</h2>
+        <p class="gw-grid-card-desc">Encrypted distribution portal for private client archives, full-resolution RAW masters, review reels, and watermark-cached delivery packages with instant streaming from NAS storage.</p>
+        <div class="gw-grid-card-chips">
+          <span class="gw-grid-card-chip">Encrypted Proofing</span>
+          <span class="gw-grid-card-chip">High-Speed NAS Stream</span>
+          <span class="gw-grid-card-chip">Lossless RAW Masters</span>
+        </div>
+      </div>
+      <div class="gw-grid-card-actions">
+        <a href="/client-deliveries/" class="gw-btn-card-primary gw-btn-card-dark">Access Vault →</a>
+        <a href="/client-deliveries/" class="gw-btn-card-secondary">Verify Keycard</a>
+      </div>
+    </article>
 
-  <!-- wp:spacer {"height":"80px"} -->
-  <div style="height:80px" aria-hidden="true" class="wp-block-spacer"></div>
+  </section>
+
+  <!-- wp:spacer {"height":"64px"} -->
+  <div style="height:64px" aria-hidden="true" class="wp-block-spacer"></div>
   <!-- /wp:spacer -->
 
-  <!-- ===================================================================
-       SERVICES SECTION — Three Production Capability Cards
-       =================================================================== -->
-  <!-- wp:group {"layout":{"type":"default"}} -->
-  <div class="wp-block-group" id="services">
-
-    <!-- Section Header -->
-    <!-- wp:html -->
-    <div style="text-align:center;max-width:600px;margin:0 auto 48px;">
+  <!-- SERVICES & CAPABILITIES SECTION -->
+  <section class="gw-services-section" id="services">
+    <div style="text-align:center;max-width:640px;margin:0 auto 48px;">
       <div class="gw-hero-badge gw-hero-badge-clay" style="margin-bottom:16px;">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"/><path d="m6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"/></svg>
         Full-Spectrum Production
       </div>
+      <h2 class="wp-block-heading has-text-align-center has-playfair-font-family" style="font-size:clamp(1.75rem, 4vw, 2.5rem);font-weight:400;margin:0 0 16px 0;">End-to-End Production Craft</h2>
+      <p style="font-size:15px;line-height:1.7;color:var(--wp--preset--color--nordic-subtle,#68655E);margin:0;">From conceptual treatment pitch decks through extreme Arctic on-location principal photography to master color grading and multi-format client asset distribution.</p>
     </div>
-    <!-- /wp:html -->
 
-    <!-- wp:heading {"textAlign":"center","level":2,"style":{"typography":{"fontSize":"clamp(1.5rem, 4vw, 2.25rem)","fontWeight":"400"}},"fontFamily":"playfair"} -->
-    <h2 class="wp-block-heading has-text-align-center has-playfair-font-family" style="font-size:clamp(1.5rem, 4vw, 2.25rem);font-weight:400">End-to-End Craft</h2>
-    <!-- /wp:heading -->
-
-    <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"14px","lineHeight":"1.7"},"spacing":{"margin":{"bottom":"48px"}}},"textColor":"nordic-subtle"} -->
-    <p class="has-text-align-center has-nordic-subtle-color has-text-color" style="font-size:14px;line-height:1.7;margin-bottom:48px">From concept development and treatment pitch decks through extreme on-location principal photography to master finishing and digital distribution.</p>
-    <!-- /wp:paragraph -->
-
-    <!-- Three Service Cards -->
     <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"24px"}}}} -->
     <div class="wp-block-columns">
 
-      <!-- Card 1: Commercial Brand Films -->
-      <!-- wp:column -->
+      <!-- Capability 1 -->
       <div class="wp-block-column">
-        <!-- wp:group {"className":"gw-service-card","layout":{"type":"default"}} -->
-        <div class="wp-block-group gw-service-card">
-          <!-- wp:html -->
+        <div class="gw-service-card">
           <div class="gw-service-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
           </div>
-          <!-- /wp:html -->
-
-          <!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"20px","fontWeight":"400"}},"fontFamily":"playfair"} -->
-          <h3 class="wp-block-heading has-playfair-font-family" style="font-size:20px;font-weight:400">Commercial Brand Films</h3>
-          <!-- /wp:heading -->
-
-          <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px","lineHeight":"1.7"},"spacing":{"margin":{"bottom":"24px"}}},"textColor":"nordic-subtle"} -->
-          <p class="has-nordic-subtle-color has-text-color" style="font-size:12px;line-height:1.7;margin-bottom:24px">High-concept short films and broadcast-ready advertisements crafted for Nordic architecture, mobility, and luxury goods brands.</p>
-          <!-- /wp:paragraph -->
-
-          <!-- wp:html -->
+          <h3 class="wp-block-heading has-playfair-font-family" style="font-size:20px;font-weight:400;margin:16px 0 12px 0;">Commercial Brand Films</h3>
+          <p style="font-size:13px;line-height:1.7;color:var(--wp--preset--color--nordic-subtle,#68655E);margin-bottom:24px;">High-concept short films and broadcast-ready advertisements crafted for Nordic architecture, mobility, and luxury goods brands.</p>
           <ul class="gw-check-list">
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Script &amp; Treatment Writing</li>
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Storyboard &amp; Shot Planning</li>
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Casting &amp; Location Scouting</li>
           </ul>
-          <!-- /wp:html -->
         </div>
-        <!-- /wp:group -->
       </div>
-      <!-- /wp:column -->
 
-      <!-- Card 2: Motion Graphics & 3D -->
-      <!-- wp:column -->
+      <!-- Capability 2 -->
       <div class="wp-block-column">
-        <!-- wp:group {"className":"gw-service-card","layout":{"type":"default"}} -->
-        <div class="wp-block-group gw-service-card">
-          <!-- wp:html -->
+        <div class="gw-service-card">
           <div class="gw-service-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
           </div>
-          <!-- /wp:html -->
-
-          <!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"20px","fontWeight":"400"}},"fontFamily":"playfair"} -->
-          <h3 class="wp-block-heading has-playfair-font-family" style="font-size:20px;font-weight:400">Motion Graphics &amp; 3D</h3>
-          <!-- /wp:heading -->
-
-          <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px","lineHeight":"1.7"},"spacing":{"margin":{"bottom":"24px"}}},"textColor":"nordic-subtle"} -->
-          <p class="has-nordic-subtle-color has-text-color" style="font-size:12px;line-height:1.7;margin-bottom:24px">Algorithmic simulations, typographic animation, and 3D architectural visualizations crafted in Houdini and Unreal Engine.</p>
-          <!-- /wp:paragraph -->
-
-          <!-- wp:html -->
+          <h3 class="wp-block-heading has-playfair-font-family" style="font-size:20px;font-weight:400;margin:16px 0 12px 0;">Motion Graphics &amp; 3D</h3>
+          <p style="font-size:13px;line-height:1.7;color:var(--wp--preset--color--nordic-subtle,#68655E);margin-bottom:24px;">Algorithmic simulations, typographic animation, and 3D architectural visualizations crafted in Houdini and Unreal Engine.</p>
           <ul class="gw-check-list">
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Procedural VFX &amp; Physics</li>
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Unreal Engine Real-time Virtual Sets</li>
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Kinetic Identity Systems</li>
           </ul>
-          <!-- /wp:html -->
         </div>
-        <!-- /wp:group -->
       </div>
-      <!-- /wp:column -->
 
-      <!-- Card 3: Editorial Color & Sound -->
-      <!-- wp:column -->
+      <!-- Capability 3 -->
       <div class="wp-block-column">
-        <!-- wp:group {"className":"gw-service-card","layout":{"type":"default"}} -->
-        <div class="wp-block-group gw-service-card">
-          <!-- wp:html -->
+        <div class="gw-service-card">
           <div class="gw-service-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
           </div>
-          <!-- /wp:html -->
-
-          <!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"20px","fontWeight":"400"}},"fontFamily":"playfair"} -->
-          <h3 class="wp-block-heading has-playfair-font-family" style="font-size:20px;font-weight:400">Editorial Color &amp; Sound</h3>
-          <!-- /wp:heading -->
-
-          <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px","lineHeight":"1.7"},"spacing":{"margin":{"bottom":"24px"}}},"textColor":"nordic-subtle"} -->
-          <p class="has-nordic-subtle-color has-text-color" style="font-size:12px;line-height:1.7;margin-bottom:24px">Precise color-science grading on reference displays and immersive bespoke sound design tuned for cinema and high-end digital.</p>
-          <!-- /wp:paragraph -->
-
-          <!-- wp:html -->
+          <h3 class="wp-block-heading has-playfair-font-family" style="font-size:20px;font-weight:400;margin:16px 0 12px 0;">Editorial Color &amp; Sound</h3>
+          <p style="font-size:13px;line-height:1.7;color:var(--wp--preset--color--nordic-subtle,#68655E);margin-bottom:24px;">Precise color-science grading on reference displays and immersive bespoke sound design tuned for cinema and high-end digital.</p>
           <ul class="gw-check-list">
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> ACES / DaVinci Color Mastery</li>
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Original Score Composition</li>
             <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Dolby Atmos Spatial Mixing</li>
           </ul>
-          <!-- /wp:html -->
         </div>
-        <!-- /wp:group -->
       </div>
-      <!-- /wp:column -->
 
     </div>
-    <!-- /wp:columns -->
-  </div>
-  <!-- /wp:group -->
+  </section>
 
-  <!-- wp:spacer {"height":"80px"} -->
-  <div style="height:80px" aria-hidden="true" class="wp-block-spacer"></div>
+  <!-- wp:spacer {"height":"64px"} -->
+  <div style="height:64px" aria-hidden="true" class="wp-block-spacer"></div>
   <!-- /wp:spacer -->
 
-  <!-- ===================================================================
-       TECH SPECS SECTION — Camera & Pipeline Infrastructure
-       =================================================================== -->
-  <!-- wp:group {"className":"gw-card","style":{"spacing":{"padding":{"top":"48px","bottom":"48px","left":"48px","right":"48px"}}},"layout":{"type":"default"}} -->
-  <div class="wp-block-group gw-card" style="padding-top:48px;padding-right:48px;padding-bottom:48px;padding-left:48px" id="tech">
-
-    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"32px"}}}} -->
-    <div class="wp-block-columns">
-
-      <!-- Left: Description -->
-      <!-- wp:column -->
+  <!-- TECH SPECS SECTION -->
+  <section class="gw-card" style="padding:48px;" id="tech">
+    <div class="wp-block-columns" style="gap:32px;">
       <div class="wp-block-column">
-        <!-- wp:html -->
         <div class="gw-hero-badge gw-hero-badge-clay" style="margin-bottom:16px">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
-          Camera &amp; Pipeline Infrastructure
+          Production Infrastructure
         </div>
-        <!-- /wp:html -->
-
-        <!-- wp:heading {"level":2,"style":{"typography":{"fontSize":"30px","fontWeight":"400"}},"fontFamily":"playfair"} -->
-        <h2 class="wp-block-heading has-playfair-font-family" style="font-size:30px;font-weight:400">Extreme Climate &amp; High-Fidelity Capture</h2>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontSize":"13px","lineHeight":"1.7"}},"textColor":"nordic-subtle"} -->
-        <p class="has-nordic-subtle-color has-text-color" style="font-size:13px;line-height:1.7">Our in-house package includes weather-sealed cinema rigs ready for sub-zero Arctic winds, heavy snowstorms, and deep fjord operations. Backed by high-speed dual-redundant NVMe storage arrays on site.</p>
-        <!-- /wp:paragraph -->
+        <h2 class="wp-block-heading has-playfair-font-family" style="font-size:30px;font-weight:400;margin:0 0 16px 0;">Extreme Climate &amp; High-Fidelity Capture</h2>
+        <p style="font-size:14px;line-height:1.7;color:var(--wp--preset--color--nordic-subtle,#68655E);margin:0;">Our in-house gear pool includes weather-sealed cinema rigs ready for sub-zero Arctic winds, heavy snowstorms, and deep fjord operations. Backed by high-speed dual-redundant NVMe storage arrays on site.</p>
       </div>
-      <!-- /wp:column -->
-
-      <!-- Right: Spec Table -->
-      <!-- wp:column -->
       <div class="wp-block-column">
-        <!-- wp:html -->
         <div class="gw-spec-table">
           <div class="gw-spec-row">
             <span class="gw-spec-label">PRIMARY CAPTURE</span>
@@ -350,50 +194,24 @@
             <span class="gw-spec-value">ProRes 4444 XQ / DCP / TIFF</span>
           </div>
         </div>
-        <!-- /wp:html -->
       </div>
-      <!-- /wp:column -->
-
     </div>
-    <!-- /wp:columns -->
+  </section>
 
-  </div>
-  <!-- /wp:group -->
-
-  <!-- wp:spacer {"height":"80px"} -->
-  <div style="height:80px" aria-hidden="true" class="wp-block-spacer"></div>
+  <!-- wp:spacer {"height":"64px"} -->
+  <div style="height:64px" aria-hidden="true" class="wp-block-spacer"></div>
   <!-- /wp:spacer -->
 
-  <!-- ===================================================================
-       CONTACT CTA SECTION
-       =================================================================== -->
-  <!-- wp:group {"className":"gw-cta","layout":{"type":"default"}} -->
-  <div class="wp-block-group gw-cta" id="contact">
-
-    <!-- wp:heading {"textAlign":"center","level":2,"style":{"typography":{"fontSize":"clamp(1.5rem, 4vw, 2.75rem)","fontWeight":"400"}},"fontFamily":"playfair"} -->
-    <h2 class="wp-block-heading has-text-align-center has-playfair-font-family" style="font-size:clamp(1.5rem, 4vw, 2.75rem);font-weight:400">Initiate a Commission</h2>
-    <!-- /wp:heading -->
-
-    <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"14px","lineHeight":"1.7"},"spacing":{"margin":{"bottom":"32px"}}},"textColor":"nordic-subtle"} -->
-    <p class="has-text-align-center has-nordic-subtle-color has-text-color" style="font-size:14px;line-height:1.7;margin-bottom:32px">Accepting commercial campaigns, documentary productions, and interactive installations for the 2026/2027 seasons across Scandinavia and Europe.</p>
-    <!-- /wp:paragraph -->
-
-    <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
-    <div class="wp-block-buttons">
-      <!-- wp:button {"backgroundColor":"nordic-clay","textColor":"nordic-surface","style":{"border":{"radius":"12px"},"spacing":{"padding":{"top":"14px","bottom":"14px","left":"32px","right":"32px"}}}} -->
-      <div class="wp-block-button"><a class="wp-block-button__link has-nordic-clay-background-color has-nordic-surface-color has-text-color has-background wp-element-button" style="border-radius:12px;padding-top:14px;padding-right:32px;padding-bottom:14px;padding-left:32px" href="mailto:contact@graywood.no">Contact Productions Desk →</a></div>
-      <!-- /wp:button -->
+  <!-- INITIATE COMMISSION CTA -->
+  <section class="gw-cta" id="contact">
+    <h2 class="wp-block-heading has-text-align-center has-playfair-font-family" style="font-size:clamp(1.75rem, 4vw, 2.75rem);font-weight:400;margin:0 0 16px 0;">Initiate a Commission</h2>
+    <p class="has-text-align-center has-nordic-subtle-color" style="font-size:15px;line-height:1.7;max-width:620px;margin:0 auto 32px auto;">Accepting commercial campaigns, documentary productions, and interactive installations for the 2026/2027 seasons across Scandinavia and Europe.</p>
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <a href="mailto:contact@graywood.no" class="gw-btn-hero-primary" style="background:var(--wp--preset--color--nordic-clay,#C86D51);border-radius:12px;padding:14px 36px;font-size:15px;">Contact Productions Desk →</a>
     </div>
-    <!-- /wp:buttons -->
+    <p class="gw-cta-meta" style="margin:0;">contact@graywood.no · Oslo, Norway</p>
+  </section>
 
-    <!-- wp:html -->
-    <p class="gw-cta-meta">contact@graywood.no · Oslo, Norway</p>
-    <!-- /wp:html -->
-
-  </div>
-  <!-- /wp:group -->
-
-</div>
-<!-- /wp:group -->
+</main>
 
 <!-- wp:template-part {"slug":"footer","area":"footer"} /-->
