@@ -680,6 +680,23 @@ function graywood_watermark_handler() {
         exit;
     }
 
+    // Phase 6.2: Check and serve from wp-content/uploads/watermarked_cache/
+    $upload_dir = wp_upload_dir();
+    $cache_dir  = $upload_dir['basedir'] . '/watermarked_cache';
+    if ( ! file_exists( $cache_dir ) ) {
+        wp_mkdir_p( $cache_dir );
+    }
+    $cache_key  = md5( $img_path . '_' . $img_id . '_' . $size );
+    $cache_file = $cache_dir . '/wm_' . $cache_key . '.jpg';
+
+    if ( file_exists( $cache_file ) ) {
+        header( 'Content-Type: image/jpeg' );
+        header( 'Cache-Control: public, max-age=3600' );
+        header( 'X-Watermark-Cache: HIT' );
+        readfile( $cache_file );
+        exit;
+    }
+
     if ( function_exists( 'imagecreatefromstring' ) && function_exists( 'imagejpeg' ) ) {
         $data = file_get_contents( $img_path );
         $src_img = @imagecreatefromstring( $data );
@@ -690,15 +707,15 @@ function graywood_watermark_handler() {
             imagealphablending( $src_img, true );
             imagesavealpha( $src_img, true );
 
-            // Central semi-transparent watermark banner
+            // Central subtle 30% opacity brand watermark banner
             $bar_h = (int) max( 60, $height * 0.12 );
             $bar_y = (int) ( ( $height - $bar_h ) / 2 );
-            $banner_color = imagecolorallocatealpha( $src_img, 20, 30, 26, 95 ); // 60% transparent dark pine
+            $banner_color = imagecolorallocatealpha( $src_img, 20, 30, 26, 89 ); // 30% opacity
             imagefilledrectangle( $src_img, 0, $bar_y, $width, $bar_y + $bar_h, $banner_color );
 
             // Watermark text
             $text = "GRAYWOOD PROOF — CLIENT PREVIEW ONLY";
-            $white = imagecolorallocatealpha( $src_img, 255, 255, 255, 25 );
+            $white = imagecolorallocatealpha( $src_img, 255, 255, 255, 89 ); // 30% opacity
             $font_size = 5;
             $text_w = imagefontwidth( $font_size ) * strlen( $text );
             $text_h = imagefontheight( $font_size );
@@ -708,14 +725,18 @@ function graywood_watermark_handler() {
             imagestring( $src_img, $font_size, $text_x, $text_y, $text, $white );
 
             // Repeating diagonal protection lines
-            $line_color = imagecolorallocatealpha( $src_img, 255, 255, 255, 115 );
+            $line_color = imagecolorallocatealpha( $src_img, 255, 255, 255, 105 );
             imageline( $src_img, 0, 0, $width, $height, $line_color );
             imageline( $src_img, 0, $height, $width, 0, $line_color );
 
+            // Cache watermarked preview
+            imagejpeg( $src_img, $cache_file, 85 );
+            imagedestroy( $src_img );
+
             header( 'Content-Type: image/jpeg' );
             header( 'Cache-Control: public, max-age=3600' );
-            imagejpeg( $src_img, null, 85 );
-            imagedestroy( $src_img );
+            header( 'X-Watermark-Cache: MISS' );
+            readfile( $cache_file );
             exit;
         }
     }
@@ -725,6 +746,60 @@ function graywood_watermark_handler() {
     exit;
 }
 add_action( 'init', 'graywood_watermark_handler', 5 );
+
+/**
+ * Phase 6.3: Direct NAS / S3 Storage Offloader
+ * Support _nas_asset_path and _external_storage_url custom post meta fields.
+ */
+function graywood_handle_nas_stream() {
+    $uri = isset( $_SERVER['REQUEST_URI'] ) ? parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ) : '';
+    if ( strpos( $uri, '/nas-delivery' ) === false && ! isset( $_GET['nas_asset'] ) ) {
+        return;
+    }
+
+    $asset_id = isset( $_GET['asset_id'] ) ? absint( $_GET['asset_id'] ) : ( isset( $_GET['nas_asset'] ) ? absint( $_GET['nas_asset'] ) : 0 );
+    if ( ! $asset_id ) {
+        status_header( 400 );
+        echo 'Missing asset_id';
+        exit;
+    }
+
+    $ext_url = get_post_meta( $asset_id, '_external_storage_url', true );
+    if ( ! empty( $ext_url ) ) {
+        wp_redirect( esc_url_raw( $ext_url ), 302 );
+        exit;
+    }
+
+    $nas_path = get_post_meta( $asset_id, '_nas_asset_path', true );
+    if ( empty( $nas_path ) ) {
+        $nas_path = 'deliveries/master-cut.mp4';
+    }
+
+    $nas_root = defined( 'GRAYWOOD_NAS_STORAGE' ) ? GRAYWOOD_NAS_STORAGE : '/mnt/nas_deliveries';
+    $full_file = rtrim( $nas_root, '/' ) . '/' . ltrim( $nas_path, '/' );
+
+    if ( ! file_exists( $full_file ) ) {
+        $upload_dir = wp_upload_dir();
+        $full_file  = $upload_dir['basedir'] . '/' . ltrim( $nas_path, '/' );
+    }
+
+    if ( ! file_exists( $full_file ) ) {
+        status_header( 404 );
+        echo 'NAS deliverable not found';
+        exit;
+    }
+
+    $filesize = filesize( $full_file );
+    $mime = wp_check_filetype( $full_file )['type'] ?: 'video/mp4';
+
+    header( 'Content-Type: ' . $mime );
+    header( 'Accept-Ranges: bytes' );
+    header( 'Content-Disposition: inline; filename="' . basename( $full_file ) . '"' );
+    header( 'Content-Length: ' . $filesize );
+    readfile( $full_file );
+    exit;
+}
+add_action( 'init', 'graywood_handle_nas_stream', 6 );
 
 /* =============================================================================
    7. Gear Pool & Strict Wikidata Lookup
@@ -1193,6 +1268,80 @@ function graywood_gear_save_meta( $post_id ) {
     }
 }
 add_action( 'save_post_gear_item', 'graywood_gear_save_meta' );
+
+/**
+ * Phase 6.5: Client Delivery Analytics Dashboard Meta Box
+ * Add admin meta box "Delivery Activity & Audit Log" on client delivery pages.
+ */
+function graywood_delivery_audit_add_meta_box() {
+    add_meta_box(
+        'graywood_delivery_audit_meta_box',
+        __( 'Delivery Activity & Audit Log', 'graywood' ),
+        'graywood_delivery_audit_meta_box_render',
+        'page',
+        'normal',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'graywood_delivery_audit_add_meta_box' );
+
+function graywood_delivery_audit_meta_box_render( $post ) {
+    $audit_log = get_post_meta( $post->ID, '_delivery_audit_log', true );
+    if ( ! is_array( $audit_log ) ) {
+        $audit_log = array();
+    }
+    $total_unlocks = 0;
+    $total_downloads = 0;
+    $total_plays = 0;
+
+    foreach ( $audit_log as $entry ) {
+        $ev = $entry['event'] ?? '';
+        if ( 'page_unlocked' === $ev ) $total_unlocks++;
+        if ( 'zip_download' === $ev ) $total_downloads++;
+        if ( 'video_play' === $ev ) $total_plays++;
+    }
+    ?>
+    <div style="padding:12px 0;">
+        <div style="display:flex;gap:16px;margin-bottom:16px;">
+            <div style="background:#f0f6fc;border:1px solid #c8d8e8;border-radius:6px;padding:12px 20px;text-align:center;">
+                <div style="font-size:24px;font-weight:700;color:#2D3B36;"><?php echo (int) $total_unlocks; ?></div>
+                <div style="font-size:11px;text-transform:uppercase;color:#555;">Total Unlocks</div>
+            </div>
+            <div style="background:#f0f6fc;border:1px solid #c8d8e8;border-radius:6px;padding:12px 20px;text-align:center;">
+                <div style="font-size:24px;font-weight:700;color:#2D3B36;"><?php echo (int) $total_downloads; ?></div>
+                <div style="font-size:11px;text-transform:uppercase;color:#555;">Downloads</div>
+            </div>
+            <div style="background:#f0f6fc;border:1px solid #c8d8e8;border-radius:6px;padding:12px 20px;text-align:center;">
+                <div style="font-size:24px;font-weight:700;color:#2D3B36;"><?php echo (int) $total_plays; ?></div>
+                <div style="font-size:11px;text-transform:uppercase;color:#555;">Video Plays</div>
+            </div>
+        </div>
+
+        <table class="wp-list-table widefat striped">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Event Type</th>
+                    <th>Client IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ( empty( $audit_log ) ) : ?>
+                    <tr><td colspan="3">No client delivery activity recorded yet.</td></tr>
+                <?php else : ?>
+                    <?php foreach ( array_slice( array_reverse( $audit_log ), 0, 15 ) as $log ) : ?>
+                        <tr>
+                            <td><?php echo esc_html( $log['timestamp'] ?? '' ); ?></td>
+                            <td><strong><?php echo esc_html( $log['event'] ?? '' ); ?></strong></td>
+                            <td><code><?php echo esc_html( $log['ip'] ?? '' ); ?></code></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php
+}
 
 /* =============================================================================
    8. Packing Manifest Generator (Admin Submenu under Gear Pool)
