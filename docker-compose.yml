@@ -39,6 +39,7 @@ services:
         }
         define('ALLOW_UNFILTERED_UPLOADS', true);
         define('GRAYWOOD_NAS_STORAGE', '/mnt/nas_deliveries');
+        define('MYSQL_CLIENT_FLAGS', 0);
     volumes:
       - wp_data:/var/www/html
       - ./wp-theme/graywood-theme:/var/www/html/wp-content/themes/graywood-theme
@@ -49,6 +50,14 @@ services:
     image: wordpress:cli
     container_name: wp_cli_installer
     user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_secure_password
+      WORDPRESS_CONFIG_EXTRA: |
+        define('MYSQL_CLIENT_FLAGS', 0);
+        define('GRAYWOOD_NAS_STORAGE', '/mnt/nas_deliveries');
     depends_on:
       wordpress:
         condition: service_started
@@ -56,6 +65,7 @@ services:
         condition: service_healthy
     volumes:
       - wp_data:/var/www/html
+      - ./wp-theme/graywood-theme:/var/www/html/wp-content/themes/graywood-theme
       - ./setup-wp.sh:/setup-wp.sh
     entrypoint: ["/bin/sh", "/setup-wp.sh"]
 

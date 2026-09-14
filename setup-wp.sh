@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-echo "Waiting for MariaDB connection..."
-until wp db check --path=/var/www/html --quiet 2>/dev/null; do
-  sleep 3
+echo "Waiting for WordPress wp-config.php and MariaDB connection..."
+until [ -f /var/www/html/wp-config.php ] && php -r 'require "/var/www/html/wp-config.php"; $c = @mysqli_init(); exit(@mysqli_real_connect($c, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) ? 0 : 1);' 2>/dev/null; do
+  sleep 2
 done
 
 if ! wp core is-installed --path=/var/www/html 2>/dev/null; then
