@@ -10,9 +10,9 @@ const fs = require('fs');
 const path = require('path');
 
 const WP_BASE_URL = process.env.WP_BASE_URL || 'http://localhost:8080';
-const ROOT_OUTPUT = path.join(__dirname, 'site-data.json');
+const ROOT_OUTPUT = path.join(__dirname, 'cached-content.json');
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const PUBLIC_OUTPUT = path.join(PUBLIC_DIR, 'site-data.json');
+const PUBLIC_OUTPUT = path.join(PUBLIC_DIR, 'cached-content.json');
 
 async function fetchJSON(endpoint) {
   const url = `${WP_BASE_URL}/wp-json/wp/v2/${endpoint}`;

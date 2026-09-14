@@ -47,7 +47,8 @@ if (-not (Test-Path $PhpExe)) {
         $content = $content -replace ';extension=openssl', 'extension=openssl'
         $content = $content -replace ';extension=pdo_sqlite', 'extension=pdo_sqlite'
         $content = $content -replace ';extension=sqlite3', 'extension=sqlite3'
-        $content += "`nmemory_limit = 256M`nmax_execution_time = 120`nupload_max_filesize = 64M`npost_max_size = 64M`n"
+        $content = $content -replace ';extension=zip', 'extension=zip'
+        $content += "`nmemory_limit = 512M`nmax_execution_time = 600`nupload_max_filesize = 2048M`npost_max_size = 2048M`n"
         Set-Content $phpIni $content
     }
     Write-Host "      PHP 8.2 installed and configured." -ForegroundColor Green
@@ -242,6 +243,18 @@ $root = __DIR__ . '/wordpress';
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $file = $root . $path;
 
+// Feature 3: Direct ZIP Protection - Deny direct HTTP access to ZIP files in uploads
+if (preg_match('/\.zip$/i', $path) && strpos($path, '/wp-content/uploads/') !== false) {
+    header('HTTP/1.1 403 Forbidden');
+    header('Content-Type: application/json');
+    echo json_encode([
+        'code'    => 'direct_zip_access_forbidden',
+        'message' => 'Direct access to archive files in /wp-content/uploads/ is denied by server security policy. Downloads must be authenticated through the /wp-json/graywood/v1/download-zip proxy.',
+        'status'  => 403,
+    ], JSON_PRETTY_PRINT);
+    exit;
+}
+
 if (is_dir($file)) {
     $file = rtrim($file, '/') . '/index.php';
     $path = rtrim($path, '/') . '/index.php';
@@ -266,6 +279,7 @@ $_SERVER['PHP_SELF'] = '/index.php';
 chdir($root);
 require $root . '/index.php';
 '@
+
 Set-Content $routerScript $routerContent
 
 Write-Host ""
