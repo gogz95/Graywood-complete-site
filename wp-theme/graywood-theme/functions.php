@@ -2,8 +2,8 @@
 /**
  * Graywood Block Theme — functions.php
  *
- * Enqueues additional styles and provides theme support hooks
- * for the Graywood Scandinavian editorial WordPress theme.
+ * Enqueues styles, configures Gutenberg support, provides Nordic client
+ * proofing password gates, and exposes REST API automation endpoints with CORS.
  *
  * @package Graywood
  * @since   1.0.0
@@ -12,6 +12,16 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
+/**
+ * Theme setup: support post thumbnails and editor styles.
+ */
+function graywood_theme_setup() {
+    add_theme_support( 'post-thumbnails' );
+    add_theme_support( 'editor-styles' );
+    add_editor_style( 'assets/css/custom.css' );
+}
+add_action( 'after_setup_theme', 'graywood_theme_setup' );
 
 /**
  * Enqueue custom frontend styles that extend theme.json.
@@ -25,14 +35,6 @@ function graywood_enqueue_styles() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'graywood_enqueue_styles' );
-
-/**
- * Enqueue editor styles so Gutenberg mirrors the frontend.
- */
-function graywood_editor_styles() {
-    add_editor_style( 'assets/css/custom.css' );
-}
-add_action( 'after_setup_theme', 'graywood_editor_styles' );
 
 /**
  * Register block pattern categories specific to Graywood.
@@ -49,7 +51,7 @@ add_action( 'init', 'graywood_register_pattern_categories' );
 
 /**
  * Customize the password-protected form for the Client Delivery template.
- * Replaces the default ugly WP password form with Graywood's Nordic styled version.
+ * Replaces the default WP password form with Graywood's Nordic styled version.
  */
 function graywood_password_form( $output ) {
     global $post;
@@ -89,3 +91,254 @@ function graywood_password_form( $output ) {
     return $output;
 }
 add_filter( 'the_password_form', 'graywood_password_form' );
+
+/* =============================================================================
+   REST API & Automation Pipeline
+   ============================================================================= */
+
+/**
+ * Configure comprehensive CORS headers for REST API queries.
+ */
+function graywood_configure_rest_cors() {
+    // Handle OPTIONS preflight requests before authentication runs
+    if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'OPTIONS' === $_SERVER['REQUEST_METHOD'] ) {
+        header( 'Access-Control-Allow-Origin: *' );
+        header( 'Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE' );
+        header( 'Access-Control-Allow-Credentials: true' );
+        header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Wpnonce, X-WP-Nonce, X-Requested-With' );
+        header( 'Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link' );
+        status_header( 200 );
+        exit;
+    }
+}
+add_action( 'init', 'graywood_configure_rest_cors', 1 );
+
+/**
+ * Append CORS headers to standard REST API responses.
+ */
+add_filter( 'rest_pre_serve_request', function( $served, $result, $request, $server ) {
+    header( 'Access-Control-Allow-Origin: *' );
+    header( 'Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE' );
+    header( 'Access-Control-Allow-Credentials: true' );
+    header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Wpnonce, X-WP-Nonce, X-Requested-With' );
+    header( 'Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages, Link' );
+    return $served;
+}, 10, 4 );
+
+/**
+ * Register post meta for client delivery attributes so they are exposed in REST.
+ */
+function graywood_register_post_meta() {
+    register_post_meta( 'page', '_zip_download_url', array(
+        'show_in_rest'  => true,
+        'single'        => true,
+        'type'          => 'string',
+        'auth_callback' => function() { return current_user_can( 'edit_posts' ); },
+    ) );
+
+    register_post_meta( 'page', '_gw_client_download_url', array(
+        'show_in_rest'  => true,
+        'single'        => true,
+        'type'          => 'string',
+        'auth_callback' => function() { return current_user_can( 'edit_posts' ); },
+    ) );
+
+    register_post_meta( 'page', '_gw_client_name', array(
+        'show_in_rest'  => true,
+        'single'        => true,
+        'type'          => 'string',
+        'auth_callback' => function() { return current_user_can( 'edit_posts' ); },
+    ) );
+}
+add_action( 'init', 'graywood_register_post_meta' );
+
+/**
+ * Helper to compute delivery data for a given post.
+ */
+function graywood_compute_delivery_data( $post_id ) {
+    $post = get_post( $post_id );
+    if ( ! $post ) {
+        return array(
+            'is_password_protected' => false,
+            'zip_download_url'      => null,
+            'gallery_images'        => array(),
+        );
+    }
+
+    $is_protected = ( '' !== $post->post_password );
+
+    // 1. ZIP Download URL resolution
+    $download_url = get_post_meta( $post_id, '_zip_download_url', true );
+    if ( empty( $download_url ) ) {
+        $download_url = get_post_meta( $post_id, '_gw_client_download_url', true );
+    }
+    if ( empty( $download_url ) && ! empty( $post->post_content ) ) {
+        if ( preg_match( '/href=["\']([^"\']+\.zip|[^"\']*download[^"\']*)["\']/i', $post->post_content, $matches ) ) {
+            $download_url = $matches[1];
+        }
+    }
+
+    // 2. Gallery Images extraction
+    $gallery_images = array();
+    if ( has_block( 'core/gallery', $post->post_content ) ) {
+        $blocks = parse_blocks( $post->post_content );
+        foreach ( $blocks as $block ) {
+            if ( 'core/gallery' === $block['blockName'] ) {
+                if ( ! empty( $block['attrs']['ids'] ) ) {
+                    foreach ( $block['attrs']['ids'] as $img_id ) {
+                        $url = wp_get_attachment_url( $img_id );
+                        if ( $url ) {
+                            $gallery_images[] = array(
+                                'id'  => (int) $img_id,
+                                'url' => esc_url_raw( $url ),
+                            );
+                        }
+                    }
+                }
+                if ( ! empty( $block['innerBlocks'] ) ) {
+                    foreach ( $block['innerBlocks'] as $inner ) {
+                        if ( 'core/image' === $inner['blockName'] && ! empty( $inner['attrs']['id'] ) ) {
+                            $img_id = (int) $inner['attrs']['id'];
+                            $url = wp_get_attachment_url( $img_id );
+                            if ( $url ) {
+                                $gallery_images[] = array(
+                                    'id'  => $img_id,
+                                    'url' => esc_url_raw( $url ),
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Also check post attachment media
+    if ( empty( $gallery_images ) ) {
+        $attachments = get_posts( array(
+            'post_parent'    => $post_id,
+            'post_type'      => 'attachment',
+            'post_mime_type' => 'image',
+            'posts_per_page' => 20,
+            'orderby'        => 'menu_order',
+            'order'          => 'ASC',
+        ) );
+        foreach ( $attachments as $att ) {
+            $url = wp_get_attachment_url( $att->ID );
+            if ( $url ) {
+                $gallery_images[] = array(
+                    'id'  => (int) $att->ID,
+                    'url' => esc_url_raw( $url ),
+                );
+            }
+        }
+    }
+
+    return array(
+        'is_password_protected' => (bool) $is_protected,
+        'zip_download_url'      => ! empty( $download_url ) ? esc_url_raw( $download_url ) : null,
+        'gallery_images'        => $gallery_images,
+    );
+}
+
+/**
+ * Register the custom `delivery_data` and legacy `client_delivery` fields on posts and pages in WP REST API.
+ */
+function graywood_register_rest_fields() {
+    // Official delivery_data field per specification
+    register_rest_field(
+        array( 'page', 'post' ),
+        'delivery_data',
+        array(
+            'get_callback' => function( $post_arr ) {
+                return graywood_compute_delivery_data( $post_arr['id'] );
+            },
+            'update_callback' => null,
+            'schema'          => array(
+                'description' => __( 'Client delivery metadata: password protection state, zip download URL, and gallery images.', 'graywood' ),
+                'type'        => 'object',
+            ),
+        )
+    );
+
+    // Complementary client_delivery field for backwards compatibility
+    register_rest_field(
+        array( 'page', 'post' ),
+        'client_delivery',
+        array(
+            'get_callback' => function( $post_arr ) {
+                $post_id = $post_arr['id'];
+                $post = get_post( $post_id );
+                $data = graywood_compute_delivery_data( $post_id );
+                $client_name = get_post_meta( $post_id, '_gw_client_name', true );
+                if ( empty( $client_name ) && strpos( strtolower( $post ? $post->post_title : '' ), 'client' ) !== false ) {
+                    $client_name = 'Private Client Vault';
+                }
+                return array(
+                    'is_protected' => $data['is_password_protected'],
+                    'download_url' => $data['zip_download_url'],
+                    'client_name'  => ! empty( $client_name ) ? sanitize_text_field( $client_name ) : null,
+                    'has_gallery'  => ! empty( $data['gallery_images'] ) || has_block( 'core/gallery', $post ? $post->post_content : '' ),
+                    'template'     => get_page_template_slug( $post_id ) ?: 'default',
+                    'content_type' => $data['is_password_protected'] ? 'encrypted_proofs' : 'public_editorial',
+                );
+            },
+            'update_callback' => null,
+            'schema'          => array(
+                'description' => __( 'Client delivery extended attributes.', 'graywood' ),
+                'type'        => 'object',
+            ),
+        )
+    );
+
+    // Direct featured image URL helper for frontend consumers
+    register_rest_field(
+        array( 'page', 'post' ),
+        'featured_image_url',
+        array(
+            'get_callback' => function( $post_arr ) {
+                $image_id = get_post_thumbnail_id( $post_arr['id'] );
+                if ( ! $image_id ) {
+                    return null;
+                }
+                return wp_get_attachment_image_url( $image_id, 'full' );
+            },
+            'schema' => array(
+                'description' => __( 'Direct URL of the featured image (full resolution).', 'graywood' ),
+                'type'        => array( 'string', 'null' ),
+            ),
+        )
+    );
+}
+add_action( 'rest_api_init', 'graywood_register_rest_fields' );
+
+/**
+ * Write a timestamped JSON payload to sync-trigger.json whenever content changes.
+ */
+function graywood_trigger_content_sync( $post_id, $post = null, $update = null ) {
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( wp_is_post_revision( $post_id ) ) {
+        return;
+    }
+
+    $payload = json_encode( array(
+        'last_updated' => current_time( 'mysql' ),
+        'timestamp'    => time(),
+        'post_id'      => (int) $post_id,
+        'post_title'   => $post ? $post->post_title : '',
+    ), JSON_PRETTY_PRINT );
+
+    // Docker path
+    $docker_dir = '/var/www/html/wp-content';
+    if ( is_dir( $docker_dir ) && is_writable( $docker_dir ) ) {
+        @file_put_contents( $docker_dir . '/sync-trigger.json', $payload );
+    }
+
+    // Local / standard WP_CONTENT_DIR path
+    if ( defined( 'WP_CONTENT_DIR' ) && is_dir( WP_CONTENT_DIR ) ) {
+        @file_put_contents( WP_CONTENT_DIR . '/sync-trigger.json', $payload );
+    }
+}
+add_action( 'save_post', 'graywood_trigger_content_sync', 10, 3 );

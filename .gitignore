@@ -1,4 +1,8 @@
-# WordPress
+# Dependencies
+node_modules/
+
+# WordPress Local Runtime
+.wp-env/
 wp_data/
 *.log
 
@@ -19,9 +23,3 @@ Thumbs.db
 .env
 .env.local
 .env.production
-
-# Legacy (retained for reference)
-.cursor/
-.claude/
-.devin/
-.agents/skills/

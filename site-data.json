@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-09-14T09:00:46.954Z",
+  "source_url": "http://localhost:8080",
+  "summary": {
+    "total_pages": 4,
+    "total_posts": 1,
+    "total_client_vaults": 1,
+    "total_portfolio_entries": 2
+  },
+  "client_deliverables": [
+    {
+      "id": 5,
+      "title": "Client Deliveries",
+      "slug": "client-deliveries",
+      "permalink": "http://localhost:8080/client-deliveries/",
+      "is_password_protected": true,
+      "zip_download_url": "http://localhost:8080/wp-content/uploads/deliveries/client-deliveries-master.zip",
+      "gallery_images": []
+    }
+  ],
+  "portfolio": [
+    {
+      "id": 6,
+      "title": "Portfolio",
+      "slug": "portfolio",
+      "permalink": "http://localhost:8080/portfolio/",
+      "date": "2026-09-13T22:18:57",
+      "modified": "2026-09-13T22:18:57",
+      "featured_image": null,
+      "delivery_data": {
+        "is_password_protected": false,
+        "zip_download_url": null,
+        "gallery_images": []
+      }
+    },
+    {
+      "id": 4,
+      "title": "Home",
+      "slug": "home",
+      "permalink": "http://localhost:8080/",
+      "date": "2026-09-13T22:18:57",
+      "modified": "2026-09-13T22:18:57",
+      "featured_image": null,
+      "delivery_data": {
+        "is_password_protected": false,
+        "zip_download_url": null,
+        "gallery_images": []
+      }
+    }
+  ],
+  "pages": [
+    {
+      "id": 6,
+      "title": "Portfolio",
+      "slug": "portfolio",
+      "permalink": "http://localhost:8080/portfolio/",
+      "date": "2026-09-13T22:18:57",
+      "modified": "2026-09-13T22:18:57",
+      "featured_image": null,
+      "delivery_data": {
+        "is_password_protected": false,
+        "zip_download_url": null,
+        "gallery_images": []
+      }
+    },
+    {
+      "id": 5,
+      "title": "Client Deliveries",
+      "slug": "client-deliveries",
+      "permalink": "http://localhost:8080/client-deliveries/",
+      "date": "2026-09-13T22:18:57",
+      "modified": "2026-09-13T22:18:57",
+      "featured_image": null,
+      "delivery_data": {
+        "is_password_protected": true,
+        "zip_download_url": "http://localhost:8080/wp-content/uploads/deliveries/client-deliveries-master.zip",
+        "gallery_images": []
+      }
+    },
+    {
+      "id": 4,
+      "title": "Home",
+      "slug": "home",
+      "permalink": "http://localhost:8080/",
+      "date": "2026-09-13T22:18:57",
+      "modified": "2026-09-13T22:18:57",
+      "featured_image": null,
+      "delivery_data": {
+        "is_password_protected": false,
+        "zip_download_url": null,
+        "gallery_images": []
+      }
+    },
+    {
+      "id": 2,
+      "title": "Sample Page",
+      "slug": "sample-page",
+      "permalink": "http://localhost:8080/sample-page/",
+      "date": "2026-09-13T22:18:53",
+      "modified": "2026-09-13T22:18:53",
+      "featured_image": null,
+      "delivery_data": {
+        "is_password_protected": false,
+        "zip_download_url": null,
+        "gallery_images": []
+      }
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "Hello world!",
+      "slug": "hello-world",
+      "permalink": "http://localhost:8080/hello-world/",
+      "date": "2026-09-13T22:18:53",
+      "modified": "2026-09-13T22:18:53",
+      "featured_image": null,
+      "delivery_data": {
+        "is_password_protected": false,
+        "zip_download_url": null,
+        "gallery_images": []
+      }
+    }
+  ]
+}

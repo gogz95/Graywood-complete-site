@@ -1,0 +1,22 @@
+{
+  "name": "graywood-platform",
+  "version": "1.0.0",
+  "description": "Graywood Scandinavian visual studio platform powered by WordPress 6.x Block Theme and REST API automation",
+  "main": "sync-wordpress.js",
+  "scripts": {
+    "sync": "node sync-client.js",
+    "sync:all": "node sync-wordpress.js",
+    "wp:start": "powershell -ExecutionPolicy Bypass -File ./run-wp.ps1",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "keywords": [
+    "wordpress",
+    "fse",
+    "block-theme",
+    "rest-api",
+    "scandinavian-design"
+  ],
+  "author": "Graywood Studio",
+  "license": "UNLICENSED"
+}
