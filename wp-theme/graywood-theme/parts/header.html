@@ -1,34 +1,39 @@
-<!-- wp:group {"tagName":"header","className":"gw-header","layout":{"type":"default"}} -->
-<header class="wp-block-group gw-header">
-  <div class="gw-header-inner">
+<!-- wp:group {"tagName":"header","align":"full","className":"gw-header","style":{"spacing":{"padding":{"top":"18px","bottom":"18px","left":"24px","right":"24px"}},"color":{"background":"var:preset|color|pure-white"},"border":{"bottom":{"color":"var:preset|color|neutral-border","width":"1px"}}},"layout":{"type":"constrained","wideSize":"1280px"}} -->
+<header class="wp-block-group alignfull gw-header has-pure-white-background-color has-background" style="border-bottom-color:var(--wp--preset--color--neutral-border);border-bottom-width:1px;padding-top:18px;padding-right:24px;padding-bottom:18px;padding-left:24px">
 
-    <!-- Left: Brand Mark / Logo -->
-    <a href="/" class="gw-brand" aria-label="Graywood Homepage">
-      <div class="gw-brand-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-      </div>
-      <div class="gw-brand-text">
-        <span class="gw-brand-name">Graywood</span>
-        <span class="gw-brand-badge">Studio Network</span>
-      </div>
-    </a>
+  <!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+  <div class="wp-block-group alignwide">
+
+    <!-- Left: Brand Title & Division Text -->
+    <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"},"style":{"spacing":{"blockGap":"8px"}}} -->
+    <div class="wp-block-group">
+      <!-- wp:site-title {"level":0,"style":{"typography":{"fontFamily":"var:preset|font-family|inter","fontWeight":"700","letterSpacing":"0.06em","fontSize":"15px","textTransform":"uppercase"}},"textColor":"deep-black"} /-->
+      <!-- wp:paragraph {"style":{"typography":{"fontSize":"11px","fontFamily":"var:preset|font-family|jetbrains-mono","letterSpacing":"0.08em"}},"textColor":"muted-gray"} -->
+      <p class="has-muted-gray-color has-text-color" style="font-size:11px;letter-spacing:0.08em">/ STUDIOS</p>
+      <!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:group -->
 
     <!-- Center: Horizontal Navigation Links -->
-    <nav class="gw-header-nav" aria-label="Primary Navigation">
-      <ul class="gw-nav-links">
-        <li><a href="/portfolio/" class="gw-nav-link">Portfolio</a></li>
-        <li><a href="/#photography" class="gw-nav-link">Graywood Photography</a></li>
-        <li><a href="/#media" class="gw-nav-link">Graywood Media</a></li>
-        <li><a href="/#about" class="gw-nav-link">About</a></li>
-        <li><a href="/client-deliveries/" class="gw-nav-link">Client Portal</a></li>
-      </ul>
-    </nav>
+    <!-- wp:navigation {"overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"center","flexWrap":"nowrap"},"style":{"typography":{"fontSize":"13px","fontWeight":"500"},"spacing":{"blockGap":"32px"}},"textColor":"muted-gray"} -->
+      <!-- wp:navigation-link {"label":"Portfolio","url":"/portfolio/","kind":"custom","isTopLevelLink":true} /-->
+      <!-- wp:navigation-link {"label":"Graywood Photography","url":"/#photography","kind":"custom","isTopLevelLink":true} /-->
+      <!-- wp:navigation-link {"label":"Graywood Media","url":"/#media","kind":"custom","isTopLevelLink":true} /-->
+      <!-- wp:navigation-link {"label":"About","url":"/#about","kind":"custom","isTopLevelLink":true} /-->
+      <!-- wp:navigation-link {"label":"Client Deliveries","url":"/client-deliveries/","kind":"custom","isTopLevelLink":true} /-->
+    <!-- /wp:navigation -->
 
-    <!-- Right: Solid Dark Inquire Button -->
-    <div class="gw-header-action">
-      <a href="/#contact" class="gw-btn-inquire">Inquire</a>
+    <!-- Right: Clean High-Contrast CTA Button -->
+    <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"right"}} -->
+    <div class="wp-block-buttons">
+      <!-- wp:button {"backgroundColor":"deep-black","textColor":"pure-white","style":{"border":{"radius":"9999px"},"spacing":{"padding":{"top":"9px","bottom":"9px","left":"22px","right":"22px"}},"typography":{"fontSize":"13px","fontWeight":"500"}}} -->
+      <div class="wp-block-button"><a class="wp-block-button__link has-pure-white-color has-deep-black-background-color has-text-color has-background wp-element-button" style="border-radius:9999px;padding-top:9px;padding-right:22px;padding-bottom:9px;padding-left:22px;font-size:13px;font-weight:500" href="/#contact">Inquire</a></div>
+      <!-- /wp:button -->
     </div>
+    <!-- /wp:buttons -->
 
   </div>
+  <!-- /wp:group -->
+
 </header>
 <!-- /wp:group -->

@@ -25,13 +25,17 @@ if ! wp core is-installed --path=/var/www/html 2>/dev/null; then
 else
   echo "WordPress is already installed. Ensuring graywood-theme is active..."
   wp theme activate graywood-theme --path=/var/www/html || true
+  wp rewrite structure '/%postname%/' --path=/var/www/html || true
 fi
 
 echo "Ensuring dedicated domain landing pages and deliverables exist..."
 # 1. graywood-hub (Graywood)
-if ! wp post list --path=/var/www/html --post_type=page --name="graywood-hub" --field=ID 2>/dev/null | grep -q '^[0-9]'; then
-  wp post create --path=/var/www/html --post_type=page --post_title="Graywood" --post_name="graywood-hub" --post_status=publish
+HUB_ID=$(wp post list --path=/var/www/html --post_type=page --name="graywood-hub" --field=ID 2>/dev/null | head -n 1)
+if [ -z "$HUB_ID" ]; then
+  HUB_ID=$(wp post create --path=/var/www/html --post_type=page --post_title="Graywood" --post_name="graywood-hub" --post_status=publish --porcelain)
 fi
+wp option update show_on_front "page" --path=/var/www/html || true
+wp option update page_on_front "$HUB_ID" --path=/var/www/html || true
 
 # 2. graywood-media (Graywood Media)
 if ! wp post list --path=/var/www/html --post_type=page --name="graywood-media" --field=ID 2>/dev/null | grep -q '^[0-9]'; then

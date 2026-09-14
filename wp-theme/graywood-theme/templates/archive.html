@@ -3,7 +3,11 @@
 <!-- wp:group {"tagName":"main","style":{"spacing":{"padding":{"top":"64px","bottom":"80px","left":"24px","right":"24px"}}},"layout":{"type":"constrained","contentSize":"840px"}} -->
 <main class="wp-block-group" style="padding-top:64px;padding-right:24px;padding-bottom:80px;padding-left:24px">
 
-  <!-- wp:query {"queryId":1,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","inherit":true}} -->
+  <!-- wp:query-title {"type":"archive","style":{"typography":{"fontSize":"clamp(2rem, 4vw, 3rem)","fontWeight":"400"},"spacing":{"margin":{"bottom":"20px"}}},"fontFamily":"playfair"} /-->
+
+  <!-- wp:term-description {"style":{"typography":{"fontSize":"15px","lineHeight":"1.7"},"spacing":{"margin":{"bottom":"48px"}}},"textColor":"muted-gray"} /-->
+
+  <!-- wp:query {"queryId":2,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","inherit":true}} -->
   <div class="wp-block-query">
 
     <!-- wp:post-template {"layout":{"type":"default"}} -->
@@ -31,12 +35,6 @@
       <!-- wp:query-pagination-numbers /-->
       <!-- wp:query-pagination-next /-->
     <!-- /wp:query-pagination -->
-
-    <!-- wp:query-no-results -->
-      <!-- wp:paragraph {"align":"center","textColor":"muted-gray"} -->
-      <p class="has-text-align-center has-muted-gray-color has-text-color">No posts found.</p>
-      <!-- /wp:paragraph -->
-    <!-- /wp:query-no-results -->
 
   </div>
   <!-- /wp:query -->
