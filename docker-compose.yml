@@ -31,17 +31,19 @@ services:
       WORDPRESS_DB_USER: wp_user
       WORDPRESS_DB_PASSWORD: wp_secure_password
       WORDPRESS_CONFIG_EXTRA: |
-        /* Dynamic Multi-Domain Host Awareness for graywood.no, graywoodmedia.no, and graywoodphotography.no */
         if (isset($$_SERVER['HTTP_HOST'])) {
             $$raw_host = strtolower($$_SERVER['HTTP_HOST']);
             $$http_scheme = (!empty($$_SERVER['HTTPS']) && $$_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
             define('WP_HOME', $$http_scheme . $$raw_host);
             define('WP_SITEURL', $$http_scheme . $$raw_host);
         }
+        define('ALLOW_UNFILTERED_UPLOADS', true);
+        define('GRAYWOOD_NAS_STORAGE', '/mnt/nas_deliveries');
     volumes:
       - wp_data:/var/www/html
       - ./wp-theme/graywood-theme:/var/www/html/wp-content/themes/graywood-theme
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - nas_storage:/mnt/nas_deliveries
 
   wp-auto-install:
     image: wordpress:cli
@@ -60,3 +62,4 @@ services:
 volumes:
   db_data:
   wp_data:
+  nas_storage:
