@@ -3,7 +3,7 @@
  * Graywood Block Theme — functions.php
  *
  * Master production suite for Graywood Scandinavian visual platform:
- * - Dynamic multi-domain routing (graywood.no, graywoodmedia.no, graywoodphotography.no)
+ * - Dynamic multi-domain routing (hub.example.com, media.example.com, photography.example.com)
  * - Gear Pool custom post type, taxonomies (gear_category, shoot_manifest) & metadata
  * - Strict Wikidata SPARQL & Wikimedia Commons camera/gear ingestion
  * - Automated media sideloading to WP Media Library
@@ -110,9 +110,9 @@ add_filter( 'upload_mimes', 'graywood_custom_upload_mimes' );
 
 /**
  * Detect domain context from HTTP_HOST.
- * - graywoodmedia.no       => graywood-media (Title: Graywood Media)
- * - graywoodphotography.no => graywood-photography (Title: Graywood Photography)
- * - graywood.no / default  => graywood-hub (Title: Graywood)
+ * - media.example.com       => graywood-media (Title: Graywood Media)
+ * - photography.example.com => graywood-photography (Title: Graywood Photography)
+ * - hub.example.com / default  => graywood-hub (Title: Graywood)
  */
 function graywood_get_current_domain_context() {
     $host = isset( $_SERVER['HTTP_HOST'] ) ? strtolower( trim( explode( ':', $_SERVER['HTTP_HOST'] )[0] ) ) : 'localhost';
@@ -122,16 +122,16 @@ function graywood_get_current_domain_context() {
         $host = strtolower( trim( $_GET['gw_domain'] ) );
     }
 
-    if ( strpos( $host, 'graywoodmedia.no' ) !== false ) {
+    if ( strpos( $host, 'media.example.com' ) !== false || strpos( $host, 'graywoodmedia' ) !== false ) {
         return array(
-            'domain' => 'graywoodmedia.no',
+            'domain' => 'media.example.com',
             'title'  => 'Graywood Media',
             'slug'   => 'graywood-media',
             'desc'   => 'Creative collective hub & collaborative motion media projects.',
         );
-    } elseif ( strpos( $host, 'graywoodphotography.no' ) !== false ) {
+    } elseif ( strpos( $host, 'photography.example.com' ) !== false || strpos( $host, 'graywoodphotography' ) !== false ) {
         return array(
-            'domain' => 'graywoodphotography.no',
+            'domain' => 'photography.example.com',
             'title'  => 'Graywood Photography',
             'slug'   => 'graywood-photography',
             'desc'   => 'Commercial photography & video business, client deliveries, gear pool.',
@@ -139,7 +139,7 @@ function graywood_get_current_domain_context() {
     }
 
     return array(
-        'domain' => 'graywood.no',
+        'domain' => 'hub.example.com',
         'title'  => 'Graywood',
         'slug'   => 'graywood-hub',
         'desc'   => 'Admin hub, gaming, homelab, and central studio directory.',
@@ -1591,7 +1591,7 @@ function graywood_rest_network_gallery_handler( WP_REST_Request $request ) {
     $brands = array(
         array(
             'id'          => 'graywood-hub',
-            'domain'      => 'graywood.no',
+            'domain'      => 'hub.example.com',
             'name'        => 'Graywood Hub',
             'tagline'     => 'Admin hub, gaming, homelab, central directory',
             'slug'        => 'graywood-hub',
@@ -1599,12 +1599,12 @@ function graywood_rest_network_gallery_handler( WP_REST_Request $request ) {
             'page_count'  => count( $hub_pages ),
             'client_portals' => 1,
             'unlock_stats'=> $unlock_count,
-            'url'         => $base_url . '/?gw_domain=graywood.no',
+            'url'         => $base_url . '/?gw_domain=hub.example.com',
             'accent'      => '#2D3B36',
         ),
         array(
             'id'          => 'graywood-media',
-            'domain'      => 'graywoodmedia.no',
+            'domain'      => 'media.example.com',
             'name'        => 'Graywood Media',
             'tagline'     => 'Creative collective hub, collaborative media projects',
             'slug'        => 'graywood-media',
@@ -1612,12 +1612,12 @@ function graywood_rest_network_gallery_handler( WP_REST_Request $request ) {
             'page_count'  => count( $hub_pages ),
             'client_portals' => 1,
             'unlock_stats'=> $unlock_count,
-            'url'         => $base_url . '/?gw_domain=graywoodmedia.no',
+            'url'         => $base_url . '/?gw_domain=media.example.com',
             'accent'      => '#4A5B52',
         ),
         array(
             'id'          => 'graywood-photography',
-            'domain'      => 'graywoodphotography.no',
+            'domain'      => 'photography.example.com',
             'name'        => 'Graywood Photography',
             'tagline'     => 'Commercial photography & video business, client deliveries, gear pool',
             'slug'        => 'graywood-photography',
@@ -1626,7 +1626,7 @@ function graywood_rest_network_gallery_handler( WP_REST_Request $request ) {
             'gear_items'  => $gear_count,
             'client_portals' => 1,
             'unlock_stats'=> $unlock_count,
-            'url'         => $base_url . '/?gw_domain=graywoodphotography.no',
+            'url'         => $base_url . '/?gw_domain=photography.example.com',
             'accent'      => '#1A2320',
         ),
     );
@@ -1703,7 +1703,7 @@ function graywood_render_brand_network_dashboard() {
                         <span style="background:#137333;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;">● Live</span>
                     </div>
                     <h2 style="color:#fff;margin:8px 0 2px 0;font-size:22px;font-family:serif;">Graywood Hub</h2>
-                    <div style="font-size:13px;color:#D8E2DC;">graywood.no</div>
+                    <div style="font-size:13px;color:#D8E2DC;">hub.example.com</div>
                 </div>
                 <div style="padding:24px;flex-grow:1;display:flex;flex-direction:column;justify-content:space-between;">
                     <div>
@@ -1718,7 +1718,7 @@ function graywood_render_brand_network_dashboard() {
                         </div>
                     </div>
                     <div style="display:flex;gap:10px;">
-                        <a href="<?php echo esc_url( $base_url . '/?gw_domain=graywood.no' ); ?>" target="_blank" class="button button-primary" style="flex:1;text-align:center;height:38px;line-height:36px;background:#2D3B36;border-color:#2D3B36;">
+                        <a href="<?php echo esc_url( $base_url . '/?gw_domain=hub.example.com' ); ?>" target="_blank" class="button button-primary" style="flex:1;text-align:center;height:38px;line-height:36px;background:#2D3B36;border-color:#2D3B36;">
                             Launch Hub ↗
                         </a>
                         <a href="<?php echo esc_url( admin_url( 'post.php?post=' . ( get_page_by_path( 'graywood-hub' )->ID ?? 0 ) . '&action=edit' ) ); ?>" class="button button-secondary" style="height:38px;line-height:36px;">
@@ -1736,7 +1736,7 @@ function graywood_render_brand_network_dashboard() {
                         <span style="background:#137333;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;">● Live</span>
                     </div>
                     <h2 style="color:#fff;margin:8px 0 2px 0;font-size:22px;font-family:serif;">Graywood Media</h2>
-                    <div style="font-size:13px;color:#D8E2DC;">graywoodmedia.no</div>
+                    <div style="font-size:13px;color:#D8E2DC;">media.example.com</div>
                 </div>
                 <div style="padding:24px;flex-grow:1;display:flex;flex-direction:column;justify-content:space-between;">
                     <div>
@@ -1751,7 +1751,7 @@ function graywood_render_brand_network_dashboard() {
                         </div>
                     </div>
                     <div style="display:flex;gap:10px;">
-                        <a href="<?php echo esc_url( $base_url . '/?gw_domain=graywoodmedia.no' ); ?>" target="_blank" class="button button-primary" style="flex:1;text-align:center;height:38px;line-height:36px;background:#3E524B;border-color:#3E524B;">
+                        <a href="<?php echo esc_url( $base_url . '/?gw_domain=media.example.com' ); ?>" target="_blank" class="button button-primary" style="flex:1;text-align:center;height:38px;line-height:36px;background:#3E524B;border-color:#3E524B;">
                             Launch Media ↗
                         </a>
                         <a href="<?php echo esc_url( admin_url( 'post.php?post=' . ( get_page_by_path( 'graywood-media' )->ID ?? 0 ) . '&action=edit' ) ); ?>" class="button button-secondary" style="height:38px;line-height:36px;">
@@ -1769,7 +1769,7 @@ function graywood_render_brand_network_dashboard() {
                         <span style="background:#137333;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;">● Live</span>
                     </div>
                     <h2 style="color:#fff;margin:8px 0 2px 0;font-size:22px;font-family:serif;">Graywood Photography</h2>
-                    <div style="font-size:13px;color:#D8E2DC;">graywoodphotography.no</div>
+                    <div style="font-size:13px;color:#D8E2DC;">photography.example.com</div>
                 </div>
                 <div style="padding:24px;flex-grow:1;display:flex;flex-direction:column;justify-content:space-between;">
                     <div>
@@ -1784,7 +1784,7 @@ function graywood_render_brand_network_dashboard() {
                         </div>
                     </div>
                     <div style="display:flex;gap:10px;">
-                        <a href="<?php echo esc_url( $base_url . '/?gw_domain=graywoodphotography.no' ); ?>" target="_blank" class="button button-primary" style="flex:1;text-align:center;height:38px;line-height:36px;background:#1A2320;border-color:#1A2320;">
+                        <a href="<?php echo esc_url( $base_url . '/?gw_domain=photography.example.com' ); ?>" target="_blank" class="button button-primary" style="flex:1;text-align:center;height:38px;line-height:36px;background:#1A2320;border-color:#1A2320;">
                             Launch Photography ↗
                         </a>
                         <a href="<?php echo esc_url( admin_url( 'post.php?post=' . ( get_page_by_path( 'graywood-photography' )->ID ?? 0 ) . '&action=edit' ) ); ?>" class="button button-secondary" style="height:38px;line-height:36px;">
@@ -1850,26 +1850,3 @@ function graywood_render_brand_network_dashboard() {
     <?php
 }
 
-/* =============================================================================
-   10. Client Vault Password Gate Styling
-   ============================================================================= */
-
-function graywood_password_form( $output ) {
-    global $post;
-    $action = esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) );
-    $title = $post ? esc_html( get_the_title( $post->ID ) ) : 'Client Delivery';
-
-    return '
-    <div class="gw-password-gate" style="max-width:480px;margin:40px auto;padding:32px;background:#fff;border:1px solid #E8E5DF;border-radius:16px;text-align:center;">
-        <div style="display:inline-block;padding:12px;background:#F1EFEA;border-radius:50%;margin-bottom:16px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D3B36" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
-        <h2 style="font-family:serif;font-size:24px;margin:0 0 8px 0;">' . $title . '</h2>
-        <p style="color:#68655E;font-size:14px;margin-bottom:24px;">Enter your client access password to view proofs and download high-resolution archives.</p>
-        <form action="' . $action . '" method="post">
-            <input name="post_password" type="password" required placeholder="Access password" style="width:100%;padding:12px 16px;border:1px solid #DDD9D0;border-radius:8px;margin-bottom:16px;box-sizing:border-box;" />
-            <button type="submit" style="width:100%;padding:12px;background:#2D3B36;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Unlock Gallery</button>
-        </form>
-    </div>';
-}
-add_filter( 'the_password_form', 'graywood_password_form' );

@@ -18,4 +18,4 @@
 - Metadata, Telemetry, Dates, Counters: Monospace (`JetBrains Mono` or `font-mono`).
 
 ## 3. Strict Consistency Rule
-Do NOT use pitch black (`#000000`, `bg-zinc-950`) or high-contrast neon accents anywhere on the site. All portals (`graywood.no`, `graywoodphotography.no`, `graywoodmedia.no`, and `/admin`) must share this warm, unbleached limestone and archival paper aesthetic.
+Do NOT use pitch black (`#000000`, `bg-zinc-950`) or high-contrast neon accents anywhere on the site. All portals (`hub.example.com`, `photography.example.com`, `media.example.com`, and `/admin`) must share this warm, unbleached limestone and archival paper aesthetic.

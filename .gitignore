@@ -1,25 +1,34 @@
-# Dependencies
-node_modules/
+# WordPress Data, Media & Backups
+wp-uploads/
+uploads/
+*.sql
+backups/
+*.tar.gz
 
-# WordPress Local Runtime
-.wp-env/
-wp_data/
-*.log
-
-# Docker
-db_data/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Environment
+# Secrets, Environment & Custom Overrides
 .env
 .env.local
-.env.production
+docker-compose.override.yml
+secrets.txt
+*.pem
+*.key
+*.crt
+
+# OS & Editor Cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.antigravity/
+*.bak
+*.tmp
+*.orig
+
+# Node & Package Managers
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# WordPress Runtime Artifacts
+.wp-env/
+cookies.txt

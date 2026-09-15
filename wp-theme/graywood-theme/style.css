@@ -1,8 +1,8 @@
 /*
 Theme Name: Graywood Theme
-Theme URI: https://graywood.no
+Theme URI: https://hub.example.com
 Author: Graywood Studio
-Author URI: https://graywood.no
+Author URI: https://hub.example.com
 Description: Modern Scandinavian editorial block theme for Graywood. Native Gutenberg FSE architecture, editorial typography, and responsive grid layouts.
 Version: 1.1.0
 Requires at least: 6.4
@@ -29,13 +29,14 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
+  width: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  min-width: 320px;
+  width: 100%;
   background-color: var(--wp--preset--color--off-white, #fafafa);
   color: var(--wp--preset--color--deep-black, #111111);
   font-family: var(--wp--preset--font-family--inter, system-ui, sans-serif);
@@ -55,22 +56,69 @@ a {
 }
 
 /* ======================================================================
-   FSE Layout & Container Rules
+   FSE Layout & Container Width Normalization
    ====================================================================== */
 
 .wp-site-blocks {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ensure direct block containers occupy full available width */
+.wp-site-blocks > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Structural tags: naturally take 100% of designated container widths */
+header,
+.site-header,
+.gw-header,
+main,
+footer,
+.wp-block-template-part {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Constrained layout alignment normalization */
+.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  max-width: var(--wp--style--global--content-size, 840px);
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box;
+}
+
+.is-layout-constrained > .alignwide,
+.alignwide {
+  max-width: var(--wp--style--global--wide-size, 1280px);
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box;
+}
+
+.is-layout-constrained > .alignfull,
+.wp-site-blocks > .alignfull,
+.alignfull {
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.wp-block-columns {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.wp-block-columns.alignwide {
+  max-width: var(--wp--style--global--wide-size, 1280px);
   width: 100%;
 }
 
-/* Ensure wide and full alignments stretch cleanly across the viewport */
-.wp-site-blocks > .alignfull {
-  margin-left: calc(-100vw / 2 + 100% / 2);
-  margin-right: calc(-100vw / 2 + 100% / 2);
-  max-width: 100vw;
-  width: 100vw;
+.wp-block-column {
+  box-sizing: border-box;
 }
 
 /* ======================================================================
@@ -81,18 +129,44 @@ a {
   position: sticky;
   top: 0;
   z-index: 999;
+  width: 100%;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
-.gw-header .wp-block-navigation .wp-block-navigation-item__content {
+/* Prevent horizontal navigation from collapsing vertically */
+.wp-block-navigation:not(.is-vertical) .wp-block-navigation__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.wp-block-navigation .wp-block-navigation__responsive-container-content {
+  align-items: center;
+}
+
+.wp-block-navigation .wp-block-navigation-item__content {
   color: var(--wp--preset--color--muted-gray, #666666);
   transition: color 0.2s ease;
   white-space: nowrap;
 }
 
-.gw-header .wp-block-navigation .wp-block-navigation-item__content:hover {
+.wp-block-navigation .wp-block-navigation-item__content:hover {
   color: var(--wp--preset--color--deep-black, #111111);
+}
+
+.wp-block-button__link {
+  white-space: nowrap;
+}
+
+/* Site Title styling */
+.wp-block-site-title a {
+  color: var(--wp--preset--color--deep-black, #111111);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 /* ======================================================================
@@ -118,3 +192,111 @@ a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
+/* ======================================================================
+   Client Portal & Native WordPress Password Form (.post-password-form)
+   ====================================================================== */
+
+.client-portal-main {
+  padding-top: 72px;
+  padding-bottom: 96px;
+  padding-left: 24px;
+  padding-right: 24px;
+  max-width: var(--wp--style--global--content-size, 840px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.client-portal-title {
+  text-align: center;
+  font-family: var(--wp--preset--font-family--playfair, Georgia, serif);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 32px;
+  color: var(--wp--preset--color--deep-black, #111111);
+}
+
+.post-password-form {
+  max-width: 520px;
+  margin: 36px auto 60px auto;
+  padding: 44px 36px;
+  background-color: var(--wp--preset--color--pure-white, #ffffff);
+  border: 1px solid var(--wp--preset--color--neutral-border, #eaeaea);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(17, 17, 17, 0.04);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.post-password-form p {
+  margin: 0 0 20px 0;
+  font-family: var(--wp--preset--font-family--inter, system-ui, sans-serif);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--wp--preset--color--muted-gray, #666666);
+}
+
+.post-password-form p:first-of-type {
+  font-size: 15px;
+  color: var(--wp--preset--color--deep-black, #111111);
+  margin-bottom: 24px;
+}
+
+.post-password-form label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--wp--preset--font-family--jetbrains-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wp--preset--color--muted-gray, #666666);
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+.post-password-form input[type="password"] {
+  width: 100%;
+  max-width: 360px;
+  padding: 12px 16px;
+  font-family: var(--wp--preset--font-family--inter, system-ui, sans-serif);
+  font-size: 14px;
+  color: var(--wp--preset--color--deep-black, #111111);
+  background-color: var(--wp--preset--color--off-white, #fafafa);
+  border: 1px solid var(--wp--preset--color--neutral-border, #eaeaea);
+  border-radius: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  letter-spacing: 0.12em;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-password-form input[type="password"]:focus {
+  outline: none;
+  border-color: var(--wp--preset--color--deep-black, #111111);
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+
+.post-password-form input[type="submit"] {
+  display: inline-block;
+  padding: 12px 32px;
+  margin-top: 8px;
+  background-color: var(--wp--preset--color--deep-black, #111111);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--wp--preset--font-family--inter, system-ui, sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.post-password-form input[type="submit"]:hover {
+  background-color: var(--wp--preset--color--nordic-pine, #2d3b36);
+  transform: translateY(-1px);
+}
+

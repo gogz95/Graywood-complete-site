@@ -193,6 +193,6 @@
     { "name": "footer", "title": "Footer", "area": "footer" }
   ],
   "customTemplates": [
-    { "name": "page-client-delivery", "title": "Client Delivery", "postTypes": ["page"] }
+    { "name": "page-client-deliveries", "title": "Client Deliveries", "postTypes": ["page"] }
   ]
 }

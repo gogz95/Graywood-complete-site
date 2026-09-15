@@ -24,16 +24,14 @@
 .wp-site-blocks {
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
 }
 
-.wp-site-blocks > .alignfull {
-  margin-left: calc(-100vw / 2 + 100% / 2);
-  margin-right: calc(-100vw / 2 + 100% / 2);
-  max-width: 100vw;
-  width: 100vw;
+.wp-site-blocks > .alignfull,
+.is-layout-constrained > .alignfull,
+.alignfull {
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .gw-gateway-card {

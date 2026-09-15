@@ -1,142 +1,117 @@
-# Graywood WordPress Platform 🌲
+# Graywood — Scandinavian Visual Production Theme & Docker Stack
 
-A self-hosted, Dockerized **Native WordPress 6.x Block Theme (Full Site Editing / FSE)** built with Scandinavian editorial design aesthetics for **Graywood Studio** — featuring zero-discovery password-protected client proofing delivery, dual-pillar studio presentation (Photography & Motion Media), and streamlined operational infrastructure.
-
----
-
-## 🎨 Architectural Overview
-
-This repository has undergone a complete transition from legacy Node/Next.js hosting to a containerized WordPress 6.x Block Theme with Full Site Editing (FSE):
-
-- **Core CMS**: WordPress 6.7+ (Apache / PHP 8.2+)
-- **Database**: MariaDB 10.11 with persistent volumes and healthcheck validation
-- **Theme Paradigm**: Native Gutenberg Block Theme (FSE)
-- **Design Tokens**: `theme.json` (v3 schema) with 10-color Nordic palette, responsive typography scale, and fluid layout rules
-- **Self-Hosted Typography**:
-  - `Playfair Display` (Variable: Serif Editorial Headlines)
-  - `Inter` (Variable: Sans-serif Body & Interface)
-  - `JetBrains Mono` (Monospace: Technical Metadata & Badges)
-- **Client Delivery System**: Password-protected proofing vaults using WordPress native encryption gates with customized Nordic PIN interface (`page-client-delivery.html`)
-- **Automated Provisioning**: WP-CLI container script (`setup-wp.sh`) that installs WordPress, activates the theme, sets permalinks, and seeds baseline pages upon launch
+A full-stack WordPress Full Site Editing (FSE) block theme and containerized production architecture engineered for high-end photography studios, cinematic motion collectives, and private client delivery vaults.
 
 ---
 
-## 📁 Repository Structure
+## Architecture Overview
+
+Graywood couples a native Gutenberg FSE block theme with an automated containerized environment:
+
+- **Theme Code on Disk (`wp-theme/graywood-theme/`):** Contains template files (`templates/*.html`), template parts (`parts/*.html`), global tokens (`theme.json`), and design system rules (`style.css`). This folder is mounted into the container live, so changes to code are immediately visible.
+- **Database Content (MariaDB & Named Volumes):** All user pages, posts, media references, and settings are preserved in persistent Docker volumes (`wp_data`, `db_data`, `nas_storage`). Containers can be stopped, rebuilt, or upgraded without data loss.
 
 ```
-.
-├── docker-compose.yml              # MariaDB + WordPress + WP-CLI orchestrator
-├── setup-wp.sh                     # Automated provisioning and page seeding script
-├── README.md                       # Platform documentation and deployment guide
-├── ROADMAP.md                      # Product roadmap and architectural tracks
-├── .gitignore                      # Git exclusion rules for WordPress & Docker
-└── wp-theme/
-    └── graywood-theme/             # Standalone WordPress 6.x Block Theme
-        ├── style.css               # Theme definition and CSS baseline
-        ├── theme.json              # Full Site Editing tokens, fonts, and colors
-        ├── functions.php           # Enqueue hooks, pattern categories, password filter
-        ├── screenshot.png          # Theme preview image for WP Admin
-        ├── assets/
-        │   ├── css/
-        │   │   └── custom.css      # Nordic styling extensions, glassmorphism & cards
-        │   ├── fonts/
-        │   │   ├── PlayfairDisplay-Variable.ttf
-        │   │   ├── Inter-Variable.ttf
-        │   │   └── JetBrainsMono-Regular.ttf
-        │   └── images/             # Theme graphic assets
-        ├── parts/
-        │   ├── header.html         # Fixed glass navbar with brand & actions
-        │   └── footer.html         # 4-column studio footer & platform credentials
-        └── templates/
-            ├── front-page.html     # Editorial hero, pillar cards, services, tech banner
-            ├── index.html          # Blog and editorial post query loop
-            ├── page.html           # Generic content page
-            ├── single.html         # Single article / editorial post
-            └── page-client-delivery.html # Password-protected client delivery vault
+┌─────────────────────────────────────────────────────────────┐
+│                    Host Browser / Client                    │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+               Reverse Proxy / Port 8080
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│                    WordPress App Container                  │
+│  - Apache 2.4 + PHP 8.3                                     │
+│  - Live Bind Mount: ./wp-theme/graywood-theme               │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+               │ MariaDB Protocol             │ Media & Deliveries
+               │                              │
+┌──────────────▼──────────────┐┌──────────────▼───────────────┐
+│     MariaDB 10.11 Database  ││      Persistent Vault        │
+│     (Named Volume: db_data) ││  (Named Volume / NAS Mount)  │
+└─────────────────────────────┘└──────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Quick Start (Docker Deployment)
+## Multi-Domain Routing Model
 
-### Prerequisites
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) or Docker Engine with `docker compose` (v2+)
-- *On Windows*: WSL 2 backend or Hyper-V enabled
+The platform can host multiple specialized studio portals through a single unified WordPress installation:
 
-### 1. Launch Services
-Run Docker Compose in the project root:
+| Portal | Role | Placeholder Domain |
+| :--- | :--- | :--- |
+| **Central Hub** | Studio directory, overview, and gateway | `hub.example.com` |
+| **Still Imagery** | Editorial photography & archives | `photography.example.com` |
+| **Motion & Sound** | Commercial video & cinematic reels | `media.example.com` |
+| **Client Portal** | Password-gated client deliverable vault | `/client-deliveries/` |
+
+---
+
+## Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows / macOS) or Docker Engine with Docker Compose v2+ (Linux).
+- [Git](https://git-scm.com/) installed on your host machine.
+- A modern web browser.
+
+---
+
+## Quick Start (One Command)
+
+### Windows (PowerShell)
+```powershell
+# 1. Clone the repository
+git clone https://github.com/example/graywood-complete-site.git
+cd graywood-complete-site
+
+# 2. Run automated setup
+.\setup.ps1
+```
+
+### Linux / macOS (Bash)
 ```bash
+# 1. Clone the repository
+git clone https://github.com/example/graywood-complete-site.git
+cd graywood-complete-site
+
+# 2. Make scripts executable and run setup
+chmod +x *.sh
+./setup.sh
+```
+
+### Manual Startup
+```bash
+cp .env.example .env
 docker compose up -d
 ```
 
-This launches three coordinated services:
-1. `graywood-db` — MariaDB database initialized with persistent storage.
-2. `graywood-wordpress` — WordPress core container mounting the `./wp-theme/graywood-theme` folder into `/var/www/html/wp-content/themes/graywood-theme`.
-3. `graywood-wp-cli` — Ephemeral container that executes `setup-wp.sh` to configure WordPress, activate the theme, create pages, and exit cleanly.
-
-### 2. Monitor Auto-Provisioning
-Track the automated setup:
-```bash
-docker compose logs -f wp-auto-install
-```
-
-Once completed, the logs will confirm:
-```
-============================================
-  Graywood provisioning complete!
-
-  Site:     http://localhost:8080
-  Admin:    http://localhost:8080/wp-admin/
-  User:     admin
-  Password: AdminPassword123!
-
-  Client Delivery Password: graywood2026
-============================================
-```
-
-### 3. Access the Studio
-- **Public Site**: [http://localhost:8080](http://localhost:8080)
-- **WordPress Admin**: [http://localhost:8080/wp-admin/](http://localhost:8080/wp-admin/)
-- **Client Delivery Vault**: [http://localhost:8080/client-deliveries/](http://localhost:8080/client-deliveries/) (Password: `graywood2026`)
+Once running, access your local environment:
+- **Public Front Page:** [http://localhost:8080](http://localhost:8080)
+- **Client Delivery Vault:** [http://localhost:8080/client-deliveries/](http://localhost:8080/client-deliveries/) (Default Password: `ClientPass2026!`)
+- **WordPress Admin:** [http://localhost:8080/wp-admin](http://localhost:8080/wp-admin)
 
 ---
 
-## 🔐 Client Delivery Vaults
+## Operational Scripts
 
-The Graywood client delivery system leverages WordPress's native cryptographic post-password mechanism, customized via `functions.php` with the `the_password_form` filter to match Graywood's Nordic aesthetic:
-
-- **Template**: `templates/page-client-delivery.html`
-- **Password Form Filter**: Intercepts default WordPress password prompt and renders an encrypted security card with SVG key indicators and PIN entry styling.
-- **Post-Authentication Content**: Unlocks full-resolution image galleries and download CTAs upon successful password validation.
+| Script | Purpose |
+| :--- | :--- |
+| `setup.ps1` / `setup.sh` | Initializes `.env`, generates randomized passwords, starts containers, and activates theme. |
+| `backup.ps1` / `backup.sh` | Creates an instant, dated SQL database snapshot in `backups/`. |
+| `deploy.ps1` / `deploy.sh` | Creates a preliminary backup, refreshes containers, flushes template cache, and checks site health. |
 
 ---
 
-## 🌐 Production VPS Deployment
+## Repository Standards & Privacy
 
-To deploy this theme to any production Ubuntu/Debian VPS:
+This repository complies with strict open-source privacy standards:
+- **Zero Real Credentials:** All defaults use safe development placeholders.
+- **Zero Real Domains:** All examples use RFC 2606 reserved domains (`hub.example.com`, `media.example.com`, `photography.example.com`).
+- **No Uploaded Client Media:** Named volumes isolate user data outside the git tree.
 
-1. **Clone or Copy Repository**:
-   ```bash
-   git clone https://github.com/gogz95/Graywood-complete-site.git /srv/graywood
-   cd /srv/graywood
-   ```
+For in-depth administrative guides, NAS configuration, reverse proxies, and backup restoration, read the [OPERATIONS_GUIDE.md](OPERATIONS_GUIDE.md).
 
-2. **Configure Environment Secrets**:
-   Update `docker-compose.yml` with strong production credentials:
-   - `MYSQL_ROOT_PASSWORD`
-   - `MYSQL_PASSWORD`
-   - `WORDPRESS_DB_PASSWORD`
+---
 
-3. **Set Production Domain**:
-   Update `setup-wp.sh` with your live domain:
-   ```bash
-   --url="https://graywood.no"
-   ```
+## License
 
-4. **Add Reverse Proxy (Nginx / Caddy / Traefik)**:
-   Point your reverse proxy with SSL termination (Let's Encrypt) to port `8080` (or update the host port in `docker-compose.yml`).
-
-5. **Start Containers**:
-   ```bash
-   docker compose up -d
-   ```
+This project is open source and released under the terms of the [GNU General Public License v2 (GPL-2.0-or-later)](LICENSE).

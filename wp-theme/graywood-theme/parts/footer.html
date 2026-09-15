@@ -1,87 +1,68 @@
-<!-- wp:group {"tagName":"footer","align":"full","className":"gw-footer","style":{"spacing":{"padding":{"top":"64px","bottom":"48px","left":"24px","right":"24px"}},"color":{"background":"var:preset|color|pure-white"},"border":{"top":{"color":"var:preset|color|neutral-border","width":"1px"}}},"layout":{"type":"constrained","wideSize":"1280px"}} -->
-<footer class="wp-block-group alignfull gw-footer has-pure-white-background-color has-background" style="border-top-color:var(--wp--preset--color--neutral-border);border-top-width:1px;padding-top:64px;padding-right:24px;padding-bottom:48px;padding-left:24px">
+<!-- wp:group {"tagName":"footer","align":"full","style":{"spacing":{"padding":{"top":"64px","bottom":"48px","left":"24px","right":"24px"}},"color":{"background":"var:preset|color|pure-white"},"border":{"top":{"color":"var:preset|color|neutral-border","width":"1px"}}},"layout":{"type":"constrained","wideSize":"1280px"}} -->
+<footer class="wp-block-group alignfull has-pure-white-background-color has-background" style="border-top-color:var(--wp--preset--color--neutral-border);border-top-width:1px;padding-top:64px;padding-right:24px;padding-bottom:48px;padding-left:24px">
 
-  <!-- wp:group {"align":"wide","layout":{"type":"default"}} -->
+  <!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"left":"48px","top":"32px"},"margin":{"bottom":"48px"}}}} -->
+  <div class="wp-block-columns alignwide" style="margin-bottom:48px">
+
+    <!-- Column 1: Brand description and studio presence -->
+    <!-- wp:column {"width":"44%"} -->
+    <div class="wp-block-column" style="flex-basis:44%">
+      <!-- wp:heading {"level":3,"style":{"typography":{"fontFamily":"var:preset|font-family|inter","fontWeight":"700","fontSize":"16px","letterSpacing":"0.08em","textTransform":"uppercase"}},"textColor":"deep-black"} -->
+      <h3 class="wp-block-heading has-deep-black-color has-text-color" style="font-family:var(--wp--preset--font-family--inter);font-size:16px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">GRAYWOOD</h3>
+      <!-- /wp:heading -->
+
+      <!-- wp:paragraph {"style":{"typography":{"fontSize":"13px","lineHeight":"1.7"},"spacing":{"margin":{"top":"12px","bottom":"16px"}}},"textColor":"muted-gray"} -->
+      <p class="has-muted-gray-color has-text-color" style="font-size:13px;line-height:1.7;margin-top:12px;margin-bottom:16px">Unified Norwegian visual production platform serving high-end still photography, cinematic motion, and private client galleries.</p>
+      <!-- /wp:paragraph -->
+
+      <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var:preset|font-family|jetbrains-mono","fontSize":"11px","letterSpacing":"0.1em","textTransform":"uppercase"}},"textColor":"muted-gray"} -->
+      <p class="has-muted-gray-color has-text-color" style="font-family:var(--wp--preset--font-family--jetbrains-mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase">OSLO STUDIO · ACTIVE OPERATIONS</p>
+      <!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:column -->
+
+    <!-- Column 2: Navigation & division links -->
+    <!-- wp:column {"width":"28%"} -->
+    <div class="wp-block-column" style="flex-basis:28%">
+      <!-- wp:heading {"level":4,"style":{"typography":{"fontFamily":"var:preset|font-family|jetbrains-mono","fontSize":"11px","letterSpacing":"0.12em","textTransform":"uppercase","fontWeight":"600"}},"textColor":"deep-black"} -->
+      <h4 class="wp-block-heading has-deep-black-color has-text-color" style="font-family:var(--wp--preset--font-family--jetbrains-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Navigation &amp; Divisions</h4>
+      <!-- /wp:heading -->
+
+      <!-- wp:paragraph {"style":{"typography":{"fontSize":"13px","lineHeight":"2"},"spacing":{"margin":{"top":"12px"}}},"textColor":"muted-gray"} -->
+      <p class="has-muted-gray-color has-text-color" style="font-size:13px;line-height:2;margin-top:12px"><a href="/portfolio/">Portfolio</a><br/><a href="/#photography">Graywood Photography</a><br/><a href="/#media">Graywood Media</a><br/><a href="/#about">About</a><br/><a href="/client-deliveries/">Client Deliveries</a></p>
+      <!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:column -->
+
+    <!-- Column 3: Contact details and inquiries -->
+    <!-- wp:column {"width":"28%"} -->
+    <div class="wp-block-column" style="flex-basis:28%">
+      <!-- wp:heading {"level":4,"style":{"typography":{"fontFamily":"var:preset|font-family|jetbrains-mono","fontSize":"11px","letterSpacing":"0.12em","textTransform":"uppercase","fontWeight":"600"}},"textColor":"deep-black"} -->
+      <h4 class="wp-block-heading has-deep-black-color has-text-color" style="font-family:var(--wp--preset--font-family--jetbrains-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Contact &amp; Inquiries</h4>
+      <!-- /wp:heading -->
+
+      <!-- wp:paragraph {"style":{"typography":{"fontSize":"13px","lineHeight":"1.7"},"spacing":{"margin":{"top":"12px"}}},"textColor":"muted-gray"} -->
+      <p class="has-muted-gray-color has-text-color" style="font-size:13px;line-height:1.7;margin-top:12px">Atelier &amp; Studio Coordinates<br/>Oslo, Norway<br/>contact@example.com<br/><a href="/#contact">Book Commission ↗</a></p>
+      <!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:column -->
+
+  </div>
+  <!-- /wp:columns -->
+
+  <!-- wp:separator {"align":"wide","style":{"spacing":{"margin":{"top":"0px","bottom":"24px"}}},"backgroundColor":"neutral-border"} -->
+  <hr class="wp-block-separator alignwide has-text-color has-neutral-border-color has-alpha-channel-opacity has-neutral-border-background-color has-background" style="margin-top:0px;margin-bottom:24px"/>
+  <!-- /wp:separator -->
+
+  <!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
   <div class="wp-block-group alignwide">
+    <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"}},"textColor":"muted-gray"} -->
+    <p class="has-muted-gray-color has-text-color" style="font-size:12px">© 2026 Graywood Digital Ecosystem. All rights reserved.</p>
+    <!-- /wp:paragraph -->
 
-    <!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"40px","top":"32px"},"margin":{"bottom":"48px"}}}} -->
-    <div class="wp-block-columns" style="margin-bottom:48px">
-
-      <!-- Column 1: Brand & Identity -->
-      <!-- wp:column {"width":"34%"} -->
-      <div class="wp-block-column" style="flex-basis:34%">
-        <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var:preset|font-family|inter","fontWeight":"700","fontSize":"15px","letterSpacing":"0.08em","textTransform":"uppercase"}},"textColor":"deep-black"} -->
-        <p class="has-deep-black-color has-text-color" style="font-size:15px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">GRAYWOOD</p>
-        <!-- /wp:paragraph -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontSize":"13px","lineHeight":"1.7"},"spacing":{"margin":{"top":"12px","bottom":"16px"}}},"textColor":"muted-gray"} -->
-        <p class="has-muted-gray-color has-text-color" style="font-size:13px;line-height:1.7;margin-top:12px;margin-bottom:16px">Unified Norwegian visual production platform serving high-end still photography, cinematic motion, and private client galleries.</p>
-        <!-- /wp:paragraph -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var:preset|font-family|jetbrains-mono","fontSize":"11px","letterSpacing":"0.1em","textTransform":"uppercase"}},"textColor":"muted-gray"} -->
-        <p class="has-muted-gray-color has-text-color" style="font-family:var(--wp--preset--font-family--jetbrains-mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase">OSLO STUDIO · ACTIVE OPERATIONS</p>
-        <!-- /wp:paragraph -->
-      </div>
-      <!-- /wp:column -->
-
-      <!-- Column 2: Studio Portals -->
-      <!-- wp:column {"width":"22%"} -->
-      <div class="wp-block-column" style="flex-basis:22%">
-        <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var:preset|font-family|jetbrains-mono","fontSize":"11px","letterSpacing":"0.12em","textTransform":"uppercase","fontWeight":"600"}},"textColor":"deep-black"} -->
-        <p class="has-deep-black-color has-text-color" style="font-family:var(--wp--preset--font-family--jetbrains-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Portals</p>
-        <!-- /wp:paragraph -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontSize":"13px","lineHeight":"2"},"spacing":{"margin":{"top":"12px"}}},"textColor":"muted-gray"} -->
-        <p class="has-muted-gray-color has-text-color" style="font-size:13px;line-height:2;margin-top:12px"><a href="/#photography">Graywood Photography</a><br><a href="/#media">Graywood Media</a><br><a href="/portfolio/">Portfolio Archive</a><br><a href="/client-deliveries/">Client Portal</a></p>
-        <!-- /wp:paragraph -->
-      </div>
-      <!-- /wp:column -->
-
-      <!-- Column 3: Presence Coordinates -->
-      <!-- wp:column {"width":"22%"} -->
-      <div class="wp-block-column" style="flex-basis:22%">
-        <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var:preset|font-family|jetbrains-mono","fontSize":"11px","letterSpacing":"0.12em","textTransform":"uppercase","fontWeight":"600"}},"textColor":"deep-black"} -->
-        <p class="has-deep-black-color has-text-color" style="font-family:var(--wp--preset--font-family--jetbrains-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Coordinates</p>
-        <!-- /wp:paragraph -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontSize":"13px","lineHeight":"1.7"},"spacing":{"margin":{"top":"12px"}}},"textColor":"muted-gray"} -->
-        <p class="has-muted-gray-color has-text-color" style="font-size:13px;line-height:1.7;margin-top:12px">Dronning Eufemias gate 16<br>0191 Oslo, Norway<br>Org: 934 102 481 MVA<br>contact@graywood.no</p>
-        <!-- /wp:paragraph -->
-      </div>
-      <!-- /wp:column -->
-
-      <!-- Column 4: Architecture -->
-      <!-- wp:column {"width":"22%"} -->
-      <div class="wp-block-column" style="flex-basis:22%">
-        <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var:preset|font-family|jetbrains-mono","fontSize":"11px","letterSpacing":"0.12em","textTransform":"uppercase","fontWeight":"600"}},"textColor":"deep-black"} -->
-        <p class="has-deep-black-color has-text-color" style="font-family:var(--wp--preset--font-family--jetbrains-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Architecture</p>
-        <!-- /wp:paragraph -->
-
-        <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px","lineHeight":"1.7"},"spacing":{"margin":{"top":"12px"}}},"textColor":"muted-gray"} -->
-        <p class="has-muted-gray-color has-text-color" style="font-size:12px;line-height:1.7;margin-top:12px">Modern WordPress FSE with native block templates, MariaDB persistence, self-hosted fonts, and high-speed delivery pipeline.</p>
-        <!-- /wp:paragraph -->
-      </div>
-      <!-- /wp:column -->
-
-    </div>
-    <!-- /wp:columns -->
-
-    <!-- wp:separator {"style":{"spacing":{"margin":{"top":"0px","bottom":"24px"}}},"backgroundColor":"neutral-border"} -->
-    <hr class="wp-block-separator has-text-color has-neutral-border-color has-alpha-channel-opacity has-neutral-border-background-color has-background" style="margin-top:0px;margin-bottom:24px"/>
-    <!-- /wp:separator -->
-
-    <!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-    <div class="wp-block-group">
-      <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"}},"textColor":"muted-gray"} -->
-      <p class="has-muted-gray-color has-text-color" style="font-size:12px">© 2026 Graywood Digital Ecosystem. All rights reserved.</p>
-      <!-- /wp:paragraph -->
-
-      <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"}},"textColor":"muted-gray"} -->
-      <p class="has-muted-gray-color has-text-color" style="font-size:12px"><a href="/">Overview</a> &nbsp;·&nbsp; <a href="/client-deliveries/">Client Access</a> &nbsp;·&nbsp; <a href="/#contact">Book Commission ↗</a></p>
-      <!-- /wp:paragraph -->
-    </div>
-    <!-- /wp:group -->
-
+    <!-- wp:paragraph {"style":{"typography":{"fontSize":"12px"}},"textColor":"muted-gray"} -->
+    <p class="has-muted-gray-color has-text-color" style="font-size:12px"><a href="/">Overview</a> &nbsp;·&nbsp; <a href="/client-deliveries/">Client Access</a> &nbsp;·&nbsp; <a href="/#contact">Book Commission ↗</a></p>
+    <!-- /wp:paragraph -->
   </div>
   <!-- /wp:group -->
 

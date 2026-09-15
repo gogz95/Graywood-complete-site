@@ -1,39 +1,26 @@
-<!-- wp:group {"tagName":"header","align":"full","className":"gw-header","style":{"spacing":{"padding":{"top":"18px","bottom":"18px","left":"24px","right":"24px"}},"color":{"background":"var:preset|color|pure-white"},"border":{"bottom":{"color":"var:preset|color|neutral-border","width":"1px"}}},"layout":{"type":"constrained","wideSize":"1280px"}} -->
-<header class="wp-block-group alignfull gw-header has-pure-white-background-color has-background" style="border-bottom-color:var(--wp--preset--color--neutral-border);border-bottom-width:1px;padding-top:18px;padding-right:24px;padding-bottom:18px;padding-left:24px">
+<!-- wp:group {"tagName":"header","align":"full","layout":{"type":"flex","justifyContent":"space-between","flexWrap":"nowrap"},"style":{"spacing":{"padding":{"top":"18px","bottom":"18px","left":"24px","right":"24px"}},"color":{"background":"var:preset|color|pure-white"},"border":{"bottom":{"color":"var:preset|color|neutral-border","width":"1px"}}}} -->
+<header class="wp-block-group alignfull has-pure-white-background-color has-background" style="border-bottom-color:var(--wp--preset--color--neutral-border);border-bottom-width:1px;padding-top:18px;padding-right:24px;padding-bottom:18px;padding-left:24px">
 
-  <!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-  <div class="wp-block-group alignwide">
+  <!-- Left: Brand title ("GRAYWOOD") linked to home -->
+  <!-- wp:site-title {"level":0,"style":{"typography":{"fontFamily":"var:preset|font-family|inter","fontWeight":"700","fontSize":"16px","letterSpacing":"0.06em","textTransform":"uppercase"}},"textColor":"deep-black"} /-->
 
-    <!-- Left: Brand Title & Division Text -->
-    <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"},"style":{"spacing":{"blockGap":"8px"}}} -->
-    <div class="wp-block-group">
-      <!-- wp:site-title {"level":0,"style":{"typography":{"fontFamily":"var:preset|font-family|inter","fontWeight":"700","letterSpacing":"0.06em","fontSize":"15px","textTransform":"uppercase"}},"textColor":"deep-black"} /-->
-      <!-- wp:paragraph {"style":{"typography":{"fontSize":"11px","fontFamily":"var:preset|font-family|jetbrains-mono","letterSpacing":"0.08em"}},"textColor":"muted-gray"} -->
-      <p class="has-muted-gray-color has-text-color" style="font-size:11px;letter-spacing:0.08em">/ STUDIOS</p>
-      <!-- /wp:paragraph -->
-    </div>
-    <!-- /wp:group -->
+  <!-- Center: Horizontal navigation links (Portfolio, Photography, Media, About, Client Deliveries) -->
+  <!-- wp:navigation {"overlayMenu":"mobile","layout":{"type":"flex","orientation":"horizontal","justifyContent":"center","flexWrap":"nowrap"},"style":{"typography":{"fontSize":"13px","fontWeight":"500"},"spacing":{"blockGap":"32px"}},"textColor":"muted-gray"} -->
+    <!-- wp:navigation-link {"label":"Portfolio","url":"/portfolio/","kind":"custom","isTopLevelLink":true} /-->
+    <!-- wp:navigation-link {"label":"Photography","url":"/#photography","kind":"custom","isTopLevelLink":true} /-->
+    <!-- wp:navigation-link {"label":"Media","url":"/#media","kind":"custom","isTopLevelLink":true} /-->
+    <!-- wp:navigation-link {"label":"About","url":"/#about","kind":"custom","isTopLevelLink":true} /-->
+    <!-- wp:navigation-link {"label":"Client Deliveries","url":"/client-deliveries/","kind":"custom","isTopLevelLink":true} /-->
+  <!-- /wp:navigation -->
 
-    <!-- Center: Horizontal Navigation Links -->
-    <!-- wp:navigation {"overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"center","flexWrap":"nowrap"},"style":{"typography":{"fontSize":"13px","fontWeight":"500"},"spacing":{"blockGap":"32px"}},"textColor":"muted-gray"} -->
-      <!-- wp:navigation-link {"label":"Portfolio","url":"/portfolio/","kind":"custom","isTopLevelLink":true} /-->
-      <!-- wp:navigation-link {"label":"Graywood Photography","url":"/#photography","kind":"custom","isTopLevelLink":true} /-->
-      <!-- wp:navigation-link {"label":"Graywood Media","url":"/#media","kind":"custom","isTopLevelLink":true} /-->
-      <!-- wp:navigation-link {"label":"About","url":"/#about","kind":"custom","isTopLevelLink":true} /-->
-      <!-- wp:navigation-link {"label":"Client Deliveries","url":"/client-deliveries/","kind":"custom","isTopLevelLink":true} /-->
-    <!-- /wp:navigation -->
-
-    <!-- Right: Clean High-Contrast CTA Button -->
-    <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"right"}} -->
-    <div class="wp-block-buttons">
-      <!-- wp:button {"backgroundColor":"deep-black","textColor":"pure-white","style":{"border":{"radius":"9999px"},"spacing":{"padding":{"top":"9px","bottom":"9px","left":"22px","right":"22px"}},"typography":{"fontSize":"13px","fontWeight":"500"}}} -->
-      <div class="wp-block-button"><a class="wp-block-button__link has-pure-white-color has-deep-black-background-color has-text-color has-background wp-element-button" style="border-radius:9999px;padding-top:9px;padding-right:22px;padding-bottom:9px;padding-left:22px;font-size:13px;font-weight:500" href="/#contact">Inquire</a></div>
-      <!-- /wp:button -->
-    </div>
-    <!-- /wp:buttons -->
-
+  <!-- Right: Solid high-contrast "Inquire" button -->
+  <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"right","flexWrap":"nowrap"}} -->
+  <div class="wp-block-buttons">
+    <!-- wp:button {"backgroundColor":"deep-black","textColor":"pure-white","style":{"border":{"radius":"9999px"},"spacing":{"padding":{"top":"9px","bottom":"9px","left":"22px","right":"22px"}},"typography":{"fontSize":"13px","fontWeight":"500"}}} -->
+    <div class="wp-block-button"><a class="wp-block-button__link has-pure-white-color has-deep-black-background-color has-text-color has-background wp-element-button" style="border-radius:9999px;padding-top:9px;padding-right:22px;padding-bottom:9px;padding-left:22px;font-size:13px;font-weight:500;white-space:nowrap" href="/#contact">Inquire</a></div>
+    <!-- /wp:button -->
   </div>
-  <!-- /wp:group -->
+  <!-- /wp:buttons -->
 
 </header>
 <!-- /wp:group -->
